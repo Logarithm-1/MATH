@@ -7,7 +7,14 @@
 
 import Foundation
 
+/// A Integer that can be hundreds of digits long
 public struct BigInt: Equatable, CustomStringConvertible {
+    /// The first element in array is an integer that represents the ones place
+    /// The secound elemnts in array is an integer that represents the tens place
+    ///
+    /// EX. 12,345,678 -> [8, 7, 6, 5, 4, 3, 2, 1]
+    ///
+    /// So it is like the arry is reversed
     var source: [Int]
     var negative: Bool = false
     
@@ -27,8 +34,10 @@ public struct BigInt: Equatable, CustomStringConvertible {
             num[num.count - 2] %= 10
         }
         
-        self.source = num.reversed()
+        self.source = num
     }
+    
+    //MARK: - Compare
     
     /// Returns a Boolean value indicating whether two values are equal
     ///
@@ -38,11 +47,115 @@ public struct BigInt: Equatable, CustomStringConvertible {
     ///   - lhs: A value to compare.
     ///   - rhs: Another value to compare.
     public static func == (lhs: BigInt, rhs: BigInt) -> Bool {
-        if(lhs.source.count == rhs.source.count) {
-            
+        if(lhs.source.count != rhs.source.count) {
+            return false
         }
         
+        for i in 0..<lhs.source.count {
+            if(lhs.source[i] != rhs.source[i]) {
+                return false
+            }
+        }
+        
+        return true
+    }
+    
+    public static func >= (lhs: BigInt, rhs: BigInt) -> Bool {
         return false
+    }
+    
+    public static func <= (lhs: BigInt, rhs: BigInt) -> Bool {
+        return false
+    }
+    
+    public static func > (lhs: BigInt, rhs: BigInt) -> Bool {
+        return false
+    }
+    
+    public static func < (lhs: BigInt, rhs: BigInt) -> Bool {
+        return false
+    }
+    
+    //MARK: - Arithmetic
+    
+    public static func += (lhs: inout BigInt, rhs: BigInt) {
+        
+    }
+    
+    public static func -= (lhs: inout BigInt, rhs: BigInt) {
+        
+    }
+    
+    public static func *= (lhs: inout BigInt, rhs: BigInt) {
+        
+    }
+    
+    public static func /= (lhs: inout BigInt, rhs: BigInt) {
+        
+    }
+    
+    public static func %= (lhs: inout BigInt, rhs: BigInt) {
+        
+    }
+    
+    public static func &= (lhs: inout BigInt, rhs: BigInt) {
+        
+    }
+    
+    public static func |= (lhs: inout BigInt, rhs: BigInt) {
+        
+    }
+    
+    public static func ^= (lhs: inout BigInt, rhs: BigInt) {
+        
+    }
+    
+    public static func &>>= (lhs: inout BigInt, rhs: BigInt) {
+        
+    }
+    
+    public static func &<<= (lhs: inout BigInt, rhs: BigInt) {
+        
+    }
+    
+    public static func & (lhs: BigInt, rhs: BigInt) -> BigInt {
+        return BigInt()
+    }
+    
+    public static func | (lhs: BigInt, rhs: BigInt) -> BigInt {
+        return BigInt()
+    }
+    
+    public static func ^ (lhs: BigInt, rhs: BigInt) -> BigInt {
+        return BigInt()
+    }
+    
+    public static func &>> (lhs: BigInt, rhs: BigInt) -> BigInt {
+        return BigInt()
+    }
+    
+    public static func &<< (lhs: BigInt, rhs: BigInt) -> BigInt {
+        return BigInt()
+    }
+    
+    public static func + (lhs: BigInt, rhs: BigInt) -> BigInt {
+        return BigInt()
+    }
+    
+    public static func - (lhs: BigInt, rhs: BigInt) -> BigInt {
+        return BigInt()
+    }
+    
+    public static func * (lhs: BigInt, rhs: BigInt) -> BigInt {
+        return BigInt()
+    }
+    
+    public static func / (lhs: BigInt, rhs: BigInt) -> BigInt {
+        return BigInt()
+    }
+    
+    public static func % (lhs: BigInt, rhs: BigInt) -> BigInt {
+        return BigInt()
     }
     
     func factorial(n: Int) -> [Int] {
@@ -104,6 +217,12 @@ public struct BigInt: Equatable, CustomStringConvertible {
         return num
     }
     
+    /// [1, 23, 4] -> [3, 3, 4]
+    /// [1, 2, 3, 0, 0] -> [1, 2, 3]
+    func reArangeArray() {
+        
+    }
+    
     func createArrayOfZeros(of count: Int) -> [Int] {
         var arr: [Int] = [Int]()
         
@@ -117,13 +236,15 @@ public struct BigInt: Equatable, CustomStringConvertible {
     func toString() -> String {
         var str: String = ""
         
-        for i in 0..<source.count {
-            let offset = source.count % 3
+        let reSource: [Int] = source.reversed()
+        
+        for i in 0..<reSource.count {
+            let offset = reSource.count % 3
             
-            if(i != 0 && i != source.count - 1 && (i - offset) % 3 == 0) {
+            if(i != 0 && i != reSource.count - 1 && (i - offset) % 3 == 0) {
                 str += ","
             }
-            str += String(source[i])
+            str += String(reSource[i])
         }
         
         return str
