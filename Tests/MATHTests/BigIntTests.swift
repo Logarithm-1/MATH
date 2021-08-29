@@ -90,8 +90,10 @@ final class BigIntTests: XCTestCase {
         let z = BigInt(246)
         
         x *= y
-        
         XCTAssertEqual(x, z)
+        
+        x *= z
+        XCTAssertEqual(x, BigInt(60516))
     }
     
     func testBackslashEqualOperator() {

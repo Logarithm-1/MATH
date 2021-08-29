@@ -161,9 +161,36 @@ public struct BigInt: Equatable, Comparable, CustomStringConvertible { //Numeric
         
         return BigInt(result)
     }
-    
+    ///
+    ///
+    ///246 * 246 = 6*246 + 40*246 + 200*246 = 1,476 + 9,840 + 49,200 = 60,516
     public static func * (lhs: BigInt, rhs: BigInt) -> BigInt {
-        return BigInt()
+        if(lhs.source.count > rhs.source.count) {
+            var result = BigInt()
+            
+            for i in 0..<rhs.source.count {
+                var smallResult = lhs.source
+                smallResult *= rhs.source[i]
+                smallResult *= 10^^i
+                
+                result += BigInt(smallResult)
+            }
+            
+            return result
+        } else {
+            var result = BigInt()
+            
+            for i in 0..<lhs.source.count {
+                var smallResult = rhs.source
+                smallResult *= lhs.source[i]
+                smallResult *= 10^^i
+                
+                result += BigInt(smallResult)
+            }
+            
+            return result
+        }
+
     }
     
     public static func / (lhs: BigInt, rhs: BigInt) -> BigInt {
@@ -196,15 +223,21 @@ public struct BigInt: Equatable, Comparable, CustomStringConvertible { //Numeric
         return factorial.reversed()
     }
     
+    mutating func reArangeArray() {
+        source = reArange(array: source)
+    }
+    
     /// [1, 23, 4] -> [1, 3, 6]
     /// [1, 2, 3, 0, 0] -> [1, 2, 3]
     /// [-1, 2, 3] -> [9, 1, 3]
     /// [1, 2, -3, 4] -> [1, 2, 7, 3]
     /// [1, 2, -3] -> -[9, 8, 2]
     /// [-1, -2, -3] -> -[1, 2, 3]
-    mutating func reArangeArray() {
+    func reArange(array: [Int]) -> [Int] {
         //Make soure every element in source only has one digit
         var i = 0
+        var source = array
+        
         while(i < source.count) {
             if(source[i] > 9) {
                 if(i + 1 >= source.count) {
@@ -226,6 +259,8 @@ public struct BigInt: Equatable, Comparable, CustomStringConvertible { //Numeric
         while(source.last == 0) {
             source.removeLast()
         }
+        
+        return source
     }
     
     func createArrayOfZeros(of count: Int) -> [Int] {
@@ -255,4 +290,18 @@ public struct BigInt: Equatable, Comparable, CustomStringConvertible { //Numeric
         return str
     }
     
+}
+
+precedencegroup PowerPrecedence { higherThan: MultiplicationPrecedence }
+infix operator ^^ : PowerPrecedence
+extension Int {
+    public static func *= (lhs: inout [Int], rhs: Int) {
+        for i in 0..<lhs.count {
+            lhs[i] *= rhs
+        }
+    }
+    
+    public static func ^^ (radix: Int, power: Int) -> Int {
+        return Int(pow(Double(radix), Double(power)))
+    }
 }
