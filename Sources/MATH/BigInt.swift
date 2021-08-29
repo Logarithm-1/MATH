@@ -8,7 +8,8 @@
 import Foundation
 
 /// A Integer that can be hundreds of digits long
-public struct BigInt: Equatable, CustomStringConvertible {
+public struct BigInt: Equatable, Comparable, CustomStringConvertible { //Numeric
+    
     /// The first element in array is an integer that represents the ones place
     /// The secound elemnts in array is an integer that represents the tens place
     ///
@@ -27,14 +28,13 @@ public struct BigInt: Equatable, CustomStringConvertible {
     }
     
     init(_ source: Int) {
-        var num: [Int] = [source]
-        
-        while(num.count != 0 && num[num.count - 1] > 9) {
-            num.append(num[num.count - 1] / 10)
-            num[num.count - 2] %= 10
-        }
-        
-        self.source = num
+        self.source = [source]
+        self.reArangeArray()
+    }
+    
+    init(_ source: [Int]) {
+        self.source = source
+        self.reArangeArray()
     }
     
     //MARK: - Compare
@@ -79,43 +79,43 @@ public struct BigInt: Equatable, CustomStringConvertible {
     //MARK: - Arithmetic
     
     public static func += (lhs: inout BigInt, rhs: BigInt) {
-        
+        lhs = lhs + rhs
     }
     
     public static func -= (lhs: inout BigInt, rhs: BigInt) {
-        
+        lhs = lhs - rhs
     }
     
     public static func *= (lhs: inout BigInt, rhs: BigInt) {
-        
+        lhs = lhs * rhs
     }
     
     public static func /= (lhs: inout BigInt, rhs: BigInt) {
-        
+        lhs = lhs / rhs
     }
     
     public static func %= (lhs: inout BigInt, rhs: BigInt) {
-        
+        lhs = lhs % rhs
     }
     
     public static func &= (lhs: inout BigInt, rhs: BigInt) {
-        
+        lhs = lhs & rhs
     }
     
     public static func |= (lhs: inout BigInt, rhs: BigInt) {
-        
+        lhs = lhs | rhs
     }
     
     public static func ^= (lhs: inout BigInt, rhs: BigInt) {
-        
+        lhs = lhs ^ rhs
     }
     
     public static func &>>= (lhs: inout BigInt, rhs: BigInt) {
-        
+        lhs = lhs &>> rhs
     }
     
     public static func &<<= (lhs: inout BigInt, rhs: BigInt) {
-        
+        lhs = lhs &<< rhs
     }
     
     public static func & (lhs: BigInt, rhs: BigInt) -> BigInt {
@@ -139,11 +139,27 @@ public struct BigInt: Equatable, CustomStringConvertible {
     }
     
     public static func + (lhs: BigInt, rhs: BigInt) -> BigInt {
-        return BigInt()
+        var result: [Int] = [Int]()
+        
+        for i in 0..<max(lhs.source.count, rhs.source.count) {
+            let value: Int = (i < lhs.source.count ? lhs.source[i] : 0) + (i < rhs.source.count ? rhs.source[i] : 0)
+            
+            result.append(value)
+        }
+        
+        return BigInt(result)
     }
     
     public static func - (lhs: BigInt, rhs: BigInt) -> BigInt {
-        return BigInt()
+        var result = [Int]()
+        
+        for i in 0..<max(lhs.source.count, rhs.source.count) {
+            let value: Int = (i < lhs.source.count ? lhs.source[i] : 0) - (i < rhs.source.count ? rhs.source[i] : 0)
+            
+            result.append(value)
+        }
+        
+        return BigInt(result)
     }
     
     public static func * (lhs: BigInt, rhs: BigInt) -> BigInt {
@@ -180,47 +196,36 @@ public struct BigInt: Equatable, CustomStringConvertible {
         return factorial.reversed()
     }
     
-    func addition(_ left: [Int], _ right: [Int]) -> [Int] {
-        var sum: [Int] = createArrayOfZeros(of: max(left.count, right.count))
-        
-        let leftRe: [Int] = left.reversed()
-        let rightRe: [Int] = right.reversed()
-        
-        for i in 0..<max(leftRe.count, rightRe.count) {
-            let value: Int = (i < leftRe.count ? leftRe[i] : 0) + (i < rightRe.count ? rightRe[i] : 0)
-            
-            sum[i] += value
-            
-            if(sum[i] > 10) {
-                sum[i + 1] += (sum[i] / 10)
-                sum[i] %= 10
-            }
-        }
-        
-        var sumRe: [Int] = sum.reversed()
-        
-        while(sumRe.count > 1 && sumRe.first == 0) {
-            sumRe.remove(at: 0)
-        }
-        
-        return sumRe
-    }
-    
-    func intToArray(_ x: Int) -> [Int] {
-        var num: [Int] = [x]
-        
-        while(num.count != 0 && num[num.count - 1] > 9) {
-            num.append(num[num.count - 1] / 10)
-            num[num.count - 2] %= 10
-        }
-        
-        return num
-    }
-    
-    /// [1, 23, 4] -> [3, 3, 4]
+    /// [1, 23, 4] -> [1, 3, 6]
     /// [1, 2, 3, 0, 0] -> [1, 2, 3]
-    func reArangeArray() {
+    /// [-1, 2, 3] -> [9, 1, 3]
+    /// [1, 2, -3, 4] -> [1, 2, 7, 3]
+    /// [1, 2, -3] -> -[9, 8, 2]
+    /// [-1, -2, -3] -> -[1, 2, 3]
+    mutating func reArangeArray() {
+        //Make soure every element in source only has one digit
+        var i = 0
+        while(i < source.count) {
+            if(source[i] > 9) {
+                if(i + 1 >= source.count) {
+                    source.append(0)
+                }
+                
+                source[i + 1] += source[i]/10
+                source[i] %= 10
+            } else if(source[i] < -9) {
+                if(i + 1 >= source.count) {
+                    source.append(0)
+                }
+            }
+            
+            i += 1
+        }
         
+        //Make soure there are no leading 0's
+        while(source.last == 0) {
+            source.removeLast()
+        }
     }
     
     func createArrayOfZeros(of count: Int) -> [Int] {
