@@ -252,4 +252,13 @@ final class BigIntTests: XCTestCase {
         XCTAssertEqual(BigInt().factorial(n: 8), [4, 0, 3, 2, 0])
         XCTAssertEqual(BigInt().factorial(n: 21), [5, 1, 0, 9, 0, 9, 4, 2, 1, 7, 1, 7, 0, 9, 4, 4, 0, 0, 0, 0])
     }
+    
+    func testReArangeArray() {
+        XCTAssertEqual(BigInt([1, 23, 4]).toString(), "631")
+        XCTAssertEqual(BigInt([1, 2, 3, 0, 0]).toString(), "321")
+        XCTAssertEqual(BigInt([-1, 2, 3]).toString(), "319")
+        XCTAssertEqual(BigInt([1, 2, -3, 4]).toString(), "3,721")
+        XCTAssertEqual(BigInt([1, 2, -3]).toString(), "-279")
+        XCTAssertEqual(BigInt([-1, -2, -3]).toString(), "-321")
+    }
 }

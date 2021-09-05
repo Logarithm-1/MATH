@@ -299,33 +299,31 @@ public struct BigInt: Equatable, Comparable, CustomStringConvertible { //Numeric
         return BigInt(lhs) * rhs
     }
     
-
-    /// [0, 0, 1] / 7 = [0/7, 0/7, 1/7] = [0/7, 10/7] = [0/7, 1 3/7] = [30/7, 1] = [4 2/7, 1] = 14 R2
-    ///
-    /// [0, 0, 1] / [1, 3] =
-    /// dividend -> Numerator -> lhs
-    /// divisor -> Denemator -> rhs
-    ///
+    /// lhs -> dividend -> Numerator
+    /// rhs -> divisor -> Denemator
+    /// return -> quotient
     public static func / (lhs: BigInt, rhs: BigInt) -> BigInt {
         var result = BigInt()
         
-        //TODO: !!!!! Finish compare functions first !!!!!!
-        /*
-        var partialDividend: BigInt = BigInt(rhs.source.last ?? 0)
-        var pdIndex: Int = rhs.source.count - 1
+        var partialDividend: BigInt = BigInt(lhs.source.last ?? 0)
+        var pdIndex: Int = lhs.source.count - 2
         
-        while(pdIndex >= 0) {
-            while(partialDividend > lhs) {
-                partialDividend *= 10
-                partialDividend += rhs.source[pdIndex]
-                pdIndex -= 1
-            }
-            
-            result += lhs.sourcePower(pdIndex)
-            partialDividend -= lhs
+        while(partialDividend < rhs) {
+            partialDividend *= 10
+            partialDividend += lhs.source[pdIndex]
+            pdIndex -= 1
+        }
+        
+        //TODO: FIX Negative, 10 - 2 = '1-2' ????
+        /*
+        while(partialDividend > rhs) {
+            print(lhs, rhs, partialDividend, result)
+            partialDividend -= rhs
+            result += lhs.sourcePower(pdIndex + 1)
+            print(lhs, rhs, partialDividend, result)
         }*/
         
-        return result
+        return partialDividend
     }
     
     /// 156 % 7 = 2
@@ -356,7 +354,9 @@ public struct BigInt: Equatable, Comparable, CustomStringConvertible { //Numeric
     }
     
     mutating func reArangeArray() {
-        source = reArange(array: source)
+        let reArr = reArange(array: source)
+        negative = reArr.0
+        source = reArr.1
     }
     
     /// [1, 23, 4] -> [1, 3, 6]
@@ -365,22 +365,32 @@ public struct BigInt: Equatable, Comparable, CustomStringConvertible { //Numeric
     /// [1, 2, -3, 4] -> [1, 2, 7, 3]
     /// [1, 2, -3] -> -[9, 8, 2]
     /// [-1, -2, -3] -> -[1, 2, 3]
-    func reArange(array: [Int]) -> [Int] {
+    func reArange(array: [Int]) -> (Bool, [Int]) {
         //Make soure every element in source only has one digit
         var i = 0
         var source = array
+        var negative = false
         
         while(i < source.count) {
-            if(source[i] > 9) {
+            if(source[i] > 9 || source[i] < -9) { // 10 and up
                 if(i + 1 >= source.count) {
                     source.append(0)
                 }
                 
                 source[i + 1] += source[i]/10
                 source[i] %= 10
-            } else if(source[i] < -9) {
+            }
+            
+            if(source[i] < 0) { //Negativs
                 if(i + 1 >= source.count) {
-                    source.append(0)
+                    negative = true
+                    for j in 0..<source.count {
+                        source[j] *= -1
+                    }
+                    i = -1
+                } else {
+                    source[i + 1] -= 1
+                    source[i] += 10
                 }
             }
             
@@ -392,7 +402,7 @@ public struct BigInt: Equatable, Comparable, CustomStringConvertible { //Numeric
             source.removeLast()
         }
         
-        return source
+        return (negative, source)
     }
     
     func createArrayOfZeros(of count: Int) -> [Int] {
@@ -407,6 +417,10 @@ public struct BigInt: Equatable, Comparable, CustomStringConvertible { //Numeric
     
     func toString() -> String {
         var str: String = ""
+        
+        if(negative) {
+            str += "-"
+        }
         
         let reSource: [Int] = source.reversed()
         
