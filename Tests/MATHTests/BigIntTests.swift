@@ -228,7 +228,11 @@ final class BigIntTests: XCTestCase {
         let y = BigInt(2)
         let z = BigInt(246)
         
+        let a = BigInt(-2)
+        let b = BigInt(-246)
+        
         XCTAssertEqual(x * y, z)
+        XCTAssertEqual(x * a, b)
     }
     
     func testBackslashOperator() {
@@ -236,7 +240,12 @@ final class BigIntTests: XCTestCase {
         let y = BigInt(2)
         let z = BigInt(61)
         
+        let a = BigInt(123543)
+        let b = BigInt(123)
+        let c = BigInt(1004)
+        
         XCTAssertEqual(x / y, z)
+        XCTAssertEqual(a / b, c)
     }
     
     func testPercentOperator() {
@@ -244,7 +253,12 @@ final class BigIntTests: XCTestCase {
         let y = BigInt(35)
         let z = BigInt(18)
         
+        let a = BigInt(123543)
+        let b = BigInt(123)
+        let c = BigInt(51)
+        
         XCTAssertEqual(x % y, z)
+        XCTAssertEqual(a % b, c)
     }
     
     func testFactorial() {

@@ -267,6 +267,8 @@ public struct BigInt: Equatable, Comparable, CustomStringConvertible { //Numeric
         if(lhs.source.count > rhs.source.count) {
             var result = BigInt()
             
+            result.negative = lhs.negative != rhs.negative
+            
             for i in 0..<rhs.source.count {
                 var smallResult = lhs.source
                 smallResult *= rhs.source[i]
@@ -278,6 +280,8 @@ public struct BigInt: Equatable, Comparable, CustomStringConvertible { //Numeric
             return result
         } else {
             var result = BigInt()
+            
+            result.negative = lhs.negative != rhs.negative
             
             for i in 0..<lhs.source.count {
                 var smallResult = rhs.source
@@ -305,30 +309,46 @@ public struct BigInt: Equatable, Comparable, CustomStringConvertible { //Numeric
     public static func / (lhs: BigInt, rhs: BigInt) -> BigInt {
         var result = BigInt()
         
+        //Negative
+        result.negative = lhs.negative != rhs.negative
+        
         var partialDividend: BigInt = BigInt(lhs.source.last ?? 0)
         var pdIndex: Int = lhs.source.count - 2
         
-        while(partialDividend < rhs) {
-            partialDividend *= 10
-            partialDividend += lhs.source[pdIndex]
-            pdIndex -= 1
+        while(pdIndex >= 0) {
+            while(partialDividend < rhs) {
+                partialDividend *= 10
+                partialDividend += lhs.source[pdIndex]
+                pdIndex -= 1
+            }
+        
+            while(partialDividend >= rhs) {
+                partialDividend -= rhs
+                result += lhs.sourcePower(pdIndex + 1)
+            }
         }
-        
-        //TODO: FIX Negative, 10 - 2 = '1-2' ????
-        /*
-        while(partialDividend > rhs) {
-            print(lhs, rhs, partialDividend, result)
-            partialDividend -= rhs
-            result += lhs.sourcePower(pdIndex + 1)
-            print(lhs, rhs, partialDividend, result)
-        }*/
-        
-        return partialDividend
+            
+        return result
     }
     
     /// 156 % 7 = 2
     public static func % (lhs: BigInt, rhs: BigInt) -> BigInt {
-        return BigInt()
+        var partialDividend: BigInt = BigInt(lhs.source.last ?? 0)
+        var pdIndex: Int = lhs.source.count - 2
+        
+        while(pdIndex >= 0) {
+            while(partialDividend < rhs) {
+                partialDividend *= 10
+                partialDividend += lhs.source[pdIndex]
+                pdIndex -= 1
+            }
+        
+            while(partialDividend >= rhs) {
+                partialDividend -= rhs
+            }
+        }
+            
+        return partialDividend
     }
     
     func factorial(n: Int) -> [Int] {
@@ -400,6 +420,10 @@ public struct BigInt: Equatable, Comparable, CustomStringConvertible { //Numeric
         //Make soure there are no leading 0's
         while(source.last == 0) {
             source.removeLast()
+        }
+        
+        if(source.count == 0) {
+            source = [0]
         }
         
         return (negative, source)
