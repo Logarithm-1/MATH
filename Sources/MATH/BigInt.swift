@@ -61,18 +61,89 @@ public struct BigInt: Equatable, Comparable, CustomStringConvertible { //Numeric
     }
     
     public static func >= (lhs: BigInt, rhs: BigInt) -> Bool {
+        if(lhs.source.count > rhs.source.count) { // [3, 4, 5, 3] > [2, 3, 4] -> 4 > 3 -> return true
+            return true
+        } else if(lhs.source.count == rhs.source.count) { // [3, 4, 5] > [2, 3, 4] -> 3 == 3 -> thus we have to look at the array's closer
+            var index: Int = lhs.source.count - 1
+            
+            while(index >= 0) {
+                if(lhs.source[index] > rhs.source[index]) {
+                    return true
+                } else if(lhs.source[index] < rhs.source[index]) {
+                    return false
+                }
+                
+                index -= 1
+            }
+            
+            //If we made it here, the array must be the same, ie lhs == rhs
+            return true
+        }
+        
         return false
     }
     
     public static func <= (lhs: BigInt, rhs: BigInt) -> Bool {
+        if(lhs.source.count < rhs.source.count) { // [3, 4, 5] < [2, 3, 4, 1] -> 3 < 4 -> return true
+            return true
+        } else if(lhs.source.count == rhs.source.count) { // [3, 4, 5] < [2, 3, 4] -> 3 == 3 -> thus we have to look at the array's closer
+            var index: Int = lhs.source.count - 1
+            
+            while(index >= 0) {
+                if(lhs.source[index] < rhs.source[index]) {
+                    return true
+                } else if(lhs.source[index] > rhs.source[index]) {
+                    return false
+                }
+                
+                index -= 1
+            }
+            
+            //If we made it here, the array must be the same, ie lhs == rhs
+            return true
+        }
+        
         return false
     }
     
     public static func > (lhs: BigInt, rhs: BigInt) -> Bool {
+        if(lhs.source.count > rhs.source.count) { // [3, 4, 5, 3] > [2, 3, 4] -> 4 > 3 -> return true
+            return true
+        } else if(lhs.source.count == rhs.source.count) { // [3, 4, 5] > [2, 3, 4] -> 3 == 3 -> thus we have to look at the array's closer
+            var index: Int = lhs.source.count - 1
+            
+            while(index >= 0) {
+                if(lhs.source[index] > rhs.source[index]) {
+                    return true
+                } else if(lhs.source[index] < rhs.source[index]) {
+                    return false
+                }
+                
+                index -= 1
+            }
+        }
+        
         return false
     }
     
+    /// - returns `true` if `lhs` is lesser than `rhs`
     public static func < (lhs: BigInt, rhs: BigInt) -> Bool {
+        if(lhs.source.count < rhs.source.count) { // [3, 4, 5] < [2, 3, 4, 1] -> 3 < 4 -> return true
+            return true
+        } else if(lhs.source.count == rhs.source.count) { // [3, 4, 5] < [2, 3, 4] -> 3 == 3 -> thus we have to look at the array's closer
+            var index: Int = lhs.source.count - 1
+            
+            while(index >= 0) {
+                if(lhs.source[index] < rhs.source[index]) {
+                    return true
+                } else if(lhs.source[index] > rhs.source[index]) {
+                    return false
+                }
+                
+                index -= 1
+            }
+        }
+        
         return false
     }
     
@@ -82,11 +153,23 @@ public struct BigInt: Equatable, Comparable, CustomStringConvertible { //Numeric
         lhs = lhs + rhs
     }
     
+    public static func += (lhs: inout BigInt, rhs: Int) {
+        lhs = lhs + rhs
+    }
+    
     public static func -= (lhs: inout BigInt, rhs: BigInt) {
         lhs = lhs - rhs
     }
     
+    public static func -= (lhs: inout BigInt, rhs: Int) {
+        lhs = lhs - rhs
+    }
+    
     public static func *= (lhs: inout BigInt, rhs: BigInt) {
+        lhs = lhs * rhs
+    }
+    
+    public static func *= (lhs: inout BigInt, rhs: Int) {
         lhs = lhs * rhs
     }
     
@@ -150,6 +233,14 @@ public struct BigInt: Equatable, Comparable, CustomStringConvertible { //Numeric
         return BigInt(result)
     }
     
+    public static func + (lhs: BigInt, rhs: Int) -> BigInt {
+        return lhs + BigInt(rhs)
+    }
+    
+    public static func + (lhs: Int, rhs: BigInt) -> BigInt {
+        return BigInt(lhs) + rhs
+    }
+    
     public static func - (lhs: BigInt, rhs: BigInt) -> BigInt {
         var result = [Int]()
         
@@ -160,6 +251,14 @@ public struct BigInt: Equatable, Comparable, CustomStringConvertible { //Numeric
         }
         
         return BigInt(result)
+    }
+    
+    public static func - (lhs: BigInt, rhs: Int) -> BigInt {
+        return lhs - BigInt(rhs)
+    }
+    
+    public static func - (lhs: Int, rhs: BigInt) -> BigInt {
+        return BigInt(lhs) - rhs
     }
     ///
     ///
@@ -190,13 +289,46 @@ public struct BigInt: Equatable, Comparable, CustomStringConvertible { //Numeric
             
             return result
         }
+    }
+    
+    public static func * (lhs: BigInt, rhs: Int) -> BigInt {
+        return lhs * BigInt(rhs)
+    }
+    
+    public static func * (lhs: Int, rhs: BigInt) -> BigInt {
+        return BigInt(lhs) * rhs
+    }
+    
 
-    }
-    
+    /// [0, 0, 1] / 7 = [0/7, 0/7, 1/7] = [0/7, 10/7] = [0/7, 1 3/7] = [30/7, 1] = [4 2/7, 1] = 14 R2
+    ///
+    /// [0, 0, 1] / [1, 3] =
+    /// dividend -> Numerator -> lhs
+    /// divisor -> Denemator -> rhs
+    ///
     public static func / (lhs: BigInt, rhs: BigInt) -> BigInt {
-        return BigInt()
+        var result = BigInt()
+        
+        //TODO: !!!!! Finish compare functions first !!!!!!
+        /*
+        var partialDividend: BigInt = BigInt(rhs.source.last ?? 0)
+        var pdIndex: Int = rhs.source.count - 1
+        
+        while(pdIndex >= 0) {
+            while(partialDividend > lhs) {
+                partialDividend *= 10
+                partialDividend += rhs.source[pdIndex]
+                pdIndex -= 1
+            }
+            
+            result += lhs.sourcePower(pdIndex)
+            partialDividend -= lhs
+        }*/
+        
+        return result
     }
     
+    /// 156 % 7 = 2
     public static func % (lhs: BigInt, rhs: BigInt) -> BigInt {
         return BigInt()
     }
@@ -288,6 +420,16 @@ public struct BigInt: Equatable, Comparable, CustomStringConvertible { //Numeric
         }
         
         return str
+    }
+    
+    func sourcePower(_ index: Int) -> BigInt {
+        var result = BigInt(1)
+        
+        for i in 0..<index {
+            result *= 10
+        }
+        
+        return result
     }
     
 }

@@ -20,19 +20,10 @@ final class BigIntTests: XCTestCase {
         XCTAssertEqual(x, y)
         XCTAssertTrue(x == y)
         XCTAssertFalse(x == z)
+        XCTAssertTrue(x != z)
     }
     
     func testGreaterThanEqual() {
-        let x = BigInt(120)
-        let y = BigInt(120)
-        let z = BigInt(340)
-        
-        XCTAssertTrue(x <= y)
-        XCTAssertTrue(x <= z)
-        XCTAssertFalse(z <= x)
-    }
-    
-    func testLesserThanEqual() {
         let x = BigInt(120)
         let y = BigInt(120)
         let z = BigInt(340)
@@ -42,14 +33,24 @@ final class BigIntTests: XCTestCase {
         XCTAssertFalse(x >= z)
     }
     
-    func testGreaterThan() {
+    func testLesserThanEqual() {
         let x = BigInt(120)
         let y = BigInt(120)
         let z = BigInt(340)
         
-        XCTAssertFalse(x < y)
-        XCTAssertTrue(x < z)
-        XCTAssertFalse(z < x)
+        XCTAssertTrue(x <= y)
+        XCTAssertTrue(x <= z)
+        XCTAssertFalse(z <= x)
+    }
+    
+    func testGreaterThan() {
+        let x = BigInt(452)
+        let y = BigInt(452)
+        let z = BigInt(348)
+        
+        XCTAssertFalse(x > y)
+        XCTAssertTrue(x > z)
+        XCTAssertFalse(z > x)
     }
     
     func testLesserThan() {
@@ -117,43 +118,93 @@ final class BigIntTests: XCTestCase {
     }
     
     func testAmpersandEqualOperator() {
+        var x = BigInt(123)
+        let y = BigInt(35)
+        let z = BigInt(18)
         
+        x &= y
+        
+        XCTAssertEqual(x, z)
     }
     
     func testVerticalEqualOperator() {
+        var x = BigInt(123)
+        let y = BigInt(35)
+        let z = BigInt(18)
         
+        x |= y
+        
+        XCTAssertEqual(x, z)
     }
     
     func testCaretEqualOperator() {
+        var x = BigInt(123)
+        let y = BigInt(35)
+        let z = BigInt(18)
         
+        x ^= y
+        
+        XCTAssertEqual(x, z)
     }
     
     func testAmpersandGreaterEqualOperator() {
+        var x = BigInt(123)
+        let y = BigInt(35)
+        let z = BigInt(18)
         
+        x &>>= y
+        
+        XCTAssertEqual(x, z)
     }
     
     func testAmpersandLesserEqualOperator() {
+        var x = BigInt(123)
+        let y = BigInt(35)
+        let z = BigInt(18)
         
+        x &<<= y
+        
+        XCTAssertEqual(x, z)
     }
     
     func testAmpersandOperator() {
+        let x = BigInt(123)
+        let y = BigInt(590)
+        let z = BigInt(713)
         
+        XCTAssertEqual(x & y, z)
     }
     
     func testVerticalOperator() {
+        let x = BigInt(123)
+        let y = BigInt(590)
+        let z = BigInt(713)
         
+        XCTAssertEqual(x | y, z)
     }
     
     func testCaretOperator() {
+        let x = BigInt(123)
+        let y = BigInt(590)
+        let z = BigInt(713)
         
+        XCTAssertEqual(x ^ y, z)
     }
     
     func testAmpersandGreaterOperator() {
+        let x = BigInt(123)
+        let y = BigInt(590)
+        let z = BigInt(713)
         
+        XCTAssertEqual(x &>> y, z)
     }
     
     func testAmpersandLesserOperator() {
+        let x = BigInt(123)
+        let y = BigInt(590)
+        let z = BigInt(713)
         
+        XCTAssertEqual(x &<< y, z)
     }
     
     func testPlusOperator() {
