@@ -61,6 +61,15 @@ public struct BigInt: Equatable, Comparable, CustomStringConvertible { //SignedI
     }
     
     public static func >= (lhs: BigInt, rhs: BigInt) -> Bool {
+        if(lhs.negative && rhs.negative) { //Both Negative
+            
+        } else if(lhs.negative) { //lhs is Negative, rhs is Positive
+            return false
+        } else if(rhs.negative) { //lhs is Positive, rhs is Negative
+            return true
+        }
+        
+        //Both are Positive
         if(lhs.source.count > rhs.source.count) { // [3, 4, 5, 3] > [2, 3, 4] -> 4 > 3 -> return true
             return true
         } else if(lhs.source.count == rhs.source.count) { // [3, 4, 5] > [2, 3, 4] -> 3 == 3 -> thus we have to look at the array's closer
@@ -329,6 +338,49 @@ public struct BigInt: Equatable, Comparable, CustomStringConvertible { //SignedI
         }
             
         return result
+    }
+    
+    /// Returns the additive inverse of the specified value.
+    ///
+    /// The negation operator (prefix `-`) returns the additive inverse of its
+    /// argument.
+    ///
+    ///     let x = BigInt(21)
+    ///     let y = -x
+    ///     // y == -[1, 2] == -21
+    ///
+    /// - Returns: The additive inverse of the argument.
+    prefix public static func - (operand: BigInt) -> BigInt {
+        var result = operand
+        result.negate()
+        return result
+    }
+    
+    /// Replaces this value with its additive inverse.
+    ///
+    /// The following example uses the `negate()` method to negate the value of
+    /// an integer `x`:
+    ///
+    ///     var x = 21
+    ///     x.negate()
+    ///     // x == -21
+    public mutating func negate() {
+        negative.toggle()
+    }
+    
+    /// Returns the given number unchanged.
+    ///
+    /// You can use the unary plus operator (`+`) to provide symmetry in your
+    /// code for positive numbers when also using the unary minus operator.
+    ///
+    ///     let x = -21
+    ///     let y = +21
+    ///     // x == -21
+    ///     // y == 21
+    ///
+    /// - Returns: The given argument without any changes.
+    prefix public static func + (x: BigInt) -> BigInt {
+        return x
     }
     
     /// 156 % 7 = 2

@@ -261,6 +261,22 @@ final class BigIntTests: XCTestCase {
         XCTAssertEqual(a % b, c)
     }
     
+    func testPrefixDash() {
+        let x = BigInt(+123)
+        let y = BigInt(-123)
+        
+        XCTAssertEqual(-x, y)
+        XCTAssertEqual(-y, x)
+    }
+    
+    func testPrefixPlus() {
+        let x = BigInt(+123)
+        let y = BigInt(-123)
+        
+        XCTAssertEqual(-x, y)
+        XCTAssertEqual(-y, x)
+    }
+    
     func testFactorial() {
         XCTAssertEqual(BigInt().factorial(n: 5), [1, 2, 0])
         XCTAssertEqual(BigInt().factorial(n: 8), [4, 0, 3, 2, 0])
