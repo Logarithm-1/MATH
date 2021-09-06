@@ -7,10 +7,7 @@
 
 import Foundation
 
-public struct MOD<T: Numeric> {
-    var value: T
-    var base: T
-    
-    
-    
+public struct MOD<Element: SignedInteger> {
+    var value: Element
+    var base: Element
 }

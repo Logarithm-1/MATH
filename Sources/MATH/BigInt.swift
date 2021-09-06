@@ -8,7 +8,7 @@
 import Foundation
 
 /// A Integer that can be hundreds of digits long
-public struct BigInt: Equatable, Comparable, CustomStringConvertible { //Numeric
+public struct BigInt: Equatable, Comparable, CustomStringConvertible { //SignedInteger
     
     /// The first element in array is an integer that represents the ones place
     /// The secound elemnts in array is an integer that represents the tens place
