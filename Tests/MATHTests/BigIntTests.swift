@@ -17,10 +17,15 @@ final class BigIntTests: XCTestCase {
         let y = BigInt(120)
         let z = BigInt(340)
         
+        let a = BigInt(-120)
+        
         XCTAssertEqual(x, y)
         XCTAssertTrue(x == y)
         XCTAssertFalse(x == z)
         XCTAssertTrue(x != z)
+        
+        XCTAssertTrue(-x == a)
+        XCTAssertFalse(x == a)
     }
     
     func testGreaterThanEqual() {
@@ -28,9 +33,14 @@ final class BigIntTests: XCTestCase {
         let y = BigInt(120)
         let z = BigInt(340)
         
+        let a = BigInt(-340)
+        
         XCTAssertTrue(x >= y)
         XCTAssertTrue(z >= x)
         XCTAssertFalse(x >= z)
+        
+        XCTAssertTrue(x >= a)
+        XCTAssertFalse(a >= z)
     }
     
     func testLesserThanEqual() {
@@ -212,7 +222,14 @@ final class BigIntTests: XCTestCase {
         let y = BigInt(590)
         let z = BigInt(713)
         
+        let a = BigInt(-123)
+        let b = BigInt(-590)
+        let c = BigInt(467)
+        let d = BigInt(-713)
+        
         XCTAssertEqual(x + y, z)
+        XCTAssertEqual(a + y, c)
+        XCTAssertEqual(a + b, d)
     }
     
     func testMinusOperator() {
@@ -244,8 +261,13 @@ final class BigIntTests: XCTestCase {
         let b = BigInt(123)
         let c = BigInt(1004)
         
+        let d = BigInt(123)
+        let e = BigInt(-2)
+        let f = BigInt(-61)
+        
         XCTAssertEqual(x / y, z)
         XCTAssertEqual(a / b, c)
+        XCTAssertEqual(d / e, f)
     }
     
     func testPercentOperator() {
@@ -275,6 +297,24 @@ final class BigIntTests: XCTestCase {
         
         XCTAssertEqual(-x, y)
         XCTAssertEqual(-y, x)
+    }
+    
+    func testDistance() {
+        let x = BigInt(123)
+        let y = BigInt(35)
+        let z = BigInt(88)
+        
+        let distance = x.distance(to: y)
+        XCTAssertEqual(distance, z)
+    }
+    
+    func testAdvanced() {
+        let x = BigInt(35)
+        let y = BigInt(88)
+        let z = BigInt(123)
+        
+        let advanced = x.advanced(by: y)
+        XCTAssertEqual(advanced, z)
     }
     
     func testFactorial() {

@@ -46,7 +46,13 @@ public struct BigInt: Equatable, Comparable, CustomStringConvertible { //SignedI
     /// - Parameters:
     ///   - lhs: A value to compare.
     ///   - rhs: Another value to compare.
+    ///
+    /// - Returns: `true` if `lhs` is equal to `rhs`
     public static func == (lhs: BigInt, rhs: BigInt) -> Bool {
+        if(lhs.negative != rhs.negative) {
+            return false
+        }
+        
         if(lhs.source.count != rhs.source.count) {
             return false
         }
@@ -60,9 +66,17 @@ public struct BigInt: Equatable, Comparable, CustomStringConvertible { //SignedI
         return true
     }
     
+    /// Returns a Boolean value indicating whether the value of the first
+    /// argument is greater than or equal to that of the second argument.
+    ///
+    /// - Parameters:
+    ///   - lhs: A value to compare.
+    ///   - rhs: Another value to compare.
+    ///
+    /// - Returns: `true` if `lhs` is greater than or equal to `rhs`
     public static func >= (lhs: BigInt, rhs: BigInt) -> Bool {
         if(lhs.negative && rhs.negative) { //Both Negative
-            
+            return -lhs <= -rhs
         } else if(lhs.negative) { //lhs is Negative, rhs is Positive
             return false
         } else if(rhs.negative) { //lhs is Positive, rhs is Negative
@@ -92,6 +106,14 @@ public struct BigInt: Equatable, Comparable, CustomStringConvertible { //SignedI
         return false
     }
     
+    /// Returns a Boolean value indicating whether the value of the first
+    /// argument is less than or equal to that of the second argument.
+    ///
+    /// - Parameters:
+    ///   - lhs: A value to compare.
+    ///   - rhs: Another value to compare.
+    ///
+    /// - Returns: `true` if `lhs` is lesser than or equal to `rhs`
     public static func <= (lhs: BigInt, rhs: BigInt) -> Bool {
         if(lhs.source.count < rhs.source.count) { // [3, 4, 5] < [2, 3, 4, 1] -> 3 < 4 -> return true
             return true
@@ -115,6 +137,13 @@ public struct BigInt: Equatable, Comparable, CustomStringConvertible { //SignedI
         return false
     }
     
+    /// Returns a Boolean value indicating whether the value of the first
+    /// argument is greater than that of the second argument.
+    ///
+    /// - Parameters:
+    ///   - lhs: A value to compare.
+    ///   - rhs: Another value to compare.
+    /// - Returns: `true` if `lhs` is greater than `rhs`
     public static func > (lhs: BigInt, rhs: BigInt) -> Bool {
         if(lhs.source.count > rhs.source.count) { // [3, 4, 5, 3] > [2, 3, 4] -> 4 > 3 -> return true
             return true
@@ -135,7 +164,18 @@ public struct BigInt: Equatable, Comparable, CustomStringConvertible { //SignedI
         return false
     }
     
-    /// - returns `true` if `lhs` is lesser than `rhs`
+    /// Returns a Boolean value indicating whether the value of the first
+    /// argument is less than that of the second argument.
+    ///
+    /// This function is the only requirement of the `Comparable` protocol. The
+    /// remainder of the relational operator functions are implemented by the
+    /// standard library for any type that conforms to `Comparable`.
+    ///
+    /// - Parameters:
+    ///   - lhs: A value to compare.
+    ///   - rhs: Another value to compare.
+    ///
+    /// - Returns: `true` if `lhs` is lesser than `rhs`
     public static func < (lhs: BigInt, rhs: BigInt) -> Bool {
         if(lhs.source.count < rhs.source.count) { // [3, 4, 5] < [2, 3, 4, 1] -> 3 < 4 -> return true
             return true
@@ -234,8 +274,9 @@ public struct BigInt: Equatable, Comparable, CustomStringConvertible { //SignedI
         var result: [Int] = [Int]()
         
         for i in 0..<max(lhs.source.count, rhs.source.count) {
-            let value: Int = (i < lhs.source.count ? lhs.source[i] : 0) + (i < rhs.source.count ? rhs.source[i] : 0)
-            
+            let left: Int = (lhs.negative ? -1 : 1)*(i < lhs.source.count ? lhs.source[i] : 0)
+            let right: Int = (rhs.negative ? -1 : 1)*(i < rhs.source.count ? rhs.source[i] : 0)
+            let value: Int = left + right
             result.append(value)
         }
         
@@ -254,7 +295,9 @@ public struct BigInt: Equatable, Comparable, CustomStringConvertible { //SignedI
         var result = [Int]()
         
         for i in 0..<max(lhs.source.count, rhs.source.count) {
-            let value: Int = (i < lhs.source.count ? lhs.source[i] : 0) - (i < rhs.source.count ? rhs.source[i] : 0)
+            let left: Int = (lhs.negative ? -1 : 1)*(i < lhs.source.count ? lhs.source[i] : 0)
+            let right: Int = (rhs.negative ? -1 : 1)*(i < rhs.source.count ? rhs.source[i] : 0)
+            let value: Int = left - right
             
             result.append(value)
         }
@@ -273,35 +316,19 @@ public struct BigInt: Equatable, Comparable, CustomStringConvertible { //SignedI
     ///
     ///246 * 246 = 6*246 + 40*246 + 200*246 = 1,476 + 9,840 + 49,200 = 60,516
     public static func * (lhs: BigInt, rhs: BigInt) -> BigInt {
-        if(lhs.source.count > rhs.source.count) {
-            var result = BigInt()
+        var result = BigInt()
+
+        for i in 0..<rhs.source.count {
+            var smallResult = lhs.source
+            smallResult *= rhs.source[i]
+            smallResult *= 10^^i
             
-            result.negative = lhs.negative != rhs.negative
-            
-            for i in 0..<rhs.source.count {
-                var smallResult = lhs.source
-                smallResult *= rhs.source[i]
-                smallResult *= 10^^i
-                
-                result += BigInt(smallResult)
-            }
-            
-            return result
-        } else {
-            var result = BigInt()
-            
-            result.negative = lhs.negative != rhs.negative
-            
-            for i in 0..<lhs.source.count {
-                var smallResult = rhs.source
-                smallResult *= lhs.source[i]
-                smallResult *= 10^^i
-                
-                result += BigInt(smallResult)
-            }
-            
-            return result
+            result += BigInt(smallResult)
         }
+        
+        result.negative = lhs.negative != rhs.negative
+    
+        return result
     }
     
     public static func * (lhs: BigInt, rhs: Int) -> BigInt {
@@ -318,26 +345,55 @@ public struct BigInt: Equatable, Comparable, CustomStringConvertible { //SignedI
     public static func / (lhs: BigInt, rhs: BigInt) -> BigInt {
         var result = BigInt()
         
-        //Negative
-        result.negative = lhs.negative != rhs.negative
+        let dividend: BigInt = lhs.abs()
+        let divisor: BigInt = rhs.abs()
         
-        var partialDividend: BigInt = BigInt(lhs.source.last ?? 0)
-        var pdIndex: Int = lhs.source.count - 2
+        var partialDividend: BigInt = BigInt(dividend.source.last ?? 0)
+        var pdIndex: Int = dividend.source.count - 2
         
         while(pdIndex >= 0) {
-            while(partialDividend < rhs) {
-                partialDividend *= 10
-                partialDividend += lhs.source[pdIndex]
+            while(partialDividend < divisor) {
+                partialDividend.source.insert(0, at: 0)
+                partialDividend += dividend.source[pdIndex]
                 pdIndex -= 1
             }
         
-            while(partialDividend >= rhs) {
-                partialDividend -= rhs
-                result += lhs.sourcePower(pdIndex + 1)
+            while(partialDividend >= divisor) {
+                partialDividend -= divisor
+                result += dividend.sourcePower(pdIndex + 1)
             }
         }
+        
+        //Negative
+        result.negative = lhs.negative != rhs.negative
             
         return result
+    }
+        
+    /// 156 % 7 = 2
+    public static func % (lhs: BigInt, rhs: BigInt) -> BigInt {
+        let dividend: BigInt = lhs.abs()
+        let divisor: BigInt = rhs.abs()
+        
+        var partialDividend: BigInt = BigInt(dividend.source.last ?? 0)
+        var pdIndex: Int = dividend.source.count - 2
+        
+        while(pdIndex >= 0) {
+            while(partialDividend < divisor) {
+                partialDividend.source.insert(0, at: 0)
+                partialDividend += dividend.source[pdIndex]
+                pdIndex -= 1
+            }
+        
+            while(partialDividend >= divisor) {
+                partialDividend -= divisor
+            }
+        }
+        
+        //Negative
+        partialDividend.negative = lhs.negative != rhs.negative
+        
+        return partialDividend
     }
     
     /// Returns the additive inverse of the specified value.
@@ -383,24 +439,41 @@ public struct BigInt: Equatable, Comparable, CustomStringConvertible { //SignedI
         return x
     }
     
-    /// 156 % 7 = 2
-    public static func % (lhs: BigInt, rhs: BigInt) -> BigInt {
-        var partialDividend: BigInt = BigInt(lhs.source.last ?? 0)
-        var pdIndex: Int = lhs.source.count - 2
-        
-        while(pdIndex >= 0) {
-            while(partialDividend < rhs) {
-                partialDividend *= 10
-                partialDividend += lhs.source[pdIndex]
-                pdIndex -= 1
-            }
-        
-            while(partialDividend >= rhs) {
-                partialDividend -= rhs
-            }
+    /// Returns the distance from this value to the given value, expressed as a
+    /// stride.
+    ///
+    /// For two values `x` and `y`, and a distance `n = x.distance(to: y)`,
+    /// `x.advanced(by: n) == y`.
+    ///
+    /// - Parameter other: The value to calculate the distance to.
+    /// - Returns: The distance from this value to `other`.
+    public func distance(to other: BigInt) -> BigInt {
+        var distance = self - other
+        distance.negative = false
+
+        return distance
+    }
+
+    /// Returns a value that is offset the specified distance from this value.
+    ///
+    /// Use the `advanced(by:)` method in generic code to offset a value by a
+    /// specified distance. If you're working directly with numeric values, use
+    /// the addition operator (`+`) instead of this method.
+    ///
+    /// For a value `x`, a distance `n`, and a value `y = x.advanced(by: n)`,
+    /// `x.distance(to: y) == n`.
+    ///
+    /// - Parameter n: The distance to advance this value.
+    /// - Returns: A value that is offset from this value by `n`.
+    public func advanced(by n: BigInt) -> BigInt {
+        return self + n
+    }
+    
+    public func abs() -> BigInt {
+        if(negative) {
+            return -self
         }
-            
-        return partialDividend
+        return self
     }
     
     func factorial(n: Int) -> [Int] {
