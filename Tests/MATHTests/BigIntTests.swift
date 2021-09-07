@@ -329,7 +329,15 @@ final class BigIntTests: XCTestCase {
     }
     
     func testDotDotLesser() {
-        XCTAssertTrue(false)
+        var t = BigInt()
+        
+        for i in BigInt(0)..<BigInt(21) {
+            t += i
+        }
+        
+        let r = BigInt(210)
+        
+        XCTAssertEqual(t, r)
     }
     
     func testPrefixDotDotLesser() {

@@ -8,7 +8,7 @@
 import Foundation
 
 /// A Integer that can be hundreds of digits long
-//TODO: Confirm to `BinaryInteger`
+//FIXME: Confirm to `BinaryInteger`
 public struct BigInt: LosslessStringConvertible, Hashable, Numeric, Strideable {
     public typealias Words = Int
 
@@ -16,12 +16,12 @@ public struct BigInt: LosslessStringConvertible, Hashable, Numeric, Strideable {
     public var magnitude: Int = 0
     
     
-    //TODO: Should be in where clause
+    //FIXME: Should be in where clause
     public typealias Magnitude = Int
     
 
     /// A type that represents an integer literal.
-    //TODO: Should be `public typealias IntegerLiteralType = BigInt`
+    //FIXME: Should be `public typealias IntegerLiteralType = BigInt`
     public typealias IntegerLiteralType = Int
     
     
@@ -73,14 +73,14 @@ public struct BigInt: LosslessStringConvertible, Hashable, Numeric, Strideable {
         self.reArangeArray()
     }
     
-    //TODO: This Init
+    //FIXME: This Init
     /// This initializer is a requirement of the `LosslessStringConvertible` protocol.
     public init?(_ description: String) {
         self.source = [0]
     }
     
     //MARK: - Words
-    //TODO
+    //FIXME
     
     //MARK: - Compare
     
@@ -520,7 +520,7 @@ public struct BigInt: LosslessStringConvertible, Hashable, Numeric, Strideable {
         var distance = self - other
         distance.negative = false
 
-        //TODO: Change to BigInt
+        //FIXME: Change to BigInt
         return 3//distance
     }
 
@@ -600,6 +600,7 @@ public struct BigInt: LosslessStringConvertible, Hashable, Numeric, Strideable {
     ///
     /// - Precondition: `maximum` must compare equal to itself (i.e. cannot be NaN).
     prefix public static func ... (maximum: BigInt) -> PartialRangeThrough<Int> {
+        //FIXME: I don't know
         return ...4
     }
     
@@ -628,6 +629,7 @@ public struct BigInt: LosslessStringConvertible, Hashable, Numeric, Strideable {
     ///
     /// - Precondition: `minimum` must compare equal to itself (i.e. cannot be NaN).
     postfix public static func ... (minimum: BigInt) -> PartialRangeFrom<Int> {
+        //FIXME: I don't Know
         return 3...
     }
     
@@ -647,8 +649,13 @@ public struct BigInt: LosslessStringConvertible, Hashable, Numeric, Strideable {
     ///   - maximum: The upper bound for the range.
     ///
     /// - Precondition: `minimum <= maximum`.
-    public static func ..< (minimum: BigInt, maximum: BigInt) -> Range<Int> {
-        return 0..<2
+    public static func ..< (minimum: BigInt, maximum: BigInt) -> Range<BigInt> {
+        if(minimum <= maximum) {
+            return Range<BigInt>(uncheckedBounds: (lower: minimum, upper: maximum))
+        }
+        
+        //FIXME: ???? Should I throw an error here ?????
+        return Range<BigInt>(uncheckedBounds: (lower: BigInt(), upper: BigInt()))
     }
     
     /// Returns a partial range up to, but not including, its upper bound.
@@ -679,6 +686,7 @@ public struct BigInt: LosslessStringConvertible, Hashable, Numeric, Strideable {
         return ..<3
     }
     
+    //MARK: - Other
     public func abs() -> BigInt {
         if(negative) {
             return -self
@@ -689,7 +697,6 @@ public struct BigInt: LosslessStringConvertible, Hashable, Numeric, Strideable {
     func factorial() -> BigInt {
         var factorial = BigInt(1)
         
-        //TODO: Ranges
         for i in 2...self {
             factorial *= i
         }
