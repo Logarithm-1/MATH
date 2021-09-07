@@ -309,13 +309,13 @@ final class BigIntTests: XCTestCase {
     //MARK: - Range
     
     func testDotDotDot() {
-        let t = BigInt()
+        var t = BigInt()
         
-        //for i in BigInt(0)...BigInt(5) {
-        //    t += i
-        //}
+        for i in BigInt(0)...BigInt(21) {
+            t += i
+        }
         
-        let r = BigInt(15)
+        let r = BigInt(231)
         
         XCTAssertEqual(t, r)
     }

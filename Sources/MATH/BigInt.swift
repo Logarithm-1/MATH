@@ -43,15 +43,15 @@ public struct BigInt: LosslessStringConvertible, Hashable, Numeric, Strideable {
     }
     
     init() {
-        source = [0]
+        self.source = [0]
     }
     
-    init(_ source: Int) {
+    public init(_ source: Int) {
         self.source = [source]
         self.reArangeArray()
     }
     
-    init(_ source: [Int]) {
+    public init(_ source: [Int]) {
         self.source = source
         self.reArangeArray()
     }
@@ -63,14 +63,17 @@ public struct BigInt: LosslessStringConvertible, Hashable, Numeric, Strideable {
     
     /// This initializer is a requirement of the `AdditiveArithmetic` protocol.
     public init(integerLiteral value: Int) {
-        source = [0]
+        self.source = [value]
+        self.reArangeArray()
     }
     
     /// This initializer is a requirement of the `Numeric` protocol.
     public init?<T>(exactly source: T) where T : BinaryInteger {
-        self.source = [0]
+        self.source = [Int(exactly: source) ?? 0]
+        self.reArangeArray()
     }
     
+    //TODO: This Init
     /// This initializer is a requirement of the `LosslessStringConvertible` protocol.
     public init?(_ description: String) {
         self.source = [0]
@@ -502,6 +505,7 @@ public struct BigInt: LosslessStringConvertible, Hashable, Numeric, Strideable {
         return BigInt()
     }
     
+    //MARK: - Strideable
     /// Confirms to `Strideable`
     ///
     /// Returns the distance from this value to the given value, expressed as a
@@ -555,7 +559,12 @@ public struct BigInt: LosslessStringConvertible, Hashable, Numeric, Strideable {
     ///
     /// - Precondition: `minimum <= maximum`.
     public static func ... (minimum: BigInt, maximum: BigInt) -> ClosedRange<BigInt> {
-        return ClosedRange<BigInt>(uncheckedBounds: (lower: minimum, upper: maximum))
+        if(minimum <= maximum) {
+            return ClosedRange<BigInt>(uncheckedBounds: (lower: minimum, upper: maximum))
+        }
+        
+        //FIXME: Might Want to throw an error??
+        return ClosedRange<BigInt>(uncheckedBounds: (lower: BigInt(), upper: BigInt()))
     }
     
     public static func ... (minimum: BigInt, maximum: Int) -> ClosedRange<BigInt> {
@@ -681,10 +690,9 @@ public struct BigInt: LosslessStringConvertible, Hashable, Numeric, Strideable {
         var factorial = BigInt(1)
         
         //TODO: Ranges
-        /*
         for i in 2...self {
             factorial *= i
-        }*/
+        }
         
         return factorial
     }
