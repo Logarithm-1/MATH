@@ -8,7 +8,26 @@
 import Foundation
 
 /// A Integer that can be hundreds of digits long
-public struct BigInt: Equatable, Comparable, CustomStringConvertible { //SignedInteger
+//TODO: Confirm to `BinaryInteger`
+public struct BigInt: LosslessStringConvertible, Hashable, Numeric, Strideable {
+    public typealias Words = Int
+
+    // This might be what I call source
+    public var magnitude: Int = 0
+    
+    
+    //TODO: Should be in where clause
+    public typealias Magnitude = Int
+    
+
+    /// A type that represents an integer literal.
+    //TODO: Should be `public typealias IntegerLiteralType = BigInt`
+    public typealias IntegerLiteralType = Int
+    
+    
+    public static var zero: BigInt = BigInt(0)
+    
+    //SignedInteger
     
     /// The first element in array is an integer that represents the ones place
     /// The secound elemnts in array is an integer that represents the tens place
@@ -36,6 +55,29 @@ public struct BigInt: Equatable, Comparable, CustomStringConvertible { //SignedI
         self.source = source
         self.reArangeArray()
     }
+    
+    init(reversed source: [Int]) {
+        self.source = source.reversed()
+        self.reArangeArray()
+    }
+    
+    /// This initializer is a requirement of the `AdditiveArithmetic` protocol.
+    public init(integerLiteral value: Int) {
+        source = [0]
+    }
+    
+    /// This initializer is a requirement of the `Numeric` protocol.
+    public init?<T>(exactly source: T) where T : BinaryInteger {
+        self.source = [0]
+    }
+    
+    /// This initializer is a requirement of the `LosslessStringConvertible` protocol.
+    public init?(_ description: String) {
+        self.source = [0]
+    }
+    
+    //MARK: - Words
+    //TODO
     
     //MARK: - Compare
     
@@ -439,6 +481,29 @@ public struct BigInt: Equatable, Comparable, CustomStringConvertible { //SignedI
         return x
     }
     
+    /// Returns the inverse of the bits set in the argument.
+    ///
+    /// The bitwise NOT operator (`~`) is a prefix operator that returns a value
+    /// in which all the bits of its argument are flipped: Bits that are `1` in
+    /// the argument are `0` in the result, and bits that are `0` in the argument
+    /// are `1` in the result. This is equivalent to the inverse of a set. For
+    /// example:
+    ///
+    ///     let x: UInt8 = 5        // 0b00000101
+    ///     let notX = ~x           // 0b11111010
+    ///
+    /// Performing a bitwise NOT operation on 0 returns a value with every bit
+    /// set to `1`.
+    ///
+    ///     let allOnes = ~UInt8.min   // 0b11111111
+    ///
+    /// - Complexity: O(1).
+    prefix public static func ~ (x: BigInt) -> BigInt {
+        return BigInt()
+    }
+    
+    /// Confirms to `Strideable`
+    ///
     /// Returns the distance from this value to the given value, expressed as a
     /// stride.
     ///
@@ -447,13 +512,16 @@ public struct BigInt: Equatable, Comparable, CustomStringConvertible { //SignedI
     ///
     /// - Parameter other: The value to calculate the distance to.
     /// - Returns: The distance from this value to `other`.
-    public func distance(to other: BigInt) -> BigInt {
+    public func distance(to other: BigInt) -> Int {
         var distance = self - other
         distance.negative = false
 
-        return distance
+        //TODO: Change to BigInt
+        return 3//distance
     }
 
+    /// Confirms to `Strideable`
+    ///
     /// Returns a value that is offset the specified distance from this value.
     ///
     /// Use the `advanced(by:)` method in generic code to offset a value by a
@@ -465,8 +533,141 @@ public struct BigInt: Equatable, Comparable, CustomStringConvertible { //SignedI
     ///
     /// - Parameter n: The distance to advance this value.
     /// - Returns: A value that is offset from this value by `n`.
-    public func advanced(by n: BigInt) -> BigInt {
+    public func advanced(by n: Int) -> BigInt {
         return self + n
+    }
+    
+    //MARK: - Range
+    
+    /// Returns a closed range that contains both of its bounds.
+    ///
+    /// Use the closed range operator (`...`) to create a closed range of any type
+    /// that conforms to the `Comparable` protocol. This example creates a
+    /// `ClosedRange<Character>` from "a" up to, and including, "z".
+    ///
+    ///     let lowercase = "a"..."z"
+    ///     print(lowercase.contains("z"))
+    ///     // Prints "true"
+    ///
+    /// - Parameters:
+    ///   - minimum: The lower bound for the range.
+    ///   - maximum: The upper bound for the range.
+    ///
+    /// - Precondition: `minimum <= maximum`.
+    public static func ... (minimum: BigInt, maximum: BigInt) -> ClosedRange<BigInt> {
+        return ClosedRange<BigInt>(uncheckedBounds: (lower: minimum, upper: maximum))
+    }
+    
+    public static func ... (minimum: BigInt, maximum: Int) -> ClosedRange<BigInt> {
+        return minimum...BigInt(maximum)
+    }
+    
+    public static func ... (minimum: Int, maximum: BigInt) -> ClosedRange<BigInt> {
+        return BigInt(minimum)...maximum
+    }
+    
+    /// Returns a partial range up to, and including, its upper bound.
+    ///
+    /// Use the prefix closed range operator (prefix `...`) to create a partial
+    /// range of any type that conforms to the `Comparable` protocol. This
+    /// example creates a `PartialRangeThrough<Double>` instance that includes
+    /// any value less than or equal to `5.0`.
+    ///
+    ///     let throughFive = ...5.0
+    ///
+    ///     throughFive.contains(4.0)     // true
+    ///     throughFive.contains(5.0)     // true
+    ///     throughFive.contains(6.0)     // false
+    ///
+    /// You can use this type of partial range of a collection's indices to
+    /// represent the range from the start of the collection up to, and
+    /// including, the partial range's upper bound.
+    ///
+    ///     let numbers = [10, 20, 30, 40, 50, 60, 70]
+    ///     print(numbers[...3])
+    ///     // Prints "[10, 20, 30, 40]"
+    ///
+    /// - Parameter maximum: The upper bound for the range.
+    ///
+    /// - Precondition: `maximum` must compare equal to itself (i.e. cannot be NaN).
+    prefix public static func ... (maximum: BigInt) -> PartialRangeThrough<Int> {
+        return ...4
+    }
+    
+    /// Returns a partial range extending upward from a lower bound.
+    ///
+    /// Use the postfix range operator (postfix `...`) to create a partial range
+    /// of any type that conforms to the `Comparable` protocol. This example
+    /// creates a `PartialRangeFrom<Double>` instance that includes any value
+    /// greater than or equal to `5.0`.
+    ///
+    ///     let atLeastFive = 5.0...
+    ///
+    ///     atLeastFive.contains(4.0)     // false
+    ///     atLeastFive.contains(5.0)     // true
+    ///     atLeastFive.contains(6.0)     // true
+    ///
+    /// You can use this type of partial range of a collection's indices to
+    /// represent the range from the partial range's lower bound up to the end
+    /// of the collection.
+    ///
+    ///     let numbers = [10, 20, 30, 40, 50, 60, 70]
+    ///     print(numbers[3...])
+    ///     // Prints "[40, 50, 60, 70]"
+    ///
+    /// - Parameter minimum: The lower bound for the range.
+    ///
+    /// - Precondition: `minimum` must compare equal to itself (i.e. cannot be NaN).
+    postfix public static func ... (minimum: BigInt) -> PartialRangeFrom<Int> {
+        return 3...
+    }
+    
+    /// Returns a half-open range that contains its lower bound but not its upper
+    /// bound.
+    ///
+    /// Use the half-open range operator (`..<`) to create a range of any type
+    /// that conforms to the `Comparable` protocol. This example creates a
+    /// `Range<Double>` from zero up to, but not including, 5.0.
+    ///
+    ///     let lessThanFive = 0.0..<5.0
+    ///     print(lessThanFive.contains(3.14))  // Prints "true"
+    ///     print(lessThanFive.contains(5.0))   // Prints "false"
+    ///
+    /// - Parameters:
+    ///   - minimum: The lower bound for the range.
+    ///   - maximum: The upper bound for the range.
+    ///
+    /// - Precondition: `minimum <= maximum`.
+    public static func ..< (minimum: BigInt, maximum: BigInt) -> Range<Int> {
+        return 0..<2
+    }
+    
+    /// Returns a partial range up to, but not including, its upper bound.
+    ///
+    /// Use the prefix half-open range operator (prefix `..<`) to create a
+    /// partial range of any type that conforms to the `Comparable` protocol.
+    /// This example creates a `PartialRangeUpTo<Double>` instance that includes
+    /// any value less than `5.0`.
+    ///
+    ///     let upToFive = ..<5.0
+    ///
+    ///     upToFive.contains(3.14)       // true
+    ///     upToFive.contains(6.28)       // false
+    ///     upToFive.contains(5.0)        // false
+    ///
+    /// You can use this type of partial range of a collection's indices to
+    /// represent the range from the start of the collection up to, but not
+    /// including, the partial range's upper bound.
+    ///
+    ///     let numbers = [10, 20, 30, 40, 50, 60, 70]
+    ///     print(numbers[..<3])
+    ///     // Prints "[10, 20, 30]"
+    ///
+    /// - Parameter maximum: The upper bound for the range.
+    ///
+    /// - Precondition: `maximum` must compare equal to itself (i.e. cannot be NaN).
+    prefix public static func ..< (maximum: BigInt) -> PartialRangeUpTo<Int> {
+        return ..<3
     }
     
     public func abs() -> BigInt {
@@ -476,26 +677,16 @@ public struct BigInt: Equatable, Comparable, CustomStringConvertible { //SignedI
         return self
     }
     
-    func factorial(n: Int) -> [Int] {
-        var factorial: [Int] = [1]
+    func factorial() -> BigInt {
+        var factorial = BigInt(1)
         
-        for i in 2...n {
-            for j in 0..<factorial.count {
-                factorial[j] *= i
-                
-                if(j != 0 && factorial[j - 1] > 9) {
-                    factorial[j] += factorial[j - 1] / 10
-                    factorial[j - 1] %= 10
-                }
-            }
-            
-            while(factorial.count != 0 && factorial[factorial.count - 1] > 9) {
-                factorial.append(factorial[factorial.count - 1] / 10)
-                factorial[factorial.count - 2] %= 10
-            }
-        }
+        //TODO: Ranges
+        /*
+        for i in 2...self {
+            factorial *= i
+        }*/
         
-        return factorial.reversed()
+        return factorial
     }
     
     mutating func reArangeArray() {
