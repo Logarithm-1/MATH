@@ -7,6 +7,12 @@
 
 import Foundation
 
+//TODO: Greatest Common Denomator
+//TODO: Euclidean Algorithm
+//TODO: Divison
+//TODO: Power
+//TODO: Inverse Power
+
 public struct MOD<Element: SignedInteger> {
     var value: Element
     var base: Element

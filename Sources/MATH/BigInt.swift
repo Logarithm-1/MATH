@@ -7,16 +7,39 @@
 
 import Foundation
 
+//TODO: Random
+//TODO: Conform BigInt to BinaryInteger
+    //TODO: Add Words
+//TODO: Conform BigInt to FixedWidthIntegerger
+//TODO: Conform BigInt to SignedNumeric
+//TODO: Conform BigInt to SignedInteger
+//TODO: Documentation
+//TODO: Math Functions (That can't act as a nomral Int)
+
 /// A Integer that can be hundreds of digits long
-//FIXME: Confirm to `BinaryInteger`
 public struct BigInt: LosslessStringConvertible, Hashable, Numeric, Strideable {
     public typealias Words = Int
 
-    // This might be what I call source
+    //FIXME: Magnitude should be a BigInt
+    /// The magnitude of this value.
+    ///
+    /// For any numeric value `x`, `x.magnitude` is the absolute value of `x`.
+    /// You can use the `magnitude` property in operations that are simpler to
+    /// implement in terms of unsigned values, such as printing the value of an
+    /// integer, which is just printing a '-' character in front of an absolute
+    /// value.
+    ///
+    ///     let x = -200
+    ///     // x.magnitude == 200
+    ///
+    /// The global `abs(_:)` function provides more familiar syntax when you need
+    /// to find an absolute value. In addition, because `abs(_:)` always returns
+    /// a value of the same type, even in a generic context, using the function
+    /// instead of the `magnitude` property is encouraged.
     public var magnitude: Int = 0
     
-    
-    //FIXME: Should be in where clause
+    /// A type that can represent the absolute value of any possible value of
+    /// this type.
     public typealias Magnitude = Int
     
 
@@ -32,7 +55,9 @@ public struct BigInt: LosslessStringConvertible, Hashable, Numeric, Strideable {
     /// The first element in array is an integer that represents the ones place
     /// The secound elemnts in array is an integer that represents the tens place
     ///
-    /// EX. 12,345,678 -> [8, 7, 6, 5, 4, 3, 2, 1]
+    ///     let x: Int = 12,345,678
+    ///     let y: BigInt = BigInt(x)
+    ///     //y == [8, 7, 6, 5, 4, 3, 2, 1] == 12,345,678
     ///
     /// So it is like the arry is reversed
     var source: [Int]
@@ -42,6 +67,7 @@ public struct BigInt: LosslessStringConvertible, Hashable, Numeric, Strideable {
         return toString()
     }
     
+    //MARK: - Initializers
     init() {
         self.source = [0]
     }
@@ -243,6 +269,14 @@ public struct BigInt: LosslessStringConvertible, Hashable, Numeric, Strideable {
     
     //MARK: - Arithmetic
     
+    /// Adds two values and stores the result in the left-hand-side variable.
+    ///
+    /// The sum of the two arguments must be representable in the arguments'
+    /// type.
+    ///
+    /// - Parameters:
+    ///   - lhs: The first value to add.
+    ///   - rhs: The second value to add.
     public static func += (lhs: inout BigInt, rhs: BigInt) {
         lhs = lhs + rhs
     }
@@ -251,6 +285,12 @@ public struct BigInt: LosslessStringConvertible, Hashable, Numeric, Strideable {
         lhs = lhs + rhs
     }
     
+    /// Subtracts the second value from the first and stores the difference in the
+    /// left-hand-side variable.
+    ///
+    /// - Parameters:
+    ///   - lhs: A numeric value.
+    ///   - rhs: The value to subtract from `lhs`.
     public static func -= (lhs: inout BigInt, rhs: BigInt) {
         lhs = lhs - rhs
     }
@@ -259,6 +299,12 @@ public struct BigInt: LosslessStringConvertible, Hashable, Numeric, Strideable {
         lhs = lhs - rhs
     }
     
+    /// Multiplies two values and stores the result in the left-hand-side
+    /// variable.
+    ///
+    /// - Parameters:
+    ///   - lhs: The first value to multiply.
+    ///   - rhs: The second value to multiply.
     public static func *= (lhs: inout BigInt, rhs: BigInt) {
         lhs = lhs * rhs
     }
@@ -267,54 +313,29 @@ public struct BigInt: LosslessStringConvertible, Hashable, Numeric, Strideable {
         lhs = lhs * rhs
     }
     
+    /// Divides the first value by the second and stores the quotient in the
+    /// left-hand-side variable.
+    ///
+    /// - Parameters:
+    ///   - lhs: The value to divide.
+    ///   - rhs: The value to divide `lhs` by. `rhs` must not be zero.
     public static func /= (lhs: inout BigInt, rhs: BigInt) {
         lhs = lhs / rhs
     }
     
-    public static func %= (lhs: inout BigInt, rhs: BigInt) {
-        lhs = lhs % rhs
-    }
-    
-    public static func &= (lhs: inout BigInt, rhs: BigInt) {
-        lhs = lhs & rhs
-    }
-    
-    public static func |= (lhs: inout BigInt, rhs: BigInt) {
-        lhs = lhs | rhs
-    }
-    
-    public static func ^= (lhs: inout BigInt, rhs: BigInt) {
-        lhs = lhs ^ rhs
-    }
-    
-    public static func &>>= (lhs: inout BigInt, rhs: BigInt) {
-        lhs = lhs &>> rhs
-    }
-    
-    public static func &<<= (lhs: inout BigInt, rhs: BigInt) {
-        lhs = lhs &<< rhs
-    }
-    
-    public static func & (lhs: BigInt, rhs: BigInt) -> BigInt {
-        return BigInt()
-    }
-    
-    public static func | (lhs: BigInt, rhs: BigInt) -> BigInt {
-        return BigInt()
-    }
-    
-    public static func ^ (lhs: BigInt, rhs: BigInt) -> BigInt {
-        return BigInt()
-    }
-    
-    public static func &>> (lhs: BigInt, rhs: BigInt) -> BigInt {
-        return BigInt()
-    }
-    
-    public static func &<< (lhs: BigInt, rhs: BigInt) -> BigInt {
-        return BigInt()
-    }
-    
+    /// Adds two values and produces their sum.
+    ///
+    /// The addition operator (`+`) calculates the sum of its two arguments. For
+    /// example:
+    ///
+    ///     1 + 2                   // 3
+    ///     -10 + 15                // 5
+    ///     -15 + -5                // -20
+    ///     21.5 + 3.25             // 24.75
+    ///
+    /// - Parameters:
+    ///   - lhs: The first value to add.
+    ///   - rhs: The second value to add.
     public static func + (lhs: BigInt, rhs: BigInt) -> BigInt {
         var result: [Int] = [Int]()
         
@@ -336,6 +357,19 @@ public struct BigInt: LosslessStringConvertible, Hashable, Numeric, Strideable {
         return BigInt(lhs) + rhs
     }
     
+    /// Subtracts one value from another and produces their difference.
+    ///
+    /// The subtraction operator (`-`) calculates the difference of its two
+    /// arguments. For example:
+    ///
+    ///     8 - 3                   // 5
+    ///     -10 - 5                 // -15
+    ///     100 - -5                // 105
+    ///     10.5 - 100.0            // -89.5
+    ///
+    /// - Parameters:
+    ///   - lhs: A numeric value.
+    ///   - rhs: The value to subtract from `lhs`.
     public static func - (lhs: BigInt, rhs: BigInt) -> BigInt {
         var result = [Int]()
         
@@ -357,9 +391,20 @@ public struct BigInt: LosslessStringConvertible, Hashable, Numeric, Strideable {
     public static func - (lhs: Int, rhs: BigInt) -> BigInt {
         return BigInt(lhs) - rhs
     }
+    
+    /// Multiplies two values and produces their product.
     ///
+    /// The multiplication operator (`*`) calculates the product of its two
+    /// arguments. For example:
     ///
-    ///246 * 246 = 6*246 + 40*246 + 200*246 = 1,476 + 9,840 + 49,200 = 60,516
+    ///     2 * 3                   // 6
+    ///     100 * 21                // 2100
+    ///     -10 * 15                // -150
+    ///     3.5 * 2.25              // 7.875
+    ///
+    /// - Parameters:
+    ///   - lhs: The first value to multiply.
+    ///   - rhs: The second value to multiply.
     public static func * (lhs: BigInt, rhs: BigInt) -> BigInt {
         var result = BigInt()
 
@@ -384,10 +429,22 @@ public struct BigInt: LosslessStringConvertible, Hashable, Numeric, Strideable {
         return BigInt(lhs) * rhs
     }
     
-    /// lhs -> dividend -> Numerator
-    /// rhs -> divisor -> Denemator
-    /// return -> quotient
+    /// Returns the quotient of dividing the first value by the second.
+    ///
+    /// For integer types, any remainder of the division is discarded.
+    ///
+    ///     let x = 21 / 5
+    ///     // x == 4
+    ///
+    /// - Parameters:
+    ///   - lhs: The value to divide.
+    ///   - rhs: The value to divide `lhs` by. `rhs` must not be zero.
     public static func / (lhs: BigInt, rhs: BigInt) -> BigInt {
+        if(rhs == BigInt()) {
+            //FIXME: Should be an overflow error
+            return BigInt()
+        }
+        
         var result = BigInt()
         
         let dividend: BigInt = lhs.abs()
@@ -415,7 +472,24 @@ public struct BigInt: LosslessStringConvertible, Hashable, Numeric, Strideable {
         return result
     }
         
-    /// 156 % 7 = 2
+    /// Returns the remainder of dividing the first value by the second.
+    ///
+    /// The result of the remainder operator (`%`) has the same sign as `lhs` and
+    /// has a magnitude less than `rhs.magnitude`.
+    ///
+    ///     let x = 22 % 5
+    ///     // x == 2
+    ///     let y = 22 % -5
+    ///     // y == 2
+    ///     let z = -22 % -5
+    ///     // z == -2
+    ///
+    /// For any two integers `a` and `b`, their quotient `q`, and their remainder
+    /// `r`, `a == b * q + r`.
+    ///
+    /// - Parameters:
+    ///   - lhs: The value to divide.
+    ///   - rhs: The value to divide `lhs` by. `rhs` must not be zero.
     public static func % (lhs: BigInt, rhs: BigInt) -> BigInt {
         let dividend: BigInt = lhs.abs()
         let divisor: BigInt = rhs.abs()
@@ -482,6 +556,282 @@ public struct BigInt: LosslessStringConvertible, Hashable, Numeric, Strideable {
     /// - Returns: The given argument without any changes.
     prefix public static func + (x: BigInt) -> BigInt {
         return x
+    }
+    
+    
+    //MARK: - Bitwise
+    /// Divides the first value by the second and stores the remainder in the
+    /// left-hand-side variable.
+    ///
+    /// The result has the same sign as `lhs` and has a magnitude less than
+    /// `rhs.magnitude`.
+    ///
+    ///     var x = 22
+    ///     x %= 5
+    ///     // x == 2
+    ///
+    ///     var y = 22
+    ///     y %= -5
+    ///     // y == 2
+    ///
+    ///     var z = -22
+    ///     z %= -5
+    ///     // z == -2
+    ///
+    /// - Parameters:
+    ///   - lhs: The value to divide.
+    ///   - rhs: The value to divide `lhs` by. `rhs` must not be zero.
+    public static func %= (lhs: inout BigInt, rhs: BigInt) {
+        lhs = lhs % rhs
+    }
+    
+    /// Stores the result of performing a bitwise AND operation on the two given
+    /// values in the left-hand-side variable.
+    ///
+    /// A bitwise AND operation results in a value that has each bit set to `1`
+    /// where *both* of its arguments have that bit set to `1`. For example:
+    ///
+    ///     var x: UInt8 = 5          // 0b00000101
+    ///     let y: UInt8 = 14         // 0b00001110
+    ///     x &= y                    // 0b00000100
+    ///
+    /// - Parameters:
+    ///   - lhs: An integer value.
+    ///   - rhs: Another integer value.
+    public static func &= (lhs: inout BigInt, rhs: BigInt) {
+        lhs = lhs & rhs
+    }
+    
+    /// Stores the result of performing a bitwise OR operation on the two given
+    /// values in the left-hand-side variable.
+    ///
+    /// A bitwise OR operation results in a value that has each bit set to `1`
+    /// where *one or both* of its arguments have that bit set to `1`. For
+    /// example:
+    ///
+    ///     var x: UInt8 = 5          // 0b00000101
+    ///     let y: UInt8 = 14         // 0b00001110
+    ///     x |= y                    // 0b00001111
+    ///
+    /// - Parameters:
+    ///   - lhs: An integer value.
+    ///   - rhs: Another integer value.
+    public static func |= (lhs: inout BigInt, rhs: BigInt) {
+        lhs = lhs | rhs
+    }
+    
+    /// Stores the result of performing a bitwise XOR operation on the two given
+    /// values in the left-hand-side variable.
+    ///
+    /// A bitwise XOR operation, also known as an exclusive OR operation, results
+    /// in a value that has each bit set to `1` where *one or the other but not
+    /// both* of its arguments had that bit set to `1`. For example:
+    ///
+    ///     var x: UInt8 = 5          // 0b00000101
+    ///     let y: UInt8 = 14         // 0b00001110
+    ///     x ^= y                    // 0b00001011
+    ///
+    /// - Parameters:
+    ///   - lhs: An integer value.
+    ///   - rhs: Another integer value.
+    public static func ^= (lhs: inout BigInt, rhs: BigInt) {
+        lhs = lhs ^ rhs
+    }
+    
+    /// Calculates the result of shifting a value's binary representation the
+    /// specified number of digits to the right, masking the shift amount to the
+    /// type's bit width, and stores the result in the left-hand-side variable.
+    ///
+    /// The `&>>=` operator performs a *masking shift*, where the value passed as
+    /// `rhs` is masked to produce a value in the range `0..<lhs.bitWidth`. The
+    /// shift is performed using this masked value.
+    ///
+    /// The following example defines `x` as an instance of `UInt8`, an 8-bit,
+    /// unsigned integer type. If you use `2` as the right-hand-side value in an
+    /// operation on `x`, the shift amount requires no masking.
+    ///
+    ///     var x: UInt8 = 30                 // 0b00011110
+    ///     x &>>= 2
+    ///     // x == 7                         // 0b00000111
+    ///
+    /// However, if you use `19` as `rhs`, the operation first bitmasks `rhs` to
+    /// `3`, and then uses that masked value as the number of bits to shift `lhs`.
+    ///
+    ///     var y: UInt8 = 30                 // 0b00011110
+    ///     y &>>= 19
+    ///     // y == 3                         // 0b00000011
+    ///
+    /// - Parameters:
+    ///   - lhs: The value to shift.
+    ///   - rhs: The number of bits to shift `lhs` to the right. If `rhs` is
+    ///     outside the range `0..<lhs.bitWidth`, it is masked to produce a
+    ///     value within that range.
+    public static func &>>= (lhs: inout BigInt, rhs: BigInt) {
+        lhs = lhs &>> rhs
+    }
+    
+    /// Returns the result of shifting a value's binary representation the
+    /// specified number of digits to the left, masking the shift amount to the
+    /// type's bit width, and stores the result in the left-hand-side variable.
+    ///
+    /// The `&<<=` operator performs a *masking shift*, where the value used as
+    /// `rhs` is masked to produce a value in the range `0..<lhs.bitWidth`. The
+    /// shift is performed using this masked value.
+    ///
+    /// The following example defines `x` as an instance of `UInt8`, an 8-bit,
+    /// unsigned integer type. If you use `2` as the right-hand-side value in an
+    /// operation on `x`, the shift amount requires no masking.
+    ///
+    ///     var x: UInt8 = 30                 // 0b00011110
+    ///     x &<<= 2
+    ///     // x == 120                       // 0b01111000
+    ///
+    /// However, if you pass `19` as `rhs`, the method first bitmasks `rhs` to
+    /// `3`, and then uses that masked value as the number of bits to shift `lhs`.
+    ///
+    ///     var y: UInt8 = 30                 // 0b00011110
+    ///     y &<<= 19
+    ///     // y == 240                       // 0b11110000
+    ///
+    /// - Parameters:
+    ///   - lhs: The value to shift.
+    ///   - rhs: The number of bits to shift `lhs` to the left. If `rhs` is
+    ///     outside the range `0..<lhs.bitWidth`, it is masked to produce a
+    ///     value within that range.
+    public static func &<<= (lhs: inout BigInt, rhs: BigInt) {
+        lhs = lhs &<< rhs
+    }
+    
+    /// Returns the result of performing a bitwise AND operation on the two given
+    /// values.
+    ///
+    /// A bitwise AND operation results in a value that has each bit set to `1`
+    /// where *both* of its arguments have that bit set to `1`. For example:
+    ///
+    ///     let x: UInt8 = 5          // 0b00000101
+    ///     let y: UInt8 = 14         // 0b00001110
+    ///     let z = x & y             // 0b00000100
+    ///     // z == 4
+    ///
+    /// - Parameters:
+    ///   - lhs: An integer value.
+    ///   - rhs: Another integer value.
+    public static func & (lhs: BigInt, rhs: BigInt) -> BigInt {
+        return BigInt()
+    }
+    
+    /// Returns the result of performing a bitwise OR operation on the two given
+    /// values.
+    ///
+    /// A bitwise OR operation results in a value that has each bit set to `1`
+    /// where *one or both* of its arguments have that bit set to `1`. For
+    /// example:
+    ///
+    ///     let x: UInt8 = 5          // 0b00000101
+    ///     let y: UInt8 = 14         // 0b00001110
+    ///     let z = x | y             // 0b00001111
+    ///     // z == 15
+    ///
+    /// - Parameters:
+    ///   - lhs: An integer value.
+    ///   - rhs: Another integer value.
+    public static func | (lhs: BigInt, rhs: BigInt) -> BigInt {
+        return BigInt()
+    }
+    
+    /// Returns the result of performing a bitwise XOR operation on the two given
+    /// values.
+    ///
+    /// A bitwise XOR operation, also known as an exclusive OR operation, results
+    /// in a value that has each bit set to `1` where *one or the other but not
+    /// both* of its arguments had that bit set to `1`. For example:
+    ///
+    ///     let x: UInt8 = 5          // 0b00000101
+    ///     let y: UInt8 = 14         // 0b00001110
+    ///     let z = x ^ y             // 0b00001011
+    ///     // z == 11
+    ///
+    /// - Parameters:
+    ///   - lhs: An integer value.
+    ///   - rhs: Another integer value.
+    public static func ^ (lhs: BigInt, rhs: BigInt) -> BigInt {
+        return BigInt()
+    }
+    
+    /// Returns the result of shifting a value's binary representation the
+    /// specified number of digits to the right, masking the shift amount to the
+    /// type's bit width.
+    ///
+    /// Use the masking right shift operator (`&>>`) when you need to perform a
+    /// shift and are sure that the shift amount is in the range
+    /// `0..<lhs.bitWidth`. Before shifting, the masking right shift operator
+    /// masks the shift to this range. The shift is performed using this masked
+    /// value.
+    ///
+    /// The following example defines `x` as an instance of `UInt8`, an 8-bit,
+    /// unsigned integer type. If you use `2` as the right-hand-side value in an
+    /// operation on `x`, the shift amount requires no masking.
+    ///
+    ///     let x: UInt8 = 30                 // 0b00011110
+    ///     let y = x &>> 2
+    ///     // y == 7                         // 0b00000111
+    ///
+    /// However, if you use `8` as the shift amount, the method first masks the
+    /// shift amount to zero, and then performs the shift, resulting in no change
+    /// to the original value.
+    ///
+    ///     let z = x &>> 8
+    ///     // z == 30                        // 0b00011110
+    ///
+    /// If the bit width of the shifted integer type is a power of two, masking
+    /// is performed using a bitmask; otherwise, masking is performed using a
+    /// modulo operation.
+    ///
+    /// - Parameters:
+    ///   - lhs: The value to shift.
+    ///   - rhs: The number of bits to shift `lhs` to the right. If `rhs` is
+    ///     outside the range `0..<lhs.bitWidth`, it is masked to produce a
+    ///     value within that range.
+    public static func &>> (lhs: BigInt, rhs: BigInt) -> BigInt {
+        return BigInt()
+    }
+    
+    /// Returns the result of shifting a value's binary representation the
+    /// specified number of digits to the left, masking the shift amount to the
+    /// type's bit width.
+    ///
+    /// Use the masking left shift operator (`&<<`) when you need to perform a
+    /// shift and are sure that the shift amount is in the range
+    /// `0..<lhs.bitWidth`. Before shifting, the masking left shift operator
+    /// masks the shift to this range. The shift is performed using this masked
+    /// value.
+    ///
+    /// The following example defines `x` as an instance of `UInt8`, an 8-bit,
+    /// unsigned integer type. If you use `2` as the right-hand-side value in an
+    /// operation on `x`, the shift amount requires no masking.
+    ///
+    ///     let x: UInt8 = 30                 // 0b00011110
+    ///     let y = x &<< 2
+    ///     // y == 120                       // 0b01111000
+    ///
+    /// However, if you use `8` as the shift amount, the method first masks the
+    /// shift amount to zero, and then performs the shift, resulting in no change
+    /// to the original value.
+    ///
+    ///     let z = x &<< 8
+    ///     // z == 30                        // 0b00011110
+    ///
+    /// If the bit width of the shifted integer type is a power of two, masking
+    /// is performed using a bitmask; otherwise, masking is performed using a
+    /// modulo operation.
+    ///
+    /// - Parameters:
+    ///   - lhs: The value to shift.
+    ///   - rhs: The number of bits to shift `lhs` to the left. If `rhs` is
+    ///     outside the range `0..<lhs.bitWidth`, it is masked to produce a
+    ///     value within that range.
+    public static func &<< (lhs: BigInt, rhs: BigInt) -> BigInt {
+        return BigInt()
     }
     
     /// Returns the inverse of the bits set in the argument.
@@ -683,6 +1033,7 @@ public struct BigInt: LosslessStringConvertible, Hashable, Numeric, Strideable {
     ///
     /// - Precondition: `maximum` must compare equal to itself (i.e. cannot be NaN).
     prefix public static func ..< (maximum: BigInt) -> PartialRangeUpTo<Int> {
+        //FIXME: I don't Know
         return ..<3
     }
     
@@ -758,16 +1109,6 @@ public struct BigInt: LosslessStringConvertible, Hashable, Numeric, Strideable {
         }
         
         return (negative, source)
-    }
-    
-    func createArrayOfZeros(of count: Int) -> [Int] {
-        var arr: [Int] = [Int]()
-        
-        for _ in 0...count {
-            arr.append(0)
-        }
-        
-        return arr
     }
     
     func toString() -> String {
