@@ -4,6 +4,8 @@ import XCTest
 final class BigIntTests: XCTestCase {
     
     func testInit() {
+        let x: BigInt = 120
+        XCTAssertEqual(x.toString(), "120")
         XCTAssertEqual(BigInt(120).toString(), "120")
         XCTAssertEqual(BigInt([0, 2, 1]).toString(), "120")
         XCTAssertEqual(BigInt([12870]).source, [0, 7, 8, 2, 1])
