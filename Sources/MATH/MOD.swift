@@ -7,9 +7,6 @@
 
 import Foundation
 
-//TODO: Greatest Common Denomator Tests
-//TODO: Greatest Common Denomator Extended Tests
-//TODO: Divison
 //TODO: Power
 //TODO: Inverse Power
 
@@ -52,31 +49,39 @@ public struct MOD<Element: SignedInteger> {
     }
     
     //GCD But first value = base value
-    func greatestCommonDenominator(value: Element) -> Element {
+    public func greatestCommonDenominator(value: Element) -> Element {
         return self.greatestCommonDenominator(base, value)
     }
     
     public func greatestCommonDenominatorExtended(_ first: Element, _ second: Element, firstCoefficient: inout Element, secondCoefficient: inout Element) -> Element {
         
         if(second == 0) {
-            firstCoefficient = 0
-            secondCoefficient = 1
+            firstCoefficient = 1
+            secondCoefficient = 0
             return first
         }
         
         let gcd = greatestCommonDenominatorExtended(second, first%second, firstCoefficient: &firstCoefficient, secondCoefficient: &secondCoefficient)
         
-        let temp = firstCoefficient
-        firstCoefficient = secondCoefficient - (first/second)*firstCoefficient;
-        secondCoefficient = temp
+        let temp = secondCoefficient
+        secondCoefficient = firstCoefficient - (first/second)*secondCoefficient;
+        firstCoefficient = temp
         
         return gcd
     }
     
     //GCDextended But first value = base value
-    func greatestCommonDenominatorExtended(value: Element, firstCoefficient: inout Element, secondCoefficient: inout Element) -> Element {
+    public func greatestCommonDenominatorExtended(value: Element, firstCoefficient: inout Element, secondCoefficient: inout Element) -> Element {
         let gcd = greatestCommonDenominatorExtended(base, value, firstCoefficient: &firstCoefficient, secondCoefficient: &secondCoefficient)
         return gcd
     }
     
+    //MARK: - Division
+    public func divide(_ dividend: Element, _ divisor: Element) -> Element {
+        var modCoefficient: Element = 0
+        var dividendCoefficient: Element = 0
+        let _ = greatestCommonDenominatorExtended(value: dividend, firstCoefficient: &modCoefficient, secondCoefficient: &dividendCoefficient)
+        let quotient = divisor * dividendCoefficient
+        return mod(quotient)
+    }
 }
