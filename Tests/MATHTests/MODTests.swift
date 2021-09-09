@@ -30,10 +30,10 @@ final class MODTests: XCTestCase {
     }
     
     func testInvserPower() {
-        let base12: MOD = MOD<Int>(modulus: 13)
-        XCTAssertEqual(base12.inversePower(5, 72), 12)
-        XCTAssertEqual(base12.inversePower(6, 95), 8)
-        XCTAssertEqual(base12.inversePower(9, 1264), 9)
+        let base13: MOD = MOD<Int>(modulus: 13)
+        XCTAssertEqual(base13.inversePower(5, 72), 5)
+        XCTAssertEqual(base13.inversePower(6, 95), 6)
+        XCTAssertEqual(base13.inversePower(9, 1264), 3)
     }
     
     
