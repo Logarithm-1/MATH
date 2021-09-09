@@ -35,7 +35,5 @@ final class MODTests: XCTestCase {
         XCTAssertEqual(base13.inversePower(6, 95), 6)
         XCTAssertEqual(base13.inversePower(9, 1264), 3)
     }
-    
-    
-    
+
 }
