@@ -54,6 +54,13 @@ final class MODTests: XCTestCase {
         XCTAssertEqual(base12.divide(29, 7), 11)
     }
     
+    func testPower() {
+        let base12: MOD = MOD<Int>(base: 12)
+        XCTAssertEqual(base12.power(5, 213), 5)
+        XCTAssertEqual(base12.power(8, 848518), 4)
+        XCTAssertEqual(base12.power(3, 848518), 9)
+    }
+    
     
     
 }

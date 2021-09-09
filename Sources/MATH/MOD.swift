@@ -84,4 +84,28 @@ public struct MOD<Element: SignedInteger> {
         let quotient = divisor * dividendCoefficient
         return mod(quotient)
     }
+    
+    //MARK: - Power
+    public func power(_ base: Element, _ power: Element) -> Element {
+        var x = mod(base)
+        var y = power
+        var product: Element = 1
+        
+        if(x == 0) {
+            return 0
+        }
+        
+        //x^y
+        while(y > 0) {
+            //If power is odd
+            if(y & 1 != 0) {
+                product = mod(product * x)
+            }
+            
+            y >>= 1 // y = y/2
+            x = mod(x * x)
+        }
+        
+        return product
+    }
 }
