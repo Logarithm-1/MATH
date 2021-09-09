@@ -11,15 +11,15 @@ import Foundation
 //TODO: Inverse Power
 
 public struct MOD<Element: SignedInteger> {
-    var base: Element
+    var modulus: Element
     
     //MARK: - Initalizers
-    init(base: Element) {
-        self.base = base
+    init(modulus: Element) {
+        self.modulus = modulus
     }
     
     init() {
-        self.base = 0
+        self.modulus = 0
     }
     
     //MARK: - Math
@@ -27,9 +27,9 @@ public struct MOD<Element: SignedInteger> {
         var value = v
         
         if(value < 0) {
-            value = (base + (value % base)) % base
+            value = (modulus + (value % modulus)) % modulus
         } else {
-            value = value % base
+            value = value % modulus
         }
         
         return value
@@ -50,7 +50,7 @@ public struct MOD<Element: SignedInteger> {
     
     //GCD But first value = base value
     public func greatestCommonDenominator(value: Element) -> Element {
-        return self.greatestCommonDenominator(base, value)
+        return self.greatestCommonDenominator(modulus, value)
     }
     
     public func greatestCommonDenominatorExtended(_ first: Element, _ second: Element, firstCoefficient: inout Element, secondCoefficient: inout Element) -> Element {
@@ -72,11 +72,49 @@ public struct MOD<Element: SignedInteger> {
     
     //GCDextended But first value = base value
     public func greatestCommonDenominatorExtended(value: Element, firstCoefficient: inout Element, secondCoefficient: inout Element) -> Element {
-        let gcd = greatestCommonDenominatorExtended(base, value, firstCoefficient: &firstCoefficient, secondCoefficient: &secondCoefficient)
+        let gcd = greatestCommonDenominatorExtended(modulus, value, firstCoefficient: &firstCoefficient, secondCoefficient: &secondCoefficient)
         return gcd
     }
     
-    //MARK: - Division
+    //MARK: Prime
+    public func isPrime(_ value: Element) -> Bool {
+        //We only need to check from 2 to sqrt(value) for factors to see if a number is prime
+        //FIXME: Will need to change this method for BigInt
+        let maxFactor: Element = Element(ceil(sqrt(Double(value))))
+        
+        var factor: Element = 2
+        while(factor <= maxFactor){
+            if(value % factor == 0) {
+                return false
+            }
+            
+            if(factor == 2) {
+                factor += 1
+            } else {
+                factor += 2
+            }
+        }
+        
+        return true
+    }
+    
+    func isPrime(x: Int) -> Bool {
+        //we only need to check from i=2 to sqrt(x) for factors
+        //to see if a number is prime
+        let maxi: Int = Int(ceil(sqrt(Double(x))))
+        for i in 2...maxi {
+            //check to see if i is a factor
+            if (x%i == 0){
+                //i is a factor so the number is not prime
+                //store the result in our array and return false
+                return false
+            }
+        }
+        return true
+    }
+    
+    //MARK: - Arithmetic
+    //MARK: Division
     public func divide(_ dividend: Element, _ divisor: Element) -> Element {
         var modCoefficient: Element = 0
         var dividendCoefficient: Element = 0
@@ -85,7 +123,7 @@ public struct MOD<Element: SignedInteger> {
         return mod(quotient)
     }
     
-    //MARK: - Power
+    //MARK: Power
     public func power(_ base: Element, _ power: Element) -> Element {
         var x = mod(base)
         var y = power
@@ -107,5 +145,20 @@ public struct MOD<Element: SignedInteger> {
         }
         
         return product
+    }
+    
+    //MARK: Inverse Power
+    func inversePower(_ base: Element, _ power: Element) -> Element {
+        if(isPrime(modulus)) {
+            let a: Element = modulus - 1
+            var powerCoefficient: Element = 0
+            var aCoefficient: Element = 0
+            let _ = greatestCommonDenominatorExtended(power, a, firstCoefficient: &powerCoefficient, secondCoefficient: &aCoefficient)
+            
+            let inversePower: Element = a + aCoefficient
+            return self.power(base, inversePower)
+        }
+        
+        return Element(0)
     }
 }
