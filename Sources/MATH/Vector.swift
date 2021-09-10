@@ -53,7 +53,7 @@ struct Vector<Element: SignedNumeric> {
         return 0 //atan((self.y - vector2.y) / (self.x - vector2.x))
     }
     
-    func theta() -> Element {
+    public func theta() -> Element {
         return 0 //atan(self.y / self.x)
     }
     
