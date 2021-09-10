@@ -10,14 +10,11 @@ import Foundation
 //TODO: Random
 //TODO: Conform BigInt to BinaryInteger
     //TODO: Add Words
-//TODO: Conform BigInt to FixedWidthIntegerger
-//TODO: Conform BigInt to SignedNumeric
 //TODO: Conform BigInt to SignedInteger
 //TODO: Documentation
-//TODO: Math Functions (That can't act as a nomral Int)
 
 /// A Integer that can be hundreds of digits long
-public struct BigInt: LosslessStringConvertible, Hashable, Numeric, Strideable {
+public struct BigInt: LosslessStringConvertible, Hashable, Strideable, SignedNumeric {
     public typealias Words = Int
 
     //FIXME: Magnitude should be a BigInt
