@@ -4,18 +4,31 @@ import XCTest
 final class VectorTests: XCTestCase {
     
     func testDimensions() {
-        XCTAssertEqual(Vector(vector: [1, 2, 3]).dimensions, 3)
-        XCTAssertEqual(Vector(vector: [1, 2]).dimensions, 2)
-        XCTAssertEqual(Vector(vector: [1, 2, 3, 4, 5]).dimensions, 5)
+        XCTAssertEqual(Vector([1, 2, 3]).dimensions, 3)
+        XCTAssertEqual(Vector([1, 2]).dimensions, 2)
+        XCTAssertEqual(Vector([1, 2, 3, 4, 5]).dimensions, 5)
+    }
+    
+    func testDescription() {
+        XCTAssertEqual(Vector([1, 2, 3]).description, "[1, 2, 3]")
     }
     
     //MARK: - Not Too sure what to call this
+    func testSubscript() {
+        var v = Vector( [1, 2, 3])
+        XCTAssertEqual(v[0], 1)
+        
+        v[0] = 2
+        
+        XCTAssertEqual(v[0], 2)
+    }
+    
     func testMagnitudeOther() {
-        XCTAssertEqual(Vector(vector: [1, 2, 3]).magnitude(from: Vector(vector: [3, 2, 1])), 3)
+        XCTAssertEqual(Vector([1, 2, 3]).magnitude(from: Vector([3, 2, 1])), 3)
     }
     
     func testMagnitudeOrgin() {
-        XCTAssertEqual(Vector(vector: [1, 2, 3]).magnitude(), 3)
+        XCTAssertEqual(Vector([3, 4]).magnitude(), 5)
     }
     
     func testDirictionOther() {
@@ -37,52 +50,100 @@ final class VectorTests: XCTestCase {
     
     //MARK: - Compare
     func testEqualEqual() {
-        XCTAssertEqual(0, 1)
+        let v = Vector([1, 2, 3])
+        let w = Vector([3, 2, 1])
+        
+        XCTAssertTrue(v == Vector([1, 2, 3]))
+        XCTAssertTrue(w == Vector([3, 2, 1]))
     }
     
     func testLesserEqual() {
-        XCTAssertEqual(0, 1)
+        let v = Vector([1, 2, 3])
+        let w = Vector([3, 2, 1])
+        
+        XCTAssertTrue(v <= Vector([1, 2, 3]))
+        XCTAssertTrue(w <= Vector([4, 2, 1]))
     }
     
     func testLesser() {
-        XCTAssertEqual(0, 1)
+        let v = Vector([1, 2, 3])
+        let w = Vector([3, 2, 1])
+        
+        XCTAssertFalse(v < Vector([1, 2, 3]))
+        XCTAssertTrue(w < Vector([4, 2, 1]))
     }
     
     func testGreaterEqual() {
-        XCTAssertEqual(0, 1)
+        let v = Vector([1, 2, 3])
+        let w = Vector([3, 2, 1])
+        
+        XCTAssertTrue(v >= Vector([1, 2, 3]))
+        XCTAssertTrue(w >= Vector([2, 2, 1]))
     }
     
     func testGreater() {
-        XCTAssertEqual(0, 1)
+        let v = Vector([1, 2, 3])
+        let w = Vector([3, 2, 1])
+        
+        XCTAssertFalse(v > Vector([1, 2, 3]))
+        XCTAssertTrue(w > Vector([2, 2, 1]))
     }
     
     //MARK: - Arithmetic
     func testPlus() {
-        XCTAssertEqual(0, 1)
+        let v = Vector([1, 2, 3])
+        let w = Vector([3, 2, 1])
+        
+        XCTAssertEqual(v + w, Vector([4, 4, 4]))
     }
     
     func testPlusEqual() {
-        XCTAssertEqual(0, 1)
+        var v = Vector([1, 2, 3])
+        let w = Vector([3, 2, 1])
+        
+        v += w
+        
+        XCTAssertEqual(v, Vector([4, 4, 4]))
     }
     
     func testMinus() {
-        XCTAssertEqual(0, 1)
+        let v = Vector([4, 4, 4])
+        let w = Vector([3, 2, 1])
+        
+        XCTAssertEqual(v - w, Vector([1, 2, 3]))
     }
     
     func testMinusEqual() {
-        XCTAssertEqual(0, 1)
+        var v = Vector([4, 4, 4])
+        let w = Vector([3, 2, 1])
+        
+        v -= w
+        
+        XCTAssertEqual(v, Vector([1, 2, 3]))
     }
     
     func testAsterisk() {
-        XCTAssertEqual(0, 1)
+        let v = Vector([1, 2, 4])
+        let w = 3
+        
+        XCTAssertEqual(v * w, Vector([3, 6, 12]))
+        XCTAssertEqual(w * v, Vector([3, 6, 12]))
     }
     
     func testAsteriskEqual() {
-        XCTAssertEqual(0, 1)
+        var v = Vector([1, 2, 4])
+        let w = 3
+        
+        v *= w
+        
+        XCTAssertEqual(v, Vector([3, 6, 12]))
     }
     
     func testBackslash() {
-        XCTAssertEqual(0, 1)
+        let v = Vector([3, 6, 12])
+        let w = 3
+        
+        XCTAssertEqual(v / w, Vector([1, 2, 4]))
     }
     
     func testBackslashEqual() {
@@ -90,27 +151,23 @@ final class VectorTests: XCTestCase {
     }
     
     func testAsteriskAsterisk() {
-        XCTAssertEqual(0, 1)
-    }
-    
-    func testAsteriskAsteriskEqual() {
-        XCTAssertEqual(0, 1)
+        let v = Vector([3, 6, 12])
+        let w = Vector([1, 2, 3])
+        
+        XCTAssertEqual(v ** w, 51)
     }
     
     func testPlusAsterisk() {
-        XCTAssertEqual(0, 1)
-    }
-    
-    func testPlusAsteriskEqual() {
-        XCTAssertEqual(0, 1)
+        let v = Vector([1, 7, 4])
+        let w = Vector([4, 8, 3])
+        
+        XCTAssertEqual(v +* w, Vector([-11, 13, -20]))
     }
     
     func testNegate() {
-        XCTAssertEqual(0, 1)
-    }
-    
-    //MARK: - Misc
-    func testMatchDimensions() {
-        XCTAssertEqual(0, 1)
+        var v = Vector([3, 6, 12])
+        v.negate()
+        
+        XCTAssertEqual(v, Vector([-3, -6, -12]))
     }
 }

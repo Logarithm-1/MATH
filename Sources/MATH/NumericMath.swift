@@ -10,7 +10,23 @@ import Foundation
 public struct NumericMath {
     @available(*, unavailable) private init() {}
     
-    //TODO: Square Root
+    //MARK: Absolute Value
+    public static func abs<Element: SignedNumeric & Comparable>(_ value: Element) -> Element {
+        if(value < 0) {
+            return -value
+        } else {
+            return value
+        }
+    }
+    
+    //MARK: Square Root
+    public static func squareRoot<Element: Numeric>(_ value: Element) -> Element {
+        
+        
+        
+        return 0
+    }
+    
     //TODO: Cube Root
     //TODO: nth Root
     //TODO: Logarithm

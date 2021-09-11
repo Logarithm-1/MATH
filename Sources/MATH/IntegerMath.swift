@@ -7,6 +7,7 @@
 
 import Foundation
 
+/// Math functions that use Integers as inputs and outputs
 public struct IntegerMath {
     @available(*, unavailable) private init() {}
     
