@@ -24,7 +24,7 @@ final class VectorTests: XCTestCase {
     }
     
     func testMagnitudeOther() {
-        XCTAssertEqual(Vector([1, 2, 3]).magnitude(from: Vector([3, 2, 1])), 3)
+        XCTAssertEqual(Vector([1, 2, 3]).magnitude(from: Vector([3, 3, 1])), 3)
     }
     
     func testMagnitudeOrgin() {
@@ -32,19 +32,19 @@ final class VectorTests: XCTestCase {
     }
     
     func testDirictionOther() {
-        XCTAssertEqual(0, 1)
+        XCTAssertEqual(Vector([3, 4, 3]).diriction(from: Vector([3, 3, 1])), Vector([0, 1, 2]))
     }
     
     func testDirictionOrgin() {
-        XCTAssertEqual(0, 1)
+        XCTAssertEqual(Vector([3, 4, 3]).diriction(), Vector([-3, -4, -3]))
     }
     
     func testThetaOther() {
-        XCTAssertEqual(0, 1)
+        XCTAssertEqual(Vector([3, 4, 3]).theta(from: Vector([3, 3, 1])), 9)
     }
     
     func testThetaOrgin() {
-        XCTAssertEqual(0, 1)
+        XCTAssertEqual(Vector([3, 4, 3]).theta(), 3)
     }
     
     

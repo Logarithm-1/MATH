@@ -10,15 +10,15 @@ import Foundation
 infix operator **  : MultiplicationPrecedence
 infix operator +*  : MultiplicationPrecedence
 struct Vector<Element: SignedNumeric & Comparable & CustomStringConvertible>: Comparable, Equatable, CustomStringConvertible {
-    var vec: [Element]
+    private var vec: [Element]
     
-    var dimensions: Int {
+    public var dimensions: Int {
         get {
             return vec.count
         }
     }
     
-    var description: String {
+    public var description: String {
         get {
             var d: String = "["
             for i in 0..<dimensions {
@@ -64,11 +64,11 @@ struct Vector<Element: SignedNumeric & Comparable & CustomStringConvertible>: Co
     public func magnitude(from vector: Vector<Element>) -> Element {
         var sum: Element = 0
         for i in 0..<max(dimensions, vector.dimensions) {
-            let value: Element = (i < dimensions ? vec[i] : 0) -    (i < vector.dimensions ? vector.vec[i] : 0)
-            sum += NumericMath.abs(value * value)
+            let value: Element = (i < dimensions ? vec[i] : 0) - (i < vector.dimensions ? vector.vec[i] : 0)
+            sum += FloatingPointMath.absoluteValue(value * value)
         }
         
-        return NumericMath.squareRoot(sum)
+        return 0//FIXME: NumericMath.squareRoot(sum)
     }
     
     public func magnitude() -> Element {
@@ -77,7 +77,7 @@ struct Vector<Element: SignedNumeric & Comparable & CustomStringConvertible>: Co
             sum += (i * i)
         }
         
-        return NumericMath.squareRoot(sum)
+        return 0 //FIXME: NumericMath.squareRoot(sum)
     }
     
     //MARK: Diriction

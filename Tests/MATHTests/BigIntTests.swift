@@ -308,6 +308,16 @@ final class BigIntTests: XCTestCase {
         XCTAssertEqual(~x, y)
     }
     
+    func testCaretCaret() {
+        let x = BigInt(2)
+        let y = BigInt(9)
+        
+        XCTAssertEqual(x^^y, BigInt(512))
+        
+        XCTAssertEqual((x^^BigInt(2048)).source.count, 617)
+        XCTAssertEqual((x^^BigInt(2048)), BigInt(3))
+    }
+    
     //MARK: - Range
     
     func testDotDotDot() {

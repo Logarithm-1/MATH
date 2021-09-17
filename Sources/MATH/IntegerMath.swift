@@ -11,6 +11,17 @@ import Foundation
 public struct IntegerMath {
     @available(*, unavailable) private init() {}
     
+    //MARK: Factorial
+    public static func factorial<Element: SignedInteger>(_ x: Element) -> Element {
+        var sum: Element = 1
+        
+        for i in 1...Int(x) {
+            sum *= Element(i)
+        }
+        
+        return sum
+    }
+    
     //MARK: Greatest Common Denominator
     /// In a set of whole numbers, the Greatest Common Denominator (GCD) is the largest positive integer that divides evenly into all numbers with zero remainder.
     ///
@@ -60,5 +71,26 @@ public struct IntegerMath {
         }
         
         return true
+    }
+    
+    //MARK: Square Root
+    public static func squareRoot<Element: SignedInteger>(_ value: Element) -> Element {
+        if(value <= 0) {
+            return 0
+        }
+        
+        var root: Element = 0
+        
+        while((root*root) < value) {
+            root += 1
+        }
+    
+        if(root*root == value) {
+            return root
+        } else {
+            root -= 1
+        }
+        
+        return root
     }
 }

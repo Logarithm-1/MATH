@@ -8,13 +8,17 @@
 import Foundation
 
 //TODO: Random
-//TODO: Conform BigInt to BinaryInteger
+//TODO: Conform BigInt to BinaryInteger: Strideable, Hashable, Numeric, CustomStringConvertible
     //TODO: Add Words
-//TODO: Conform BigInt to SignedInteger
+//TODO: Conform BigInt to SignedInteger: BinaryInteger, SignedNumeric
 //TODO: Documentation
 
 /// A Integer that can be hundreds of digits long
-public struct BigInt: LosslessStringConvertible, Hashable, Strideable, SignedNumeric {
+precedencegroup PowerPrecedence { higherThan: MultiplicationPrecedence }
+infix operator ^^ : PowerPrecedence
+public struct BigInt: CustomStringConvertible, Hashable, Strideable, SignedNumeric {
+    
+    
     public typealias Words = Int
 
     //FIXME: Magnitude should be a BigInt
@@ -33,11 +37,11 @@ public struct BigInt: LosslessStringConvertible, Hashable, Strideable, SignedNum
     /// to find an absolute value. In addition, because `abs(_:)` always returns
     /// a value of the same type, even in a generic context, using the function
     /// instead of the `magnitude` property is encouraged.
-    public var magnitude: Int = 0
+    public var magnitude: UInt = 0
     
     /// A type that can represent the absolute value of any possible value of
     /// this type.
-    public typealias Magnitude = Int
+    public typealias Magnitude = UInt
     
 
     /// A type that represents an integer literal.
@@ -103,7 +107,6 @@ public struct BigInt: LosslessStringConvertible, Hashable, Strideable, SignedNum
     }
     
     //MARK: - Words
-    //FIXME
     
     //MARK: - Compare
     
@@ -548,6 +551,17 @@ public struct BigInt: LosslessStringConvertible, Hashable, Strideable, SignedNum
     ///   - rhs: The value to divide `lhs` by. `rhs` must not be zero.
     public static func %= (lhs: inout BigInt, rhs: BigInt) {
         lhs = lhs % rhs
+    }
+    
+    //MARK: Power
+    public static func ^^(lhs: BigInt, rhs: BigInt) -> BigInt {
+        var result = BigInt(1)
+        
+        for _ in 0..<rhs {
+            result *= lhs
+        }
+        
+        return result
     }
     
     //MARK: Prefixs
@@ -1165,8 +1179,6 @@ public struct BigInt: LosslessStringConvertible, Hashable, Strideable, SignedNum
 }
 
 
-precedencegroup PowerPrecedence { higherThan: MultiplicationPrecedence }
-infix operator ^^ : PowerPrecedence
 extension Int {
     public static func *= (lhs: inout [Int], rhs: Int) {
         for i in 0..<lhs.count {
