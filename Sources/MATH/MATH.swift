@@ -79,7 +79,7 @@ public struct MATH {
         return true
     }
     
-    //MARK: Addition
+    //MARK: - Addition
     //MARK: Summation
     /// The sum of all elements in an array
     public static func summation<T: AdditiveArithmetic>(_ arr: [T]) -> T {
@@ -88,6 +88,19 @@ public struct MATH {
             sum += a
         }
         
+        return sum
+    }
+    
+    /// The summation is a loop that sums a certian function `f(x)` using `i` as the input. Mathematically represented by `∑_{i = start}^{end}f(i)`.
+    /// - Parameters:
+    ///   - start: Start of `i`
+    ///   - end: End of `i`
+    ///   - completion: The function that takes in `i`
+    public static func summation<T: AdditiveArithmetic>(start: Int, end: Int, completion: (Int) -> T) -> T {
+        var sum: T = .zero
+        for i in start...end {
+            sum += completion(i)
+        }
         return sum
     }
     
@@ -103,11 +116,24 @@ public struct MATH {
     }
     
     //MARK: Product
+    /// The product is a loop that multiplies a certian function `f(x)` using `i` as the input. Mathematically represented by `∏_{i = start}^{end}f(i)`.
+    /// It is the product version of the `summation ∑` function.
+    /// - Parameters:
+    ///   - start: Start of `i`
+    ///   - end: End of `i`
+    ///   - completion: The function that takes in `i`
+    public static func product<T: SignedNumeric>(start: Int, end: Int, completion: (Int) -> T) -> T {
+        var prod: T = 1
+        for i in start...end {
+            prod *= completion(i)
+        }
+        return prod
+    }
     
     //MARK: - Exponents
     //MARK: Power
     //FIXME: Exponet to Element
-    public static func power<Element: FloatingPoint>(_ base: Element, _ exponent: Int) -> Element {
+    public static func power<Element: BinaryFloatingPoint>(_ base: Element, _ exponent: Int) -> Element {
         var result: Element = 1
         
         for _ in 0..<exponent {
@@ -118,7 +144,7 @@ public struct MATH {
     }
     
     //MARK: Square Root
-    public static func squareRoot<Element: FloatingPoint>(_ x: Element) -> Element {
+    public static func squareRoot<Element: BinaryFloatingPoint>(_ x: Element) -> Element {
         var result: Element = x/2
         
         for _ in 0..<10 {
@@ -133,7 +159,7 @@ public struct MATH {
     //TODO: nth Root
     
     //MARK: Logarithm
-    public static func logarithm<Element: FloatingPoint>(_ x: Element) -> Element {
+    public static func logarithm<Element: BinaryFloatingPoint>(_ x: Element) -> Element {
         /*var y: Element = x
         var sum: Element = 0
         var divied: Element = 1
@@ -162,29 +188,29 @@ public struct MATH {
         return 0
     }
     
-    public static func logarithm<Element: FloatingPoint>(_ x: Element, _ base: Element) -> Element {
+    public static func logarithm<Element: BinaryFloatingPoint>(_ x: Element, _ base: Element) -> Element {
         return logarithm(x) / logarithm(base)
     }
     
-    public static func natralLogarithm<Element: FloatingPoint>(_ x: Element) -> Element {
-        let e: Element = 3
+    public static func natralLogarithm<Element: BinaryFloatingPoint>(_ x: Element) -> Element {
+        let e: Element = Element(MATH.Constants.e)
         return logarithm(x, e)
     }
     
     //MARK: - Trigonometry
-    public static func degreesToRadians<Element: FloatingPoint>(_ x: Element) -> Element {
-        let pi: Element = 3
+    public static func degreesToRadians<Element: BinaryFloatingPoint>(_ x: Element) -> Element {
+        let pi: Element = Element(MATH.Constants.π)
         return (x*pi)/180
     }
     
-    public static func radiansToDegrees<Element: FloatingPoint>(_ x: Element) -> Element {
-        let pi: Element = 3
+    public static func radiansToDegrees<Element: BinaryFloatingPoint>(_ x: Element) -> Element {
+        let pi: Element = Element(MATH.Constants.π)
         return (x*180)/pi
     }
     
     //MARK: Sine
-    public static func sine<Element: FloatingPoint>(_ radians: Element) -> Element {
-        let pi: Element = 3
+    public static func sine<Element: BinaryFloatingPoint>(_ radians: Element) -> Element {
+        let pi: Element = Element(MATH.Constants.π)
         let y: Element = radians.truncatingRemainder(dividingBy: 2*pi)
         
         var sum: Element = 0
@@ -203,16 +229,16 @@ public struct MATH {
         return sum
     }
     
-    public static func sine<Element: FloatingPoint>(degrees: Element) ->  Element {
+    public static func sine<Element: BinaryFloatingPoint>(degrees: Element) ->  Element {
         let y = degreesToRadians(degrees)
         return sine(y)
     }
     
-    public static func arcSine<Element: FloatingPoint>(_ radians: Element) -> Element {
+    public static func arcSine<Element: BinaryFloatingPoint>(_ radians: Element) -> Element {
         return 1 / sine(radians)
     }
     
-    public static func arcSine<Element: FloatingPoint>(degrees: Element) -> Element {
+    public static func arcSine<Element: BinaryFloatingPoint>(degrees: Element) -> Element {
         return 1 / sine(degrees: degrees)
     }
     
@@ -220,8 +246,8 @@ public struct MATH {
     //TODO: arc Sine Hyperbolic
     
     //MARK: Cosine
-    public static func cosine<Element: FloatingPoint>(_ radians: Element) -> Element {
-        let pi: Element = 3
+    public static func cosine<Element: BinaryFloatingPoint>(_ radians: Element) -> Element {
+        let pi: Element = Element(MATH.Constants.π)
         let y: Element = radians.truncatingRemainder(dividingBy: 2*pi)
         
         var sum: Element = 0
@@ -240,16 +266,16 @@ public struct MATH {
         return sum
     }
     
-    public static func cosine<Element: FloatingPoint>(degrees: Element) -> Element {
+    public static func cosine<Element: BinaryFloatingPoint>(degrees: Element) -> Element {
         let y = degreesToRadians(degrees)
         return cosine(y)
     }
     
-    public static func arcCosine<Element: FloatingPoint>(_ radians: Element) -> Element {
+    public static func arcCosine<Element: BinaryFloatingPoint>(_ radians: Element) -> Element {
         return 1 / cosine(radians)
     }
     
-    public static func arcCosine<Element: FloatingPoint>(degrees: Element) -> Element {
+    public static func arcCosine<Element: BinaryFloatingPoint>(degrees: Element) -> Element {
         return 1 / cosine(degrees: degrees)
     }
     
@@ -257,19 +283,19 @@ public struct MATH {
     //TODO: arc Cosine Hyperbolic
     
     //MARK: Tangent
-    public static func tangent<Element: FloatingPoint>(_ radians: Element) -> Element {
+    public static func tangent<Element: BinaryFloatingPoint>(_ radians: Element) -> Element {
         return sine(radians) / cosine(radians)
     }
     
-    public static func tangent<Element: FloatingPoint>(degrees: Element) -> Element {
+    public static func tangent<Element: BinaryFloatingPoint>(degrees: Element) -> Element {
         return sine(degrees: degrees) / cosine(degrees: degrees)
     }
     
-    public static func arcTangent<Element: FloatingPoint>(_ radians: Element) -> Element {
+    public static func arcTangent<Element: BinaryFloatingPoint>(_ radians: Element) -> Element {
         return 1 / tangent(radians)
     }
     
-    public static func arcTangent<Element: FloatingPoint>(degrees: Element) -> Element {
+    public static func arcTangent<Element: BinaryFloatingPoint>(degrees: Element) -> Element {
         return 1 / tangent(degrees: degrees)
     }
     

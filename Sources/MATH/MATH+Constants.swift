@@ -7,66 +7,123 @@
 
 import Foundation
 
-//TODO: Should I do intalic "𝑒" or just "e"
-//TODO: Should I do symbol π or just "pi"
 extension MATH {
     
     ///[link](https://en.wikipedia.org/wiki/List_of_mathematical_constants)
     public struct Constants {
         
         //MARK: - Antiquity
-        /// `π` (small pi)
-        /// The ratio between the diameter and circumfernce of a circle.
+        //MARK: Pi (1900 to 1600 BCE)
+        /// The number `π` (small pi) is a mathematical constant.
+        /// It is defined in Euclidean Geometry as the ratio of a circle's circumference to its diameter.
+        ///
+        /// The number appears in many formulas in all areas of mathematics and physics.
+        /// `π` is an irratinal number, as such cannout be expressed as a common fraction. Its decimal digits appear to be randomly distributed, and are conjectured to satisfy a specifc kind of statistical randomness.
+        ///
+        /// To learn more click [link](https://en.wikipedia.org/wiki/Pi)
         public static let π: Double = 3.1415_9265_3589_7932_3846
         
-        /// `π` (small pi)
-        /// The ratio between the diameter and circumfernce of a circle.
-        public static let pi: Double = 3.1415_9265_3589_7932_3846
+        /// The number `π` (small pi) is a mathematical constant.
+        /// It is defined in Euclidean Geometry as the ratio of a circle's circumference to its diameter.
+        ///
+        /// The number appears in many formulas in all areas of mathematics and physics.
+        /// `π` is an irratinal number, as such cannout be expressed as a common fraction. Its decimal digits appear to be randomly distributed, and are conjectured to satisfy a specifc kind of statistical randomness.
+        ///
+        /// To learn more click [link](https://en.wikipedia.org/wiki/Pi)
+        public static let pi: Double = π
         
-        /// `𝝋` (small phi).
-        /// The golden ratio
+        //MARK: The Golden Ratio (~300 BCE)
+        /// The Golden Ratio commonly represented by `𝝋` (small phi), is an irrational number that is a solution to the positive root of the quadratic equation `x^2 - x - 1 = 0`.
+        ///
+        /// It's application endless, showing up in Nature, Art, Music, Architecture, etc.
+        ///
+        /// To learn more click [link](https://en.wikipedia.org/wiki/Golden_ratio)
         public static let 𝝋: Double = 1.61803398874989484820
         
-        /// `𝝋` (small phi).
-        /// The golden ratio
-        public static let phi: Double = 1.61803398874989484820
+        /// The Golden Ratio commonly represented by `𝝋` (small phi), is an irrational number that is a solution to the positive root of the quadratic equation `x^2 - x - 1 = 0`.
+        ///
+        /// It's application endless, showing up in Nature, Art, Music, Architecture, etc.
+        ///
+        /// To learn more click [link](https://en.wikipedia.org/wiki/Golden_ratio)
+        public static let phi: Double = 𝝋
         
-        //MARK: - Medievall and Early Modern
-        ///The math constant `𝑊` (W)
-        ///Wallis Constant
+        /// The Golden Ratio commonly represented by `𝝋` (small phi), is an irrational number that is a solution to the positive root of the quadratic equation `x^2 - x - 1 = 0`.
+        ///
+        /// It's application endless, showing up in Nature, Art, Music, Architecture, etc.
+        ///
+        /// To learn more click [link](https://en.wikipedia.org/wiki/Golden_ratio)
+        public static let goldenRatio: Double = 𝝋
+        
+        //MARK: - Medieval and Early Modern
+        //MARK: Wallis Constant (1616 to 1703)
+        /// Wallis Constant commonly represented by `𝑊` (W)
+        ///
+        /// The real solution to the cubic equation `x^3 - 2x - 5 = 0`.
         public static let W: Double = 2.09455148154232659148
         
-        ///The math constant  `𝑒` (e)
-        ///Euler's number
+        /// Wallis Constant commonly represented by `𝑊` (W)
+        ///
+        /// The real solution to the cubic equation `x^3 - 2x - 5 = 0`.
+        public static let wallisConstant: Double = W
+        
+        //MARK: Euler's Number (1618)
+        /// Euler's Number, commonly represented by `𝑒` (e)
         public static let e: Double = 2.71828182845904523536
         
-        /// Sophomore's dream 1
-        /// `𝐼_1` (I subscript 1)
+        /// Euler's Number, commonly represented by `𝑒` (e)
+        public static let eulersNumber: Double = e
+        
+        //MARK: Sophomore's Dream (1697)
+        /// Sophomore's dream 1, commonly represented by `𝐼_1` (I subscript 1)
         public static let I_1: Double = 0.78343051071213440705
         
-        /// Sophomore's dream 2
-        /// `𝐼_2` (I subscript 2)
-        public static let I_2 = 1.29128599706266354040
+        /// Sophomore's dream 1, commonly represented by `𝐼_1` (I subscript 1)
+        public static let sophomoresDream_1: Double = I_1
         
-        ///The math constant `𝜛` (pi symbol)
-        ///Lemniscate constant
-        public static let 𝜛 = 2.62205755429211981046
+        /// Sophomore's dream 2, commonly represented by `𝐼_2` (I subscript 2)
+        public static let I_2: Double = 1.29128599706266354040
         
-        ///The math constant `𝛾` (small gamma).
-        ///Euler–Mascheroni constant
-        public static let 𝛾 = 0.57721566490153286060
+        /// Sophomore's dream 2, commonly represented by `𝐼_2` (I subscript 2)
+        public static let sophomoresDream_2: Double = I_2
         
-        /// Erdős–Borwein constant
-        /// `𝐸_𝐵` (E subscript B)
-        public static let E_B = 1.60669515241529176378
+        //MARK: Lemniscate Constant (1718 to 1798)
+        /// Lemniscate constant, commonly represented by `𝜛` (pi symbol).
+        public static let 𝜛: Double = 2.62205755429211981046
         
-        ///The math constant `𝜆` (small lamda).
-        ///Laplace Limit
-        public static let 𝜆 = 0.66274341934918158097
+        /// Lemniscate constant, commonly represented by `𝜛` (pi symbol).
+        public static let lemniscateConstant: Double = 𝜛
         
-        ///The math constant `𝐺` (G).
-        ///Gauss's constant
-        public static let G = 0.83462684167407318628
+        //MARK: Euler-Mascheroni Constant (1735)
+        /// Euler–Mascheroni constant, commonly represented by `𝛾` (small gamma).
+        public static let 𝛾: Double = 0.57721566490153286060
+        
+        /// Euler–Mascheroni constant, commonly represented by `𝛾` (small gamma).
+        public static let eulerMascheroniConstant: Double = 𝛾
+        
+        //MARK: Erdös-Borwein Constant (1749)
+        /// Erdős–Borwein constant, commonly represented by `𝐸_𝐵` (E subscript B)
+        public static let E_B: Double = 1.60669515241529176378
+        
+        /// Erdős–Borwein constant, commonly represented by `𝐸_𝐵` (E subscript B)
+        public static let erdösBorweinConstant: Double = E_B
+        
+        /// Erdős–Borwein constant, commonly represented by `𝐸_𝐵` (E subscript B)
+        public static let erdosBorweinConstant: Double = E_B
+         
+        //MARK: Laplace Limit (~1782)
+        ///Laplace Limit, commonly represeneted by `𝜆` (small lamda).
+        public static let 𝜆: Double = 0.66274341934918158097
+        
+        ///Laplace Limit, commonly represeneted by `𝜆` (small lamda).
+        public static let laplaceLimit: Double = 𝜆
+        
+        //MARK: Gauss's Constant (1799)
+        ///Gauss's constant, commonly represeneted by `𝐺` (G).
+        public static let G: Double = 0.83462684167407318628
+        
+        ///Gauss's constant, commonly represeneted by `𝐺` (G).
+        public static let gausssConstant: Double = G
+        
         
         //MARK: - 19th Century
         ///The math constant `𝜇` (small mu)
