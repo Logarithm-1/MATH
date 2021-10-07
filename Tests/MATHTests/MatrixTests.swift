@@ -4,12 +4,12 @@ import XCTest
 final class MatrixTests: XCTestCase {
     
     func testRows() {
-        let m = Matrix(matrix: [[1, 2, 3], [3, 2, 1]])
+        let m = MATH.Matrix(matrix: [[1, 2, 3], [3, 2, 1]])
         XCTAssertEqual(m.rows, 2)
     }
     
     func testCols() {
-        let m = Matrix(matrix: [[1, 2, 3], [3, 2, 1]])
+        let m = MATH.Matrix(matrix: [[1, 2, 3], [3, 2, 1]])
         XCTAssertEqual(m.cols, 3)
     }
     
