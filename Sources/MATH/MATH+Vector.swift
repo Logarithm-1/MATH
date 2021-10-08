@@ -11,94 +11,238 @@ infix operator **  : MultiplicationPrecedence
 infix operator +*  : MultiplicationPrecedence
 extension MATH {
     
-    struct Vector<Element: SignedNumeric & Comparable & CustomStringConvertible>: Comparable, Equatable, CustomStringConvertible {
-        private var vec: [Element]
+    /// A  `Vector` is a mathetical was to discribe both a magnitude and a direction.
+    struct Vector<Element: Numeric & CustomStringConvertible>: Equatable, CustomStringConvertible {
         
-        public var dimensions: Int {
-            get {
-                return vec.count
-            }
-        }
+        /// The `components` are how much the vector point's in each deriction `(x, y, z, w,...)`.
+        private var components: [Element]
         
         public var description: String {
             get {
-                var d: String = "["
+                var d: String = "<"
                 for i in 0..<dimensions {
-                    d += String(vec[i].description)
+                    d += String(components[i].description)
                     
                     if(i + 2 <= dimensions) {
                         d += ", "
                     }
                 }
                 
-                d += "]"
+                d += ">"
                 
                 return d
             }
         }
         
+        //TODO: Unit Vector
+        
         //MARK: - Initializers
         public init() {
-            vec = [Element]()
+            components = [Element]()
         }
         
         public init(_ vector: [Element]) {
-            vec = vector
+            components = vector
+        }
+        
+        public init(magnitude: Int, angle: Double) {
+            components = [Element]()
         }
         
         public init(dimensions: Int) {
             let vector: [Element] = Array(repeating: 0, count: dimensions)
-            vec = vector
+            components = vector
         }
         
-        //MARK: - Subscript
-        @inlinable public subscript(index: Int) -> Element {
+        //MARK: - Modifiers
+        public var x: Element {
             get {
-                return vec[index]
-            }
-            set(newValue) {
-                vec[index] = newValue
-            }
-        }
-        
-        //MARK: - Not Too sure what to call this
-        //MARK: Magnitude
-        public func magnitude(from vector: Vector<Element>) -> Element {
-            var sum: Element = 0
-            for i in 0..<max(dimensions, vector.dimensions) {
-                let value: Element = (i < dimensions ? vec[i] : 0) - (i < vector.dimensions ? vector.vec[i] : 0)
-                sum += 2//FloatingPointMath.absoluteValue(value * value)
+                if(components.count >= 1) {
+                    return components[0]
+                }
+                return 0
             }
             
-            return 0//FIXME: NumericMath.squareRoot(sum)
+            set {
+                while(components.count < 1) {
+                    components.append(0)
+                }
+                components[0] = newValue
+            }
         }
         
+        public var y: Element {
+            get {
+                if(components.count >= 2) {
+                    return components[1]
+                }
+                
+                return 0
+            }
+            
+            set {
+                while(components.count < 2) {
+                    components.append(0)
+                }
+                components[1] = newValue
+            }
+        }
+        
+        public var z: Element {
+            get {
+                if(components.count >= 3) {
+                    return components[2]
+                }
+                
+                return 0
+            }
+            
+            set {
+                while(components.count < 3) {
+                    components.append(0)
+                }
+                components[2] = newValue
+            }
+        }
+        
+        public var w: Element {
+            get {
+                if(components.count >= 4) {
+                    return components[3]
+                }
+                
+                return 0
+            }
+            
+            set {
+                while(components.count < 4) {
+                    components.append(0)
+                }
+                components[3] = newValue
+            }
+        }
+        
+        public var dimensions: Int {
+            get {
+                return components.count
+            }
+            
+            set {
+                while(components.count < newValue) {
+                    components.append(0)
+                }
+                
+                while(components.count > newValue) {
+                    components.removeLast()
+                }
+            }
+        }
+        
+        //MARK: Subscript
+        @inlinable public subscript(index: Int) -> Element {
+            get {
+                return components[index]
+            }
+            set(newValue) {
+                components[index] = newValue
+            }
+        }
+        
+        //MARK: Scale
+        public mutating func scale(by scalar: Element) {
+            self *= scalar
+        }
+        
+        //TODO: Rotate
+        
+        //MARK: - Other
+        //MARK: Magnitude
         public func magnitude() -> Element {
+            fatalError("Can't do magnitude if Element is not a BinaryInteger or BinaryFloatingPoint")
+        }
+        
+        public func magnitude() -> Element where Element: BinaryInteger {
             var sum: Element = 0
-            for i in vec {
+            for i in components {
                 sum += (i * i)
             }
             
-            return 0 //FIXME: NumericMath.squareRoot(sum)
+            return MATH.squareRoot(sum)
+        }
+        
+        public func magnitude() -> Element where Element: BinaryFloatingPoint {
+            var sum: Element = 0
+            for i in components {
+                sum += (i * i)
+            }
+            
+            return MATH.squareRoot(sum)
+        }
+        
+        public func magnitude(from vector: Vector<Element>) -> Element where Element: BinaryInteger {
+            let diff: Vector = self - vector
+            return diff.magnitude()
+        }
+        
+        public func magnitude(from vector: Vector<Element>) -> Element where Element: BinaryFloatingPoint {
+            let diff: Vector = self - vector
+            return diff.magnitude()
         }
         
         //MARK: Diriction
-        public func diriction(from vector: Vector<Element>) -> Vector {
-            return self - vector
-        }
-        
         public func diriction() -> Vector {
             return -self
         }
         
-        //MARK: Theta
-        public func theta(from vector: Vector<Element>) -> Element { // From Orgin
-            return 0 //atan((self.y - vector2.y) / (self.x - vector2.x))
+        public func diriction(from vector: Vector<Element>) -> Vector {
+            return self - vector
         }
         
+        //MARK: Theta
         public func theta() -> Element {
-            return 0 //atan(self.y / self.x)
+            fatalError("Can't do theta if Element is not a BinaryInteger or BinaryFloatingPoint")
         }
+        
+        public func theta() -> Element where Element: BinaryInteger {
+            assert(dimensions < 3)
+            return MATH.arcTangent(x / x)
+        }
+        
+        public func theta() -> Element where Element: BinaryFloatingPoint {
+            assert(dimensions < 3)
+            return MATH.arcTangent(x / x)
+        }
+        
+        //MARK: Angle From
+        public func angle(from vector: Vector<Element>) -> Element {
+            fatalError("Can't do angle from if Element is not a BinaryInteger or BinaryFloatingPoint")
+        }
+        
+        public func angle(from vector: Vector<Element>) -> Element where Element: BinaryInteger {
+            return MATH.arcTangent((y - vector.y) / (x - vector.x))
+        }
+        
+        public func angle(from vector: Vector<Element>) -> Element where Element: BinaryFloatingPoint {
+            return MATH.arcTangent((y - vector.y) / (x - vector.x))
+        }
+        
+        //TODO: Is Parallel To
+        public func isParallel(to vector: Vector<Element>) -> Bool {
+            return false
+        }
+        
+        //TODO: Is Antiparallel To
+        public func isAntiParallel(to vector: Vector<Element>) -> Bool {
+            return false
+        }
+        
+        //TODO: Is Perpendicular To
+        public func isPerpendicular(to vector: Vector<Element>) -> Bool {
+            return false
+        }
+        
+        //TODO: Lies on Line
+        //TODO: Lies in Plane
         
         //MARK: - Compare
         //MARK: Equality
@@ -116,43 +260,6 @@ extension MATH {
             
             return true
         }
-        
-        //MARK: Lesser Than or Equal
-        public static func <= (lhs: Vector, rhs: Vector) -> Bool {
-            if(lhs == rhs) {
-                return true
-            }
-            
-            return lhs.magnitude() <= rhs.magnitude()
-        }
-        
-        //MARK: Lesser Than
-        public static func < (lhs: Vector, rhs: Vector) -> Bool {
-            if(lhs == rhs) {
-                return false
-            }
-            
-            return lhs.magnitude() < rhs.magnitude()
-        }
-        
-        //MARK: Greater Than or Equal
-        public static func >= (lhs: Vector, rhs: Vector) -> Bool {
-            if(lhs == rhs) {
-                return true
-            }
-            
-            return lhs.magnitude() >= rhs.magnitude()
-        }
-        
-        //MARK: Greater Than
-        public static func > (lhs: Vector, rhs: Vector) -> Bool {
-            if(lhs == rhs) {
-                return false
-            }
-            
-            return lhs.magnitude() > rhs.magnitude()
-        }
-        
         
         //MARK: - Arithmetic
         //MARK: Addition
@@ -212,17 +319,38 @@ extension MATH {
         
         //MARK: Division
         public static func / (lhs: Vector, rhs: Element) -> Vector {
+            fatalError("Can't do division if Element is not a BinaryInteger or BinaryFloatingPoint")
+        }
+        
+        public static func / (lhs: Vector, rhs: Element) -> Vector where Element: BinaryInteger {
             var result: Vector = lhs
             
             for i in 0..<result.dimensions {
-                //FIXME: Binary operator '/=' cannot be applied to two 'Element' operands
-                //result[i] /= rhs
+                result[i] /= rhs
+            }
+            
+            return result
+        }
+        
+        public static func / (lhs: Vector, rhs: Element) -> Vector where Element: BinaryFloatingPoint {
+            var result: Vector = lhs
+            
+            for i in 0..<result.dimensions {
+                result[i] /= rhs
             }
             
             return result
         }
         
         public static func /= (lhs: inout Vector, rhs: Element) {
+            fatalError("Can't do division if Element is not a BinaryInteger or BinaryFloatingPoint")
+        }
+        
+        public static func /= (lhs: inout Vector, rhs: Element) where Element: BinaryInteger {
+            lhs = lhs / rhs
+        }
+        
+        public static func /= (lhs: inout Vector, rhs: Element) where Element: BinaryFloatingPoint {
             lhs = lhs / rhs
         }
         
@@ -240,19 +368,39 @@ extension MATH {
         }
         
         //MARK: Cross Product
+        //TODO: Vector Cross Product in higher dimensions (4+)
         public static func +* (lhs: Vector, rhs: Vector) -> Vector {
+            assert(lhs.dimensions <= 3 && rhs.dimensions <= 3)
             
+            var result: Vector = Vector(dimensions: 3)
             
-            return Vector()
+            result.x = (lhs.y * rhs.z) - (lhs.z * rhs.y)
+            result.y = (lhs.z * rhs.x) - (lhs.x * rhs.z)
+            result.z = (lhs.x * rhs.y) - (lhs.y * rhs.x)
+            
+            return result
         }
         
         //MARK: Modulus
         public static func % (lhs: Vector, rhs: Element) -> Vector {
+            fatalError("Can't do division if Element is not a BinaryInteger or BinaryFloatingPoint")
+        }
+        
+        public static func % (lhs: Vector, rhs: Element) -> Vector where Element: BinaryInteger {
             var result: Vector = lhs
             
             for i in 0..<result.dimensions {
-                //FIXME: Binary operator '%' cannot be applied to two 'Element' operands
-                //result[i] = result[i] % rhs
+                result[i] = result[i] % rhs
+            }
+            
+            return result
+        }
+        
+        public static func % (lhs: Vector, rhs: Element) -> Vector where Element: BinaryFloatingPoint {
+            var result: Vector = lhs
+            
+            for i in 0..<result.dimensions {
+                result[i] = result[i].truncatingRemainder(dividingBy: rhs)
             }
             
             return result
@@ -272,8 +420,8 @@ extension MATH {
         }
         
         public mutating func negate() {
-            for i in 0..<vec.count {
-                vec[i] *= -1
+            for i in 0..<components.count {
+                components[i] *= -1
             }
         }
         

@@ -7,9 +7,6 @@
 
 import Foundation
 
-//TODO: cbrt
-//TODO: ceil
-//TODO: floor
 //TODO: rint
 //TODO: fabs
 
@@ -24,6 +21,10 @@ public struct MATH {
         
         return value
     }
+    
+    //TODO: Ceil
+    
+    //TODO: Floor
     
     //MARK: Greatest Common Denominator
     /// In a set of whole numbers, the Greatest Common Denominator (GCD) is the largest positive integer that divides evenly into all numbers with zero remainder.
@@ -106,6 +107,10 @@ public struct MATH {
     
     //MARK: Factorial
     public static func factorial<Element: SignedInteger>(_ x: Element) -> Element {
+        if(x <= 1) {
+            return 1
+        }
+        
         var sum: Element = 1
         
         for i in 1...Int(x) {
@@ -122,7 +127,7 @@ public struct MATH {
     ///   - start: Start of `i`
     ///   - end: End of `i`
     ///   - completion: The function that takes in `i`
-    public static func product<T: SignedNumeric>(start: Int, end: Int, completion: (Int) -> T) -> T {
+    public static func product<T: Numeric>(start: Int, end: Int, completion: (Int) -> T) -> T {
         var prod: T = 1
         for i in start...end {
             prod *= completion(i)
@@ -133,7 +138,7 @@ public struct MATH {
     //MARK: - Exponents
     //MARK: Power
     //FIXME: Exponet to Element
-    public static func power<Element: BinaryFloatingPoint>(_ base: Element, _ exponent: Int) -> Element {
+    public static func power<Element: Numeric>(_ base: Element, _ exponent: Int) -> Element {
         var result: Element = 1
         
         for _ in 0..<exponent {
@@ -144,8 +149,18 @@ public struct MATH {
     }
     
     //MARK: Square Root
+    public static func squareRoot<Element: BinaryInteger>(_ x: Element) -> Element {
+        var result: Element =  x/2
+        
+        for _ in 0..<10 {
+            result = (result + x/result)/2
+        }
+        
+        return result
+    }
+    
     public static func squareRoot<Element: BinaryFloatingPoint>(_ x: Element) -> Element {
-        var result: Element = x/2
+        var result: Element =  x/2
         
         for _ in 0..<10 {
             result = (result + x/result)/2
@@ -203,9 +218,17 @@ public struct MATH {
         return (x*pi)/180
     }
     
+    public static func degreesToRadians<Element: BinaryInteger>(_ x: Element) -> Element {
+        return Element(degreesToRadians(Double(x)))
+    }
+        
     public static func radiansToDegrees<Element: BinaryFloatingPoint>(_ x: Element) -> Element {
         let pi: Element = Element(MATH.Constants.π)
         return (x*180)/pi
+    }
+    
+    public static func radiansToDegrees<Element: BinaryInteger>(_ x: Element) -> Element {
+        return Element(radiansToDegrees(Double(x)))
     }
     
     //MARK: Sine
@@ -229,17 +252,33 @@ public struct MATH {
         return sum
     }
     
+    public static func sine<Element: BinaryInteger>(_ radians: Element) -> Element {
+        return Element(sine(Double(radians)))
+    }
+    
     public static func sine<Element: BinaryFloatingPoint>(degrees: Element) ->  Element {
         let y = degreesToRadians(degrees)
         return sine(y)
+    }
+    
+    public static func sine<Element: BinaryInteger>(degrees: Element) ->  Element {
+        return Element(sine(degrees: Double(degrees)))
     }
     
     public static func arcSine<Element: BinaryFloatingPoint>(_ radians: Element) -> Element {
         return 1 / sine(radians)
     }
     
+    public static func arcSine<Element: BinaryInteger>(_ radians: Element) -> Element {
+        return Element(arcSine(Double(radians)))
+    }
+    
     public static func arcSine<Element: BinaryFloatingPoint>(degrees: Element) -> Element {
         return 1 / sine(degrees: degrees)
+    }
+    
+    public static func arcSine<Element: BinaryInteger>(degrees: Element) -> Element {
+        return Element(arcSine(degrees: Double(degrees)))
     }
     
     //TODO: sine Hyperbolic
@@ -266,17 +305,33 @@ public struct MATH {
         return sum
     }
     
+    public static func cosine<Element: BinaryInteger>(_ radians: Element) -> Element {
+        return Element(cosine(Double(radians)))
+    }
+    
     public static func cosine<Element: BinaryFloatingPoint>(degrees: Element) -> Element {
         let y = degreesToRadians(degrees)
         return cosine(y)
+    }
+    
+    public static func cosine<Element: BinaryInteger>(degrees: Element) -> Element {
+        return Element(cosine(degrees: Double(degrees)))
     }
     
     public static func arcCosine<Element: BinaryFloatingPoint>(_ radians: Element) -> Element {
         return 1 / cosine(radians)
     }
     
+    public static func arcCosine<Element: BinaryInteger>(_ radians: Element) -> Element {
+        return Element(arcCosine(Double(radians)))
+    }
+    
     public static func arcCosine<Element: BinaryFloatingPoint>(degrees: Element) -> Element {
         return 1 / cosine(degrees: degrees)
+    }
+    
+    public static func arcCosine<Element: BinaryInteger>(degrees: Element) -> Element {
+        return Element(arcCosine(degrees: Double(degrees)))
     }
     
     //TODO: cosine Hyperbolic
@@ -287,16 +342,32 @@ public struct MATH {
         return sine(radians) / cosine(radians)
     }
     
+    public static func tangent<Element: BinaryInteger>(_ radians: Element) -> Element {
+        return Element(tangent(Double(radians)))
+    }
+    
     public static func tangent<Element: BinaryFloatingPoint>(degrees: Element) -> Element {
         return sine(degrees: degrees) / cosine(degrees: degrees)
+    }
+    
+    public static func tangent<Element: BinaryInteger>(degrees: Element) -> Element {
+        return Element(tangent(degrees: Double(degrees)))
     }
     
     public static func arcTangent<Element: BinaryFloatingPoint>(_ radians: Element) -> Element {
         return 1 / tangent(radians)
     }
     
+    public static func arcTangent<Element: BinaryInteger>(_ radians: Element) -> Element {
+        return Element(arcTangent(Double(radians)))
+    }
+    
     public static func arcTangent<Element: BinaryFloatingPoint>(degrees: Element) -> Element {
         return 1 / tangent(degrees: degrees)
+    }
+    
+    public static func arcTangent<Element: BinaryInteger>(degrees: Element) -> Element {
+        return Element(arcTangent(degrees: Double(degrees)))
     }
     
     //TODO: tangent Hyperbolic

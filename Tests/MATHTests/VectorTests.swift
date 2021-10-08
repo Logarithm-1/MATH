@@ -2,6 +2,48 @@ import XCTest
 @testable import MATH
 
 final class VectorTests: XCTestCase {
+    //MARK: - Initializers
+    func testInitOne() {
+        let v = MATH.Vector<Int>(dimensions: 5)
+        
+        XCTAssertEqual(v[0], 0)
+        XCTAssertEqual(v[1], 0)
+        XCTAssertEqual(v[2], 0)
+        XCTAssertEqual(v[3], 0)
+        XCTAssertEqual(v[4], 0)
+    }
+    
+    func testInitTwo() {
+        let v = MATH.Vector([1, 2, 3, 4, 5])
+        
+        XCTAssertEqual(v[0], 1)
+        XCTAssertEqual(v[1], 2)
+        XCTAssertEqual(v[2], 3)
+        XCTAssertEqual(v[3], 4)
+        XCTAssertEqual(v[4], 5)
+    }
+    
+    func testDescription() {
+        XCTAssertEqual(MATH.Vector([1, 2, 3]).description, "<1, 2, 3>")
+    }
+    
+    //MARK: Modifiers
+    func testGetSetXYZW() {
+        var v = MATH.Vector<Int>()
+        XCTAssertEqual(v.x, 0)
+        XCTAssertEqual(v.y, 0)
+        XCTAssertEqual(v.z, 0)
+        XCTAssertEqual(v.w, 0)
+        
+        v.x = 5
+        v.z = 23
+        v.w = 42
+        
+        XCTAssertEqual(v.x, 5)
+        XCTAssertEqual(v.y, 0)
+        XCTAssertEqual(v.z, 23)
+        XCTAssertEqual(v.w, 42)
+    }
     
     func testDimensions() {
         XCTAssertEqual(MATH.Vector([1, 2, 3]).dimensions, 3)
@@ -9,11 +51,6 @@ final class VectorTests: XCTestCase {
         XCTAssertEqual(MATH.Vector([1, 2, 3, 4, 5]).dimensions, 5)
     }
     
-    func testDescription() {
-        XCTAssertEqual(MATH.Vector([1, 2, 3]).description, "[1, 2, 3]")
-    }
-    
-    //MARK: - Not Too sure what to call this
     func testSubscript() {
         var v = MATH.Vector( [1, 2, 3])
         XCTAssertEqual(v[0], 1)
@@ -23,8 +60,11 @@ final class VectorTests: XCTestCase {
         XCTAssertEqual(v[0], 2)
     }
     
+    //MARK: - Other
     func testMagnitudeOther() {
         XCTAssertEqual(MATH.Vector([1, 2, 3]).magnitude(from: MATH.Vector([3, 3, 1])), 3)
+        
+        XCTAssertEqual(MATH.Vector([1.5, 2, 3]).magnitude(from: MATH.Vector([3, 3, 1])), 2.6925824035672523)
     }
     
     func testMagnitudeOrgin() {
@@ -39,12 +79,8 @@ final class VectorTests: XCTestCase {
         XCTAssertEqual(MATH.Vector([3, 4, 3]).diriction(), MATH.Vector([-3, -4, -3]))
     }
     
-    func testThetaOther() {
-        XCTAssertEqual(MATH.Vector([3, 4, 3]).theta(from: MATH.Vector([3, 3, 1])), 9)
-    }
-    
     func testThetaOrgin() {
-        XCTAssertEqual(MATH.Vector([3, 4, 3]).theta(), 3)
+        XCTAssertEqual(MATH.Vector([3, 4]).theta(), 0.6420926159343305)
     }
     
     
@@ -55,38 +91,6 @@ final class VectorTests: XCTestCase {
         
         XCTAssertTrue(v == MATH.Vector([1, 2, 3]))
         XCTAssertTrue(w == MATH.Vector([3, 2, 1]))
-    }
-    
-    func testLesserEqual() {
-        let v = MATH.Vector([1, 2, 3])
-        let w = MATH.Vector([3, 2, 1])
-        
-        XCTAssertTrue(v <= MATH.Vector([1, 2, 3]))
-        XCTAssertTrue(w <= MATH.Vector([4, 2, 1]))
-    }
-    
-    func testLesser() {
-        let v = MATH.Vector([1, 2, 3])
-        let w = MATH.Vector([3, 2, 1])
-        
-        XCTAssertFalse(v < MATH.Vector([1, 2, 3]))
-        XCTAssertTrue(w < MATH.Vector([4, 2, 1]))
-    }
-    
-    func testGreaterEqual() {
-        let v = MATH.Vector([1, 2, 3])
-        let w = MATH.Vector([3, 2, 1])
-        
-        XCTAssertTrue(v >= MATH.Vector([1, 2, 3]))
-        XCTAssertTrue(w >= MATH.Vector([2, 2, 1]))
-    }
-    
-    func testGreater() {
-        let v = MATH.Vector([1, 2, 3])
-        let w = MATH.Vector([3, 2, 1])
-        
-        XCTAssertFalse(v > MATH.Vector([1, 2, 3]))
-        XCTAssertTrue(w > MATH.Vector([2, 2, 1]))
     }
     
     //MARK: - Arithmetic
@@ -140,14 +144,19 @@ final class VectorTests: XCTestCase {
     }
     
     func testBackslash() {
-        let v = MATH.Vector([3, 6, 12])
-        let w = 3
+        let v = MATH.Vector<Int>([3, 6, 12])
+        let w: Int = 3
         
         XCTAssertEqual(v / w, MATH.Vector([1, 2, 4]))
     }
     
     func testBackslashEqual() {
-        XCTAssertEqual(0, 1)
+        var v = MATH.Vector<Int>([3, 6, 12])
+        let w: Int = 3
+        
+        v /= w
+        
+        XCTAssertEqual(v, MATH.Vector([1, 2, 4]))
     }
     
     func testAsteriskAsterisk() {
