@@ -138,6 +138,24 @@ extension MATH {
             }
         }
         
+        public var nonZeroTrailingDimensions: Int {
+            get {
+                var count: Int = 0
+                var index: Int = components.count - 1
+                
+                //Remove dimensions that are zero if they are trailing
+                //EX. <1, 2, 0, 0, 0> has 2D
+                //EX. <0, 0, 3> has 3D
+                //EX. <1, 2, 0, 0, 3> has 5D
+                while(index > 0 && components[index] == 0) {
+                    index -= 1
+                    count += 1
+                }
+                
+                return components.count - count
+            }
+        }
+        
         //MARK: Subscript
         @inlinable public subscript(index: Int) -> Element {
             get {
@@ -189,12 +207,12 @@ extension MATH {
             return diff.magnitude()
         }
         
-        //MARK: Diriction
-        public func diriction() -> Vector {
+        //MARK: Direction
+        public func direction() -> Vector {
             return -self
         }
         
-        public func diriction(from vector: Vector<Element>) -> Vector {
+        public func direction(from vector: Vector<Element>) -> Vector {
             return self - vector
         }
         
@@ -204,12 +222,12 @@ extension MATH {
         }
         
         public func theta() -> Element where Element: BinaryInteger {
-            assert(dimensions < 3)
+            assert(nonZeroTrailingDimensions < 3, "Can't do theta if Vector is 3+D")
             return MATH.arcTangent(x / x)
         }
         
         public func theta() -> Element where Element: BinaryFloatingPoint {
-            assert(dimensions < 3)
+            assert(nonZeroTrailingDimensions < 3, "Can't do theta if Vector is 3+D")
             return MATH.arcTangent(x / x)
         }
         
@@ -370,7 +388,7 @@ extension MATH {
         //MARK: Cross Product
         //TODO: Vector Cross Product in higher dimensions (4+)
         public static func +* (lhs: Vector, rhs: Vector) -> Vector {
-            assert(lhs.dimensions <= 3 && rhs.dimensions <= 3)
+            assert(lhs.nonZeroTrailingDimensions <= 3 && rhs.nonZeroTrailingDimensions <= 3)
             
             var result: Vector = Vector(dimensions: 3)
             

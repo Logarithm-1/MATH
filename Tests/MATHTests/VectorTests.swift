@@ -51,6 +51,12 @@ final class VectorTests: XCTestCase {
         XCTAssertEqual(MATH.Vector([1, 2, 3, 4, 5]).dimensions, 5)
     }
     
+    func testNonZeroTrainlingDimensions() {
+        XCTAssertEqual(MATH.Vector([1, 2, 3, 0, 0]).nonZeroTrailingDimensions, 3)
+        XCTAssertEqual(MATH.Vector([0, 2, 0]).nonZeroTrailingDimensions, 2)
+        XCTAssertEqual(MATH.Vector([1, 0, 3, 4, 5, 0, 0]).nonZeroTrailingDimensions, 5)
+    }
+    
     func testSubscript() {
         var v = MATH.Vector( [1, 2, 3])
         XCTAssertEqual(v[0], 1)
@@ -72,11 +78,11 @@ final class VectorTests: XCTestCase {
     }
     
     func testDirictionOther() {
-        XCTAssertEqual(MATH.Vector([3, 4, 3]).diriction(from: MATH.Vector([3, 3, 1])), MATH.Vector([0, 1, 2]))
+        XCTAssertEqual(MATH.Vector([3, 4, 3]).direction(from: MATH.Vector([3, 3, 1])), MATH.Vector([0, 1, 2]))
     }
     
     func testDirictionOrgin() {
-        XCTAssertEqual(MATH.Vector([3, 4, 3]).diriction(), MATH.Vector([-3, -4, -3]))
+        XCTAssertEqual(MATH.Vector([3, 4, 3]).direction(), MATH.Vector([-3, -4, -3]))
     }
     
     func testThetaOrgin() {
