@@ -12,10 +12,10 @@ infix operator +*  : MultiplicationPrecedence
 extension MATH {
     
     /// A  `Vector` is a mathetical was to discribe both a magnitude and a direction.
-    struct Vector<Element: Numeric & CustomStringConvertible>: Equatable, CustomStringConvertible {
+    public struct Vector<Element: Numeric & CustomStringConvertible>: Equatable, CustomStringConvertible {
         
         /// The `components` are how much the vector point's in each deriction `(x, y, z, w,...)`.
-        private var components: [Element]
+        public var components: [Element]
         
         public var description: String {
             get {
@@ -175,36 +175,20 @@ extension MATH {
         
         //MARK: - Other
         //MARK: Magnitude
+        public func magnitudeSquared() -> Element {
+            return MATH.summation(for: components) { i in i*i}
+        }
+        
         public func magnitude() -> Element {
             fatalError("Can't do magnitude if Element is not a BinaryInteger or BinaryFloatingPoint")
         }
         
         public func magnitude() -> Element where Element: BinaryInteger {
-            var sum: Element = 0
-            for i in components {
-                sum += (i * i)
-            }
-            
-            return MATH.squareRoot(sum)
+            return MATH.squareRoot(magnitudeSquared())
         }
         
         public func magnitude() -> Element where Element: BinaryFloatingPoint {
-            var sum: Element = 0
-            for i in components {
-                sum += (i * i)
-            }
-            
-            return MATH.squareRoot(sum)
-        }
-        
-        public func magnitude(from vector: Vector<Element>) -> Element where Element: BinaryInteger {
-            let diff: Vector = self - vector
-            return diff.magnitude()
-        }
-        
-        public func magnitude(from vector: Vector<Element>) -> Element where Element: BinaryFloatingPoint {
-            let diff: Vector = self - vector
-            return diff.magnitude()
+            return MATH.squareRoot(magnitudeSquared())
         }
         
         //MARK: Direction
@@ -229,6 +213,21 @@ extension MATH {
         public func theta() -> Element where Element: BinaryFloatingPoint {
             assert(nonZeroTrailingDimensions < 3, "Can't do theta if Vector is 3+D")
             return MATH.arcTangent(x / x)
+        }
+        
+        //MARK: Distance From
+        public func distance(from vector: Vector<Element>) {
+            fatalError("Can't do distance from if Element is not a BinaryInteger or BinaryFloatingPoint")
+        }
+        
+        public func distance(from vector: Vector<Element>) -> Element where Element: BinaryInteger {
+            let diff: Vector = self - vector
+            return diff.magnitude()
+        }
+        
+        public func distance(from vector: Vector<Element>) -> Element where Element: BinaryFloatingPoint {
+            let diff: Vector = self - vector
+            return diff.magnitude()
         }
         
         //MARK: Angle From

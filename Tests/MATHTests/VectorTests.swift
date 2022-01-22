@@ -67,13 +67,11 @@ final class VectorTests: XCTestCase {
     }
     
     //MARK: - Other
-    func testMagnitudeOther() {
-        XCTAssertEqual(MATH.Vector([1, 2, 3]).magnitude(from: MATH.Vector([3, 3, 1])), 3)
-        
-        XCTAssertEqual(MATH.Vector([1.5, 2, 3]).magnitude(from: MATH.Vector([3, 3, 1])), 2.6925824035672523)
+    func testMagnitudeSquard() {
+        XCTAssertEqual(MATH.Vector([3, 4]).magnitudeSquared(), 25)
     }
     
-    func testMagnitudeOrgin() {
+    func testMagnitude() {
         XCTAssertEqual(MATH.Vector([3, 4]).magnitude(), 5)
     }
     
@@ -85,8 +83,15 @@ final class VectorTests: XCTestCase {
         XCTAssertEqual(MATH.Vector([3, 4, 3]).direction(), MATH.Vector([-3, -4, -3]))
     }
     
-    func testThetaOrgin() {
+    func testTheta() {
         XCTAssertEqual(MATH.Vector([3, 4]).theta(), 0.6420926159343305)
+    }
+    
+    //MARK: - From/To other vectors
+    func testDistanceFrom() {
+        XCTAssertEqual(MATH.Vector([1, 2, 3]).distance(from: MATH.Vector([3, 3, 1])), 3)
+        
+        XCTAssertEqual(MATH.Vector([1.5, 2, 3]).distance(from: MATH.Vector([3, 3, 1])), 2.6925824035672523)
     }
     
     

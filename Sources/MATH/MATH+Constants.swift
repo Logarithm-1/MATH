@@ -21,7 +21,7 @@ extension MATH {
         /// `π` is an irratinal number, as such cannout be expressed as a common fraction. Its decimal digits appear to be randomly distributed, and are conjectured to satisfy a specifc kind of statistical randomness.
         ///
         /// To learn more click [link](https://en.wikipedia.org/wiki/Pi)
-        public static let π: Double = 3.1415_9265_3589_7932_3846
+        public static let pi: Double = 3.1415_9265_3589_7932_3846
         
         /// The number `π` (small pi) is a mathematical constant.
         /// It is defined in Euclidean Geometry as the ratio of a circle's circumference to its diameter.
@@ -30,7 +30,7 @@ extension MATH {
         /// `π` is an irratinal number, as such cannout be expressed as a common fraction. Its decimal digits appear to be randomly distributed, and are conjectured to satisfy a specifc kind of statistical randomness.
         ///
         /// To learn more click [link](https://en.wikipedia.org/wiki/Pi)
-        public static let pi: Double = π
+        public static let π: Double = pi
         
         //MARK: The Golden Ratio (~300 BCE)
         /// The Golden Ratio commonly represented by `𝝋` (small phi), is an irrational number that is a solution to the positive root of the quadratic equation `x^2 - x - 1 = 0`.
@@ -38,97 +38,145 @@ extension MATH {
         /// It's application endless, showing up in Nature, Art, Music, Architecture, etc.
         ///
         /// To learn more click [link](https://en.wikipedia.org/wiki/Golden_ratio)
-        public static let 𝝋: Double = 1.61803398874989484820
+        public static let goldenRatio: Double = 1.6180_3398_8749_8948_4820
         
         /// The Golden Ratio commonly represented by `𝝋` (small phi), is an irrational number that is a solution to the positive root of the quadratic equation `x^2 - x - 1 = 0`.
         ///
         /// It's application endless, showing up in Nature, Art, Music, Architecture, etc.
         ///
         /// To learn more click [link](https://en.wikipedia.org/wiki/Golden_ratio)
-        public static let phi: Double = 𝝋
+        public static let phi: Double = goldenRatio
         
         /// The Golden Ratio commonly represented by `𝝋` (small phi), is an irrational number that is a solution to the positive root of the quadratic equation `x^2 - x - 1 = 0`.
         ///
         /// It's application endless, showing up in Nature, Art, Music, Architecture, etc.
         ///
         /// To learn more click [link](https://en.wikipedia.org/wiki/Golden_ratio)
-        public static let goldenRatio: Double = 𝝋
+        public static let 𝝋: Double = goldenRatio
         
         //MARK: - Medieval and Early Modern
+        //TODO: Imaginary Unit (1501 to 1576)
+        
         //MARK: Wallis Constant (1616 to 1703)
         /// Wallis Constant commonly represented by `𝑊` (W)
         ///
         /// The real solution to the cubic equation `x^3 - 2x - 5 = 0`.
-        public static let W: Double = 2.09455148154232659148
+        public static let wallisConstant: Double = 2.0945_5148_1542_3265_9148
         
         /// Wallis Constant commonly represented by `𝑊` (W)
         ///
         /// The real solution to the cubic equation `x^3 - 2x - 5 = 0`.
-        public static let wallisConstant: Double = W
+        public static let W: Double = wallisConstant
         
         //MARK: Euler's Number (1618)
-        /// Euler's Number, commonly represented by `𝑒` (e)
-        public static let e: Double = 2.71828182845904523536
+        /// Euler's Number, commonly represented by `𝑒` (e), is the base of the natrual logarithm as well as the limit of `(1 + 1/n)^n` as `n` approaches infinity.
+        ///
+        /// It commonly arises in the study of compound interest. It is also can be calculated as the sum of the infinite series `e = ∑_{n = 0}^{∞}(1/n!) = 1 + 1/(1) + 1/(1*2) + 1/(1*2*3) + ...*`
+        ///
+        /// To learn more click [link](https://en.wikipedia.org/wiki/E_(mathematical_constant))
+        public static let eulersNumber: Double = 2.7182_8182_8459_0452_3536
         
-        /// Euler's Number, commonly represented by `𝑒` (e)
-        public static let eulersNumber: Double = e
+        /// Euler's Number, commonly represented by `𝑒` (e), is the base of the natrual logarithm as well as the limit of `(1 + 1/n)^n` as `n` approaches infinity.
+        ///
+        /// It commonly arises in the study of compound interest. It is also can be calculated as the sum of the infinite series `e = ∑_{n = 0}^{∞}(1/n!) = 1 + 1/(1) + 1/(1*2) + 1/(1*2*3) + ...*`
+        ///
+        /// To learn more click [link](https://en.wikipedia.org/wiki/E_(mathematical_constant))
+        public static let e: Double = eulersNumber
         
         //MARK: Sophomore's Dream (1697)
-        /// Sophomore's dream 1, commonly represented by `𝐼_1` (I subscript 1)
-        public static let I_1: Double = 0.78343051071213440705
+        /// Sophomore's dream is a pair of identites, the first of which, commonly represent by `I_1` (I subscrit 1) is
+        /// `∫_{0}^{1}x^{-x} dx = ∑_{n=1}^{∞}n^{-n}`
+        /// `∫_{0}^{1}x^{x} dx = ∑_{n=1}^{∞}(-1)^{n+1}n^{-n} = -∑_{n=1}^{∞}(-n)^{-n}`
+        ///
+        /// To learn more click [link](https://en.wikipedia.org/wiki/Sophomore%27s_dream)
+        public static let sophomoresDream_1: Double = 0.7834_3051_0712_1344_0705
         
-        /// Sophomore's dream 1, commonly represented by `𝐼_1` (I subscript 1)
-        public static let sophomoresDream_1: Double = I_1
+        /// Sophomore's dream is a pair of identites, the first of which, commonly represent by `I_1` (I subscrit 1) is
+        /// `∫_{0}^{1}x^{-x} dx = ∑_{n=1}^{∞}n^{-n}`
+        /// `∫_{0}^{1}x^{x} dx = ∑_{n=1}^{∞}(-1)^{n+1}n^{-n} = -∑_{n=1}^{∞}(-n)^{-n}`
+        ///
+        /// To learn more click [link](https://en.wikipedia.org/wiki/Sophomore%27s_dream)
+        public static let I_1: Double = sophomoresDream_1
         
-        /// Sophomore's dream 2, commonly represented by `𝐼_2` (I subscript 2)
-        public static let I_2: Double = 1.29128599706266354040
+        /// Sophomore's dream is a pair of identites, the second of which, commonly represent by `I_2` (I subscrit 2) is
+        /// `∫_{0}^{1}x^{x} dx = ∑_{n=1}^{∞}(-1)^{n+1}n^{-n} = -∑_{n=1}^{∞}(-n)^{-n}`
+        ///
+        /// To learn more click [link](https://en.wikipedia.org/wiki/Sophomore%27s_dream)
+        public static let sophomoresDream_2: Double = 1.2912_8599_7062_6635_4040
         
-        /// Sophomore's dream 2, commonly represented by `𝐼_2` (I subscript 2)
-        public static let sophomoresDream_2: Double = I_2
+        /// Sophomore's dream is a pair of identites, the second of which, commonly represent by `I_2` (I subscrit 2) is
+        /// `∫_{0}^{1}x^{x} dx = ∑_{n=1}^{∞}(-1)^{n+1}n^{-n} = -∑_{n=1}^{∞}(-n)^{-n}`
+        ///
+        /// To learn more click [link](https://en.wikipedia.org/wiki/Sophomore%27s_dream)
+        public static let I_2: Double = sophomoresDream_2
         
         //MARK: Lemniscate Constant (1718 to 1798)
-        /// Lemniscate constant, commonly represented by `𝜛` (pi symbol).
-        public static let 𝜛: Double = 2.62205755429211981046
+        /// The Lemniscate constant, commonly represented by `𝜛` (pi symbol) are elliptic functions related to the arc lenth of the [lemniscate of Bernoulli](https://en.wikipedia.org/wiki/Lemniscate_of_Bernoulli).
+        ///
+        /// To learn more click [link](https://en.wikipedia.org/wiki/Lemniscate_constant)
+        public static let lemniscateConstant: Double = 2.6220_5755_4292_1198_1046
         
-        /// Lemniscate constant, commonly represented by `𝜛` (pi symbol).
-        public static let lemniscateConstant: Double = 𝜛
+        /// The Lemniscate constant, commonly represented by `𝜛` (pi symbol) are elliptic functions related to the arc lenth of the [lemniscate of Bernoulli](https://en.wikipedia.org/wiki/Lemniscate_of_Bernoulli).
+        ///
+        /// To learn more click [link](https://en.wikipedia.org/wiki/Lemniscate_constant)
+        public static let 𝜛: Double = lemniscateConstant
         
         //MARK: Euler-Mascheroni Constant (1735)
-        /// Euler–Mascheroni constant, commonly represented by `𝛾` (small gamma).
-        public static let 𝛾: Double = 0.57721566490153286060
+        /// The Euler–Mascheroni constant, commonly represented by `𝛾` (small gamma), is a mathematical constant occuring in analysis and number theory.
+        ///
+        /// To learn more click [link](https://en.wikipedia.org/wiki/Euler–Mascheroni_constant)
+        public static let eulerMascheroniConstant: Double = 0.5772_1566_4901_5328_6060
         
-        /// Euler–Mascheroni constant, commonly represented by `𝛾` (small gamma).
-        public static let eulerMascheroniConstant: Double = 𝛾
+        /// The Euler–Mascheroni constant, commonly represented by `𝛾` (small gamma), is a mathematical constant occuring in analysis and number theory.
+        ///
+        /// To learn more click [link](https://en.wikipedia.org/wiki/Euler–Mascheroni_constant)
+        public static let 𝛾: Double = eulerMascheroniConstant
         
         //MARK: Erdös-Borwein Constant (1749)
-        /// Erdős–Borwein constant, commonly represented by `𝐸_𝐵` (E subscript B)
-        public static let E_B: Double = 1.60669515241529176378
+        /// The Erdős–Borwein constant, commonly represented by `𝐸_𝐵` (E subscript B), is the sum of the reciprocals of the Mersenne numbers.
+        ///
+        /// To learn more click [link](https://en.wikipedia.org/wiki/Erdős–Borwein_constant)
+        public static let erdösBorweinConstant: Double = 1.6066_9515_2415_2917_6378
         
-        /// Erdős–Borwein constant, commonly represented by `𝐸_𝐵` (E subscript B)
-        public static let erdösBorweinConstant: Double = E_B
+        /// The Erdős–Borwein constant, commonly represented by `𝐸_𝐵` (E subscript B), is the sum of the reciprocals of the Mersenne numbers.
+        ///
+        /// To learn more click [link](https://en.wikipedia.org/wiki/Erdős–Borwein_constant)
+        public static let erdosBorweinConstant: Double = erdösBorweinConstant
         
-        /// Erdős–Borwein constant, commonly represented by `𝐸_𝐵` (E subscript B)
-        public static let erdosBorweinConstant: Double = E_B
+        /// The Erdős–Borwein constant, commonly represented by `𝐸_𝐵` (E subscript B), is the sum of the reciprocals of the Mersenne numbers.
+        ///
+        /// To learn more click [link](https://en.wikipedia.org/wiki/Erdős–Borwein_constant)
+        public static let E_B: Double = erdösBorweinConstant
          
         //MARK: Laplace Limit (~1782)
-        ///Laplace Limit, commonly represeneted by `𝜆` (small lamda).
-        public static let 𝜆: Double = 0.66274341934918158097
+        /// The Laplace Limit, commonly represeneted by `𝜆` (small lamda), is the maximum value of the eccentricity for which a solution to Kepler's equation.
+        ///
+        /// To learn more click [link](https://en.wikipedia.org/wiki/Laplace_limit)
+        public static let laplaceLimit: Double = 0.6627_4341_9349_1815_8097
         
-        ///Laplace Limit, commonly represeneted by `𝜆` (small lamda).
-        public static let laplaceLimit: Double = 𝜆
+        /// The Laplace Limit, commonly represeneted by `𝜆` (small lamda), is the maximum value of the eccentricity for which a solution to Kepler's equation.
+        ///
+        /// To learn more click [link](https://en.wikipedia.org/wiki/Laplace_limit)
+        public static let 𝜆: Double = laplaceLimit
         
         //MARK: Gauss's Constant (1799)
-        ///Gauss's constant, commonly represeneted by `𝐺` (G).
-        public static let G: Double = 0.83462684167407318628
+        ///The Gauss's constant, commonly represeneted by `𝐺` (G), is defined as the reciprocal of the arithmetic-geometric mean of 1 and the square root of 2.
+        ///
+        /// To learn more click [link](https://en.wikipedia.org/wiki/Gauss%27s_constant)
+        public static let gausssConstant: Double = 0.8346_2684_1674_0731_8628
         
-        ///Gauss's constant, commonly represeneted by `𝐺` (G).
-        public static let gausssConstant: Double = G
-        
+        /// The Gauss's constant, commonly represeneted by `𝐺` (G), is defined as the reciprocal of the arithmetic-geometric mean of 1 and the square root of 2.
+        ///
+        /// To learn more click [link](https://en.wikipedia.org/wiki/Gauss%27s_constant)
+        public static let G: Double = gausssConstant
         
         //MARK: - 19th Century
-        ///The math constant `𝜇` (small mu)
-        ///Ramanujan–Soldner constant
+        //MARK: Ramanujan-Soldner Constant (1812)
+        ///Ramanujan–Soldner constant, commonly represeneted by `𝜇` (small mu)
         public static let 𝜇 = 1.45136923488338105028
+        
+        ///Ramanujan–Soldner constant, commonly represeneted by `𝜇` (small mu)
+        public static let ramanujanSoldnerConstant = 1.45136923488338105028
         
         ///The math constant `𝛾_2` (small  gamma subscript 2)
         ///Hermite constant

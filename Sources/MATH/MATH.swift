@@ -98,9 +98,18 @@ public struct MATH {
     ///   - end: End of `i`
     ///   - completion: The function that takes in `i`
     public static func summation<T: AdditiveArithmetic>(start: Int, end: Int, completion: (Int) -> T) -> T {
+        assert(start <= end, "MATH.summation start must be less than end")
         var sum: T = .zero
         for i in start...end {
             sum += completion(i)
+        }
+        return sum
+    }
+    
+    public static func summation<T: AdditiveArithmetic>(for elements: [T], completion: (T) -> T) -> T {
+        var sum: T = .zero
+        for elm in elements {
+            sum += completion(elm)
         }
         return sum
     }
@@ -175,7 +184,7 @@ public struct MATH {
     
     //MARK: Logarithm
     public static func logarithm<Element: BinaryFloatingPoint>(_ x: Element) -> Element {
-        /*var y: Element = x
+        var y: Element = x
         var sum: Element = 0
         var divied: Element = 1
         var power: Int = 1
@@ -185,13 +194,13 @@ public struct MATH {
             
             while(true) {
                 if(y >= 1 && y < 10) {
-                    y = power(y, 10)
+                    y = MATH.power(y, 10)
                     divied *= 10
                     sum *= 10
                     break
-                } else if(y >= power(10, power) && x < power(10, power+1)) {
+                } else if(y >= MATH.power(10, power) && x < MATH.power(10, power+1)) {
                     sum += Element(power)
-                    y /= power(10, power)
+                    y /= MATH.power(10, power)
                     break
                 }
                 
@@ -199,8 +208,7 @@ public struct MATH {
             }
         }
         
-        return sum / divied*/
-        return 0
+        return sum / divied
     }
     
     public static func logarithm<Element: BinaryFloatingPoint>(_ x: Element, _ base: Element) -> Element {
