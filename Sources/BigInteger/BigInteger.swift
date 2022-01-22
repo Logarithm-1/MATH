@@ -23,8 +23,14 @@ public struct BigInteger {
     ///     //Which would normally look like 0101 1100 or 92
     ///
     /// So the array would be read in rervse.
-    var source: [Bool]
+    internal var source: [Bool]
     
     /// A Boolean where if `true` the BigInteger is negative and if `false` it is positve.
-    var negative: Bool = false
+    internal var negative: Bool
+    
+    /// A BigInteger constructed by specifying the source array and wether it is positive or negative.
+    public init(source: [Bool], negative: Bool = false) {
+        self.source = source
+        self.negative = negative
+    }
 }
