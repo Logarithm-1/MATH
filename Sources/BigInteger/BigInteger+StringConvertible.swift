@@ -1,4 +1,4 @@
-// BasicTests.swift
+// BigInteger+StringConvertible.swift
 //
 // This source file is part of the Swift Math open source project.
 //
@@ -7,14 +7,8 @@
 //
 // See https://github.com/Logarithm-1/MATH/blob/main/LICENSE for license information
 
-import XCTest
-@testable import BigInteger
-
-final class BasicTests: XCTestCase {
-    
-    func testInitializers() {
-        let num: BigInteger = BigInteger(25)
-        XCTAssertEqual(num.toString(), "11001")
+extension BigInteger: CustomStringConvertible {
+    public var description: String {
+        return toString()
     }
-    
 }
