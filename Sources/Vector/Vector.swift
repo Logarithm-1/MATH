@@ -7,6 +7,28 @@
 //
 // See https://github.com/Logarithm-1/MATH/blob/main/LICENSE for license information
 
+//TODO: Unit Vector
+
+//TODO: Magnitude
+//TODO: MagnitudeSquared
+
+//TODO: Direction
+
+//TODO: Theta (for 2D)
+
+//TODO: Distance to
+//TODO: Angle to
+
+//TODO: isParallel to
+//TODO: isAnti Parallet to?
+//TODO: isPerpendicular to
+//TODO: Lies on Line
+//TODO: Lies on Plane
+
+//TODO: Scale by
+
+//TODO: Create Scalar Protocol the has both integers and floating points in it.
+
 /// A `Vector` is a mathematical way to discribe both a magnitude and a direction.
 public struct Vector<Element: FloatingPoint> {
     
