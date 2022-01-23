@@ -8,9 +8,9 @@
 // See https://github.com/Logarithm-1/MATH/blob/main/LICENSE for license information
 
 /// A type that adds `modular arithmetic` or `remainder arithmetic` to a ``SignedInteger``.
-public protocol ModularArithmetic: SignedInteger {}
+public protocol ModularArithmetic: BinaryInteger {}
 
-extension ModularArithmetic {
+extension ModularArithmetic where Self : SignedInteger {
     
     /// `Modulus` (abbriviated as `MOD`) is the remainder (or the left-over) when one integer is divided by another integer. For Example:
     ///

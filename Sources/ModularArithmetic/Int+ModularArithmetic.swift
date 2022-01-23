@@ -8,3 +8,13 @@
 // See https://github.com/Logarithm-1/MATH/blob/main/LICENSE for license information
 
 extension Int: ModularArithmetic {}
+extension Int8: ModularArithmetic {}
+extension Int16: ModularArithmetic {}
+extension Int32: ModularArithmetic {}
+extension Int64: ModularArithmetic {}
+
+extension UInt: ModularArithmetic {}
+extension UInt8: ModularArithmetic{}
+extension UInt16: ModularArithmetic {}
+extension UInt32: ModularArithmetic {}
+extension UInt64: ModularArithmetic {}
