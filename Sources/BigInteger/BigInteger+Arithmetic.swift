@@ -1,4 +1,4 @@
-// BigInteger+AdditiveArithmetic.swift
+// BigInteger+Arithmetic.swift
 //
 // This source file is part of the Swift Math open source project.
 //
@@ -13,7 +13,7 @@ extension BigInteger: AdditiveArithmetic {
     }
     
     //MARK: - Addition
-    public static func + (lhs: BigInteger, rhs: BigInteger) -> BigInteger {
+    public static func +(lhs: BigInteger, rhs: BigInteger) -> BigInteger {
         var result: BigInteger = BigInteger()
         
         
@@ -36,7 +36,33 @@ extension BigInteger: AdditiveArithmetic {
     }
     
     //MARK: - Subtraction
-    public static func - (lhs: BigInteger, rhs: BigInteger) -> BigInteger {
+    public static func -(lhs: BigInteger, rhs: BigInteger) -> BigInteger {
+        return BigInteger()
+    }
+}
+
+extension BigInteger {
+    //MARK: - Multiplication
+    public static func *(lhs: BigInteger, rhs: BigInteger) -> BigInteger {
+        return BigInteger()
+    }
+    
+    //MARK: - Division
+    public static func /(lhs: BigInteger, rhs: BigInteger) -> BigInteger {
+        return BigInteger()
+    }
+    
+    //MARK: - Modulus
+    public static func %(lhs: BigInteger, rhs: BigInteger) -> BigInteger {
+        return BigInteger()
+    }
+}
+
+precedencegroup PowerPrecedence { higherThan: MultiplicationPrecedence }
+infix operator ^^ : PowerPrecedence
+extension BigInteger {
+    //MARK: - Power
+    public static func ^^(lhs: BigInteger, rhs: BigInteger) -> BigInteger {
         return BigInteger()
     }
 }

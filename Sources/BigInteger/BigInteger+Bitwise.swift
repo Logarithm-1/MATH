@@ -290,7 +290,13 @@ extension BigInteger {
         
         //FIXME: Remove toInt (ie when Range is complete)
         for _ in 0..<rhs.toInt() {
-            result.source.removeFirst()
+            if(result.bitWidth >= 1) {
+                result.source.removeFirst()
+            }
+        }
+        
+        if(result.bitWidth == 0) {
+            result[0] = false
         }
         
         return result

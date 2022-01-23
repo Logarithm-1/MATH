@@ -150,7 +150,6 @@ extension BigInteger {
     }
     
     public func toInt() -> Int {
-        print(toString())
         if(bitWidth > 64) {
             fatalError("Cannot convert to integer at this size")
         }
