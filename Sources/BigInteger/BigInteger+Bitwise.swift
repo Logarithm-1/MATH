@@ -34,6 +34,30 @@ extension BigInteger {
         return result
     }
     
+    /// Returns the result of performing a bitwise AND operation on the two given
+    /// values.
+    public static func &<T: SignedInteger>(lhs: BigInteger, rhs: T) -> BigInteger {
+        return lhs & BigInteger(rhs)
+    }
+    
+    /// Returns the result of performing a bitwise AND operation on the two given
+    /// values.
+    public static func &<T: SignedInteger>(lhs: T, rhs: BigInteger) -> BigInteger {
+        return BigInteger(lhs) & rhs
+    }
+    
+    /// Returns the result of performing a bitwise AND operation on the two given
+    /// values.
+    public static func &<T: UnsignedInteger>(lhs: BigInteger, rhs: T) -> BigInteger {
+        return lhs & BigInteger(rhs)
+    }
+    
+    /// Returns the result of performing a bitwise AND operation on the two given
+    /// values.
+    public static func &<T: UnsignedInteger>(lhs: T, rhs: BigInteger) -> BigInteger {
+        return BigInteger(lhs) & rhs
+    }
+    
     /// Stores the result of performing a bitwise AND operation on the two given
     /// values in the left-hand-side variable.
     ///
@@ -48,6 +72,18 @@ extension BigInteger {
     ///   - lhs: An integer value.
     ///   - rhs: Another integer value.
     public static func &= (lhs: inout BigInteger, rhs: BigInteger) {
+        lhs = lhs & rhs
+    }
+    
+    /// Stores the result of performing a bitwise AND operation on the two given
+    /// values in the left-hand-side variable.
+    public static func &=<T: SignedInteger>(lhs: inout BigInteger, rhs: T) {
+        lhs = lhs & rhs
+    }
+    
+    /// Stores the result of performing a bitwise AND operation on the two given
+    /// values in the left-hand-side variable.
+    public static func &=<T: UnsignedInteger>(lhs: inout BigInteger, rhs: T) {
         lhs = lhs & rhs
     }
     
@@ -77,6 +113,30 @@ extension BigInteger {
         return result
     }
     
+    /// Returns the result of performing a bitwise OR operation on the two given
+    /// values.
+    public static func |<T: SignedInteger>(lhs: BigInteger, rhs: T) -> BigInteger {
+        return lhs | BigInteger(rhs)
+    }
+    
+    /// Returns the result of performing a bitwise OR operation on the two given
+    /// values.
+    public static func |<T: SignedInteger>(lhs: T, rhs: BigInteger) -> BigInteger {
+        return BigInteger(lhs) & rhs
+    }
+    
+    /// Returns the result of performing a bitwise OR operation on the two given
+    /// values.
+    public static func |<T: UnsignedInteger>(lhs: BigInteger, rhs: T) -> BigInteger {
+        return lhs & BigInteger(rhs)
+    }
+    
+    /// Returns the result of performing a bitwise OR operation on the two given
+    /// values.
+    public static func |<T: UnsignedInteger>(lhs: T, rhs: BigInteger) -> BigInteger {
+        return BigInteger(lhs) & rhs
+    }
+    
     /// Stores the result of performing a bitwise OR operation on the two given
     /// values in the left-hand-side variable.
     ///
@@ -92,6 +152,18 @@ extension BigInteger {
     ///   - lhs: An integer value.
     ///   - rhs: Another integer value.
     public static func |=(lhs: inout BigInteger, rhs: BigInteger) {
+        lhs = lhs | rhs
+    }
+    
+    /// Stores the result of performing a bitwise OR operation on the two given
+    /// values in the left-hand-side variable.
+    public static func |=<T: SignedInteger>(lhs: inout BigInteger, rhs: T) {
+        lhs = lhs | rhs
+    }
+    
+    /// Stores the result of performing a bitwise OR operation on the two given
+    /// values in the left-hand-side variable.
+    public static func |=<T: UnsignedInteger>(lhs: inout BigInteger, rhs: T) {
         lhs = lhs | rhs
     }
     
@@ -124,6 +196,30 @@ extension BigInteger {
         return result
     }
     
+    /// Returns the result of performing a bitwise XOR operation on the two given
+    /// values.
+    public static func ^<T: SignedInteger>(lhs: BigInteger, rhs: T) -> BigInteger {
+        return lhs ^ BigInteger(rhs)
+    }
+    
+    /// Returns the result of performing a bitwise XOR operation on the two given
+    /// values.
+    public static func ^<T: SignedInteger>(lhs: T, rhs: BigInteger) -> BigInteger {
+        return BigInteger(lhs) ^ rhs
+    }
+    
+    /// Returns the result of performing a bitwise XOR operation on the two given
+    /// values.
+    public static func ^<T: UnsignedInteger>(lhs: BigInteger, rhs: T) -> BigInteger {
+        return lhs ^ BigInteger(rhs)
+    }
+    
+    /// Returns the result of performing a bitwise XOR operation on the two given
+    /// values.
+    public static func ^<T: UnsignedInteger>(lhs: T, rhs: BigInteger) -> BigInteger {
+        return BigInteger(lhs) ^ rhs
+    }
+    
     /// Stores the result of performing a bitwise XOR operation on the two given
     /// values in the left-hand-side variable.
     ///
@@ -142,34 +238,17 @@ extension BigInteger {
         lhs = lhs ^ rhs
     }
     
-    //MARK: - NOT
-    /// Returns the inverse of the bits set in the argument.
-    ///
-    /// The bitwise NOT operator (`~`) is a prefix operator that returns a value
-    /// in which all the bits of its argument are flipped: Bits that are `1` in
-    /// the argument are `0` in the result, and bits that are `0` in the argument
-    /// are `1` in the result. This is equivalent to the inverse of a set. For
-    /// example:
-    ///
-    ///     let x: UInt8 = 5        // 0b00000101
-    ///     let notX = ~x           // 0b11111010
-    ///
-    /// Performing a bitwise NOT operation on 0 returns a value with every bit
-    /// set to `1`.
-    ///
-    ///     let allOnes = ~UInt8.min   // 0b11111111
-    ///
-    /// - Complexity: O(1).
-    prefix public static func ~(x: BigInteger) -> BigInteger {
-        var result: BigInteger = BigInteger()
-
-        for i in 0..<x.upperLimit {
-            result[i] = !x[i]
-        }
-        
-        return result
+    /// Stores the result of performing a bitwise XOR operation on the two given
+    /// values in the left-hand-side variable.
+    public static func ^=<T: SignedInteger>(lhs: inout BigInteger, rhs: T) {
+        lhs = lhs ^ rhs
     }
     
+    /// Stores the result of performing a bitwise XOR operation on the two given
+    /// values in the left-hand-side variable.
+    public static func ^=<T: UnsignedInteger>(lhs: inout BigInteger, rhs: T) {
+        lhs = lhs ^ rhs
+    }
     
     //MARK: - Move to the Right
     /// Returns the result of shifting a value's binary representation the
@@ -217,6 +296,34 @@ extension BigInteger {
         return result
     }
     
+    /// Returns the result of shifting a value's binary representation the
+    /// specified number of digits to the right, masking the shift amount to the
+    /// type's bit width.
+    public static func &>><T: SignedInteger>(lhs: BigInteger, rhs: T) -> BigInteger {
+        return lhs &>> BigInteger(rhs)
+    }
+    
+    /// Returns the result of shifting a value's binary representation the
+    /// specified number of digits to the right, masking the shift amount to the
+    /// type's bit width.
+    public static func &>><T: SignedInteger>(lhs: T, rhs: BigInteger) -> BigInteger {
+        return BigInteger(lhs) &>> rhs
+    }
+    
+    /// Returns the result of shifting a value's binary representation the
+    /// specified number of digits to the right, masking the shift amount to the
+    /// type's bit width.
+    public static func &>><T: UnsignedInteger>(lhs: BigInteger, rhs: T) -> BigInteger {
+        return lhs &>> BigInteger(rhs)
+    }
+    
+    /// Returns the result of shifting a value's binary representation the
+    /// specified number of digits to the right, masking the shift amount to the
+    /// type's bit width.
+    public static func &>><T: UnsignedInteger>(lhs: T, rhs: BigInteger) -> BigInteger {
+        return BigInteger(lhs) &>> rhs
+    }
+    
     /// Calculates the result of shifting a value's binary representation the
     /// specified number of digits to the right, masking the shift amount to the
     /// type's bit width, and stores the result in the left-hand-side variable.
@@ -245,7 +352,21 @@ extension BigInteger {
     ///   - rhs: The number of bits to shift `lhs` to the right. If `rhs` is
     ///     outside the range `0..<lhs.bitWidth`, it is masked to produce a
     ///     value within that range.
-    public static func &>>= (lhs: inout BigInteger, rhs: BigInteger) {
+    public static func &>>=(lhs: inout BigInteger, rhs: BigInteger) {
+        lhs = lhs &>> rhs
+    }
+    
+    /// Calculates the result of shifting a value's binary representation the
+    /// specified number of digits to the right, masking the shift amount to the
+    /// type's bit width, and stores the result in the left-hand-side variable.
+    public static func &>>=<T: SignedInteger>(lhs: inout BigInteger, rhs: T) {
+        lhs = lhs &>> rhs
+    }
+    
+    /// Calculates the result of shifting a value's binary representation the
+    /// specified number of digits to the right, masking the shift amount to the
+    /// type's bit width, and stores the result in the left-hand-side variable.
+    public static func &>>=<T: UnsignedInteger>(lhs: inout BigInteger, rhs: T) {
         lhs = lhs &>> rhs
     }
     
@@ -297,6 +418,34 @@ extension BigInteger {
     
     /// Returns the result of shifting a value's binary representation the
     /// specified number of digits to the left, masking the shift amount to the
+    /// type's bit width.
+    public static func &<<<T: SignedInteger>(lhs: BigInteger, rhs: T) -> BigInteger {
+        return lhs &<< BigInteger(rhs)
+    }
+    
+    /// Returns the result of shifting a value's binary representation the
+    /// specified number of digits to the left, masking the shift amount to the
+    /// type's bit width.
+    public static func &<<<T: SignedInteger>(lhs: T, rhs: BigInteger) -> BigInteger {
+        return BigInteger(lhs) &<< rhs
+    }
+    
+    /// Returns the result of shifting a value's binary representation the
+    /// specified number of digits to the left, masking the shift amount to the
+    /// type's bit width.
+    public static func &<<<T: UnsignedInteger>(lhs: BigInteger, rhs: T) -> BigInteger {
+        return lhs &<< BigInteger(rhs)
+    }
+    
+    /// Returns the result of shifting a value's binary representation the
+    /// specified number of digits to the left, masking the shift amount to the
+    /// type's bit width.
+    public static func &<<<T: UnsignedInteger>(lhs: T, rhs: BigInteger) -> BigInteger {
+        return BigInteger(lhs) &<< rhs
+    }
+    
+    /// Returns the result of shifting a value's binary representation the
+    /// specified number of digits to the left, masking the shift amount to the
     /// type's bit width, and stores the result in the left-hand-side variable.
     ///
     /// The `&<<=` operator performs a *masking shift*, where the value used as
@@ -327,4 +476,45 @@ extension BigInteger {
         lhs = lhs &<< rhs
     }
     
+    /// Returns the result of shifting a value's binary representation the
+    /// specified number of digits to the left, masking the shift amount to the
+    /// type's bit width, and stores the result in the left-hand-side variable.
+    public static func &<<=<T: SignedInteger>(lhs: inout BigInteger, rhs: T) {
+        lhs = lhs &<< rhs
+    }
+    
+    /// Returns the result of shifting a value's binary representation the
+    /// specified number of digits to the left, masking the shift amount to the
+    /// type's bit width, and stores the result in the left-hand-side variable.
+    public static func &<<=<T: UnsignedInteger>(lhs: inout BigInteger, rhs: T) {
+        lhs = lhs &<< rhs
+    }
+    
+    //MARK: - NOT
+    /// Returns the inverse of the bits set in the argument.
+    ///
+    /// The bitwise NOT operator (`~`) is a prefix operator that returns a value
+    /// in which all the bits of its argument are flipped: Bits that are `1` in
+    /// the argument are `0` in the result, and bits that are `0` in the argument
+    /// are `1` in the result. This is equivalent to the inverse of a set. For
+    /// example:
+    ///
+    ///     let x: UInt8 = 5        // 0b00000101
+    ///     let notX = ~x           // 0b11111010
+    ///
+    /// Performing a bitwise NOT operation on 0 returns a value with every bit
+    /// set to `1`.
+    ///
+    ///     let allOnes = ~UInt8.min   // 0b11111111
+    ///
+    /// - Complexity: O(1).
+    prefix public static func ~(x: BigInteger) -> BigInteger {
+        var result: BigInteger = BigInteger()
+
+        for i in 0..<x.upperLimit {
+            result[i] = !x[i]
+        }
+        
+        return result
+    }
 }

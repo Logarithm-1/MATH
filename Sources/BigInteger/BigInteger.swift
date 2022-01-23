@@ -57,7 +57,7 @@ extension BigInteger {
     /// A BigInteger that equates to a unsigned integer.
     ///
     /// Equivalent to `BigInteger(num, false)`.
-    public init(_ num: UInt, negative: Bool = false) {
+    public init<T: UnsignedInteger>(_ num: T, negative: Bool = false) {
         if(num == 0) {
             self.init()
             return
@@ -85,7 +85,7 @@ extension BigInteger {
     /// A BigInteger that equates to a signed integer.
     ///
     /// Equivalent to `BigInteger(num, num < 0)`.
-    public init(_ num: Int) {
+    public init<T: SignedInteger>(_ num: T) {
         if(num >= 0) {
             self.init(UInt(num), negative: false)
         } else {
