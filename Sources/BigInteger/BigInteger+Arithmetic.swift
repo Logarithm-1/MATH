@@ -56,8 +56,7 @@ extension BigInteger: AdditiveArithmetic {
     //MARK: - Subtraction
     /// Subtracts one value from another and produces their difference.
     ///
-    /// The subtraction operator (`-`) calculates the difference of its two
-    /// arguments. For example:
+    /// The subtraction operator (`-`) calculates the difference of its two arguments. For example:
     ///
     ///     8 - 3                   // 5
     ///     -10 - 5                 // -15
@@ -113,8 +112,7 @@ extension BigInteger {
         return product
     }
     
-    /// Multiplies two values and stores the result in the left-hand-side
-    /// variable.
+    /// Multiplies two values and stores the result in the left-hand-side variable.
     ///
     /// - Parameters:
     ///   - lhs: The first value to multiply.

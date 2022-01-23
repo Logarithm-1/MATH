@@ -20,6 +20,12 @@ public struct Vector<Element: FloatingPoint> {
 
 //MARK: - Additional Initializers
 extension Vector {
+    /// A Defult initializers the equates to 0
+    public init() {
+        let vector: [Element] = Array(repeating: 0, count: 2)
+        self.init(vector)
+    }
+    
     /// A Vector that equates to 0, with different dimension sizes.
     public init(dimensions: Int) {
         let vector: [Element] = Array(repeating: 0, count: dimensions)
@@ -35,7 +41,7 @@ extension Vector {
             return index < dimensions ? components[index] : 0
         } set(newValue) {
             //Add dimensions until index can fit in to components
-            while(index < dimensions) {
+            while(dimensions <= index) {
                 dimensions += 1
             }
             
