@@ -15,27 +15,31 @@ extension BigInteger: AdditiveArithmetic {
     //MARK: - Addition
     /// Adds two values and produces their sum.
     ///
-    /// The addition operator (`+`) calculates the sum of its two arguments. For
-    /// example:
+    /// The addition operator (`+`) calculates the sum of its two arguments. For example:
     ///
     ///     1 + 2                   // 3
     ///     -10 + 15                // 5
     ///     -15 + -5                // -20
-    ///     21.5 + 3.25             // 24.75
     ///
     /// - Parameters:
     ///   - lhs: The first value to add.
     ///   - rhs: The second value to add.
     /// - Returns: The sum of two values, `lhs` and `rhs`
     public static func +(lhs: BigInteger, rhs: BigInteger) -> BigInteger {
-        let and: BigInteger = (lhs & rhs) &<< 1
-        let xor: BigInteger = lhs ^ rhs
-        
-        if(and.toInt() == 0) {
-            return xor
-        }
+        //If lhs and rhs have the same sign (are both positive or both negative) add like normal and keep the sign
+        if(lhs.negative == rhs.negative) {
+            let and: BigInteger = (lhs & rhs) &<< 1
+            let xor: BigInteger = lhs ^ rhs
             
-        return and + xor
+            if(and.toInt() == 0) {
+                return xor
+            }
+                
+            return and + xor
+        }
+        //TODO: lhs and rhs don't have the same sign
+        
+        return BigInteger()
     }
     
     /// Adds two values and produces their sum.
@@ -60,8 +64,7 @@ extension BigInteger: AdditiveArithmetic {
     
     /// Adds two values and stores the result in the left-hand-side variable.
     ///
-    /// The sum of the two arguments must be representable in the arguments'
-    /// type.
+    /// The sum of the two arguments must be representable in the arguments' type.
     ///
     /// - Parameters:
     ///   - lhs: The first value to add.
@@ -81,8 +84,59 @@ extension BigInteger: AdditiveArithmetic {
     }
     
     //MARK: - Subtraction
+    /// Subtracts one value from another and produces their difference.
+    ///
+    /// The subtraction operator (`-`) calculates the difference of its two
+    /// arguments. For example:
+    ///
+    ///     8 - 3                   // 5
+    ///     -10 - 5                 // -15
+    ///     100 - -5                // 105
+    ///
+    /// - Parameters:
+    ///   - lhs: A numeric value.
+    ///   - rhs: The value to subtract from `lhs`.
     public static func -(lhs: BigInteger, rhs: BigInteger) -> BigInteger {
-        return BigInteger()
+        return lhs + (-rhs)
+    }
+    
+    /// Subtracts one value from another and produces their difference.
+    public static func -<T: SignedInteger>(lhs: BigInteger, rhs: T) -> BigInteger {
+        return lhs - BigInteger(rhs)
+    }
+    
+    /// Subtracts one value from another and produces their difference.
+    public static func -<T: SignedInteger>(lhs: T, rhs: BigInteger) -> BigInteger {
+        return BigInteger(lhs) - rhs
+    }
+    
+    /// Subtracts one value from another and produces their difference.
+    public static func -<T: UnsignedInteger>(lhs: BigInteger, rhs: T) -> BigInteger {
+        return lhs - BigInteger(rhs)
+    }
+    
+    /// Subtracts one value from another and produces their difference.
+    public static func -<T: UnsignedInteger>(lhs: T, rhs: BigInteger) -> BigInteger {
+        return BigInteger(lhs) - rhs
+    }
+    
+    /// Subtracts the second value from the first and stores the difference in the left-hand-side variable.
+    ///
+    /// - Parameters:
+    ///   - lhs: A numeric value.
+    ///   - rhs: The value to subtract from `lhs`.
+    public static func -= (lhs: inout BigInteger, rhs: BigInteger) {
+        lhs = lhs - rhs
+    }
+    
+    /// Subtracts the second value from the first and stores the difference in the left-hand-side variable.
+    public static func -=<T: SignedInteger>(lhs: inout BigInteger, rhs: T) {
+        lhs = lhs - rhs
+    }
+    
+    /// Subtracts the second value from the first and stores the difference in the left-hand-side variable.
+    public static func -=<T: UnsignedInteger>(lhs: inout BigInteger, rhs: T) {
+        lhs = lhs - rhs
     }
 }
 
