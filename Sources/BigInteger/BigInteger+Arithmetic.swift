@@ -13,26 +13,71 @@ extension BigInteger: AdditiveArithmetic {
     }
     
     //MARK: - Addition
+    /// Adds two values and produces their sum.
+    ///
+    /// The addition operator (`+`) calculates the sum of its two arguments. For
+    /// example:
+    ///
+    ///     1 + 2                   // 3
+    ///     -10 + 15                // 5
+    ///     -15 + -5                // -20
+    ///     21.5 + 3.25             // 24.75
+    ///
+    /// - Parameters:
+    ///   - lhs: The first value to add.
+    ///   - rhs: The second value to add.
+    /// - Returns: The sum of two values, `lhs` and `rhs`
     public static func +(lhs: BigInteger, rhs: BigInteger) -> BigInteger {
-        var result: BigInteger = BigInteger()
+        let and: BigInteger = (lhs & rhs) &<< 1
+        let xor: BigInteger = lhs ^ rhs
         
-        
-        for bitIndex in 0..<max(lhs.bitWidth, rhs.bitWidth) {
-            //TODO: Figure out Negative BigIntegers
-            if(lhs[bitIndex] || rhs[bitIndex]) {
-                result[bitIndex] = false
-                var index: Int = bitIndex + (lhs[bitIndex] && rhs[bitIndex] ? 1 : 0)
-                while(result[index]) {
-                    result[index] = false
-                    index += 1
-                }
-                result[index] = true
-            }
+        if(and.toInt() == 0) {
+            return xor
         }
-        
-        
-        
-        return BigInteger()
+            
+        return and + xor
+    }
+    
+    /// Adds two values and produces their sum.
+    public static func +<T: SignedInteger>(lhs: BigInteger, rhs: T) -> BigInteger {
+        return lhs + BigInteger(rhs)
+    }
+    
+    /// Adds two values and produces their sum.
+    public static func +<T: SignedInteger>(lhs: T, rhs: BigInteger) -> BigInteger {
+        return BigInteger(lhs) + rhs
+    }
+    
+    /// Adds two values and produces their sum.
+    public static func +<T: UnsignedInteger>(lhs: BigInteger, rhs: T) -> BigInteger {
+        return lhs + BigInteger(rhs)
+    }
+    
+    /// Adds two values and produces their sum.
+    public static func +<T: UnsignedInteger>(lhs: T, rhs: BigInteger) -> BigInteger {
+        return BigInteger(lhs) + rhs
+    }
+    
+    /// Adds two values and stores the result in the left-hand-side variable.
+    ///
+    /// The sum of the two arguments must be representable in the arguments'
+    /// type.
+    ///
+    /// - Parameters:
+    ///   - lhs: The first value to add.
+    ///   - rhs: The second value to add.
+    public static func += (lhs: inout BigInteger, rhs: BigInteger) {
+        lhs = lhs + rhs
+    }
+    
+    /// Adds two values and stores the result in the left-hand-side variable.
+    public static func +=<T: SignedInteger>(lhs: inout BigInteger, rhs: T) {
+        lhs = lhs + rhs
+    }
+    
+    /// Adds two values and stores the result in the left-hand-side variable.
+    public static func +=<T: UnsignedInteger>(lhs: inout BigInteger, rhs: T) {
+        lhs = lhs + rhs
     }
     
     //MARK: - Subtraction
