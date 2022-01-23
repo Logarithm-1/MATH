@@ -7,33 +7,45 @@
 //
 // See https://github.com/Logarithm-1/MATH/blob/main/LICENSE for license information
 
-/// A type that adds a modulus to integers.
+/// A type that adds `modular arithmetic` or `remainder arithmetic` to a ``SignedInteger``.
 public protocol ModularArithmetic: SignedInteger {}
 
 extension ModularArithmetic {
-    public func mod(_ modulus: Self) -> Self {
+    
+    /// `Modulus` (abbriviated as `MOD`) is the remainder (or the left-over) when one integer is divided by another integer. For Example:
+    ///
+    ///     7.modulus(3) //7 MOD 3 = 1
+    ///     8.modulus(3) //8 MOD 3 = 2
+    ///     9.modulus(3) //9 MOD 3 = 0
+    ///     (-1).modulus(12) //-1 MOD 12 = 11
+    ///
+    /// - Parameter modulo: The denominator (or divisor).
+    /// - Returns the remainder of a integer (`self`) divided by another integer (`modulo`).
+    public func modulus(_ modulo: Self) -> Self {
         var value: Self = self
         
         if(value < 0) {//Value is negative
             //Ex: value = -45 and modulas = 26
             //-> then value % modulus = -19
-            value %= modulus
+            value %= modulo
             
             //-> then value + modulus = 7
-            value += modulus
+            value += modulo
         }
         
-        return value % modulus
+        return value % modulo
     }
     
+    //TODO: Should I add functions for (+, -, *, etc)
+    
     //TODO: Greatest Common Denominator - Extended
-    public func divided(by divisor: Self, for modulus: Self) -> Self {
+    public func divided(by divisor: Self, for modulo: Self) -> Self {
         return 0
     }
     
     //MARK: - Powers
-    public func power(of power: Self, for modulus: Self) -> Self {
-        var value: Self = self.mod(modulus)
+    public func power(of power: Self, for modulo: Self) -> Self {
+        var value: Self = self.modulus(modulo)
         var ex: Self = power
         var product: Self = 1
         
@@ -44,18 +56,18 @@ extension ModularArithmetic {
         while(ex > 0) {
             //If power (ex) is odd
             if(ex & 1 != 0) {
-                product = (product * value).mod(modulus)
+                product = (product * value).modulus(modulo)
             }
             
             ex >>= 1 //ex /= 2
-            value = (value*value).mod(modulus)
+            value = (value*value).modulus(modulo)
         }
         
         return product
     }
     
     //TODO: Greatest Common Denominator - Extended
-    public func inversePower(of power: Self, for modulus: Self) -> Self {
+    public func inversePower(of power: Self, for modulo: Self) -> Self {
         return 0
     }
 }
