@@ -94,6 +94,8 @@ extension BigInteger {
     /// - Parameters:
     ///   - lhs: The first value to multiply.
     ///   - rhs: The second value to multiply.
+    ///
+    /// - Note: This function is a requirement of the protocol ``Numeric``
     public static func *(lhs: BigInteger, rhs: BigInteger) -> BigInteger {
         // 1101 * 0011
         // (1101*1) + (1101*10)
@@ -117,6 +119,8 @@ extension BigInteger {
     /// - Parameters:
     ///   - lhs: The first value to multiply.
     ///   - rhs: The second value to multiply.
+    ///
+    /// - Note: This function is a requirement of the protocol ``Numeric``
     public static func *=(lhs: inout BigInteger, rhs: BigInteger) {
         lhs = lhs * rhs
     }
