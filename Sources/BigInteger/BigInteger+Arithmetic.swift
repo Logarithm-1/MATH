@@ -142,9 +142,85 @@ extension BigInteger: AdditiveArithmetic {
 
 extension BigInteger {
     //MARK: - Multiplication
+    /// Multiplies two values and produces their product.
+    ///
+    /// The multiplication operator (`*`) calculates the product of its two
+    /// arguments. For example:
+    ///
+    ///     2 * 3                   // 6
+    ///     100 * 21                // 2100
+    ///     -10 * 15                // -150
+    ///
+    /// - Parameters:
+    ///   - lhs: The first value to multiply.
+    ///   - rhs: The second value to multiply.
     public static func *(lhs: BigInteger, rhs: BigInteger) -> BigInteger {
-        return BigInteger()
+        // 1101 * 0011
+        // (1101*1) + (1101*10)
+        // (1101 &<< 0) + (1101 &<< 1)
+        // (1101) + (11010)
+        // (100111)
+        var product: BigInteger = BigInteger() //= 0
+        
+        for i in 0..<rhs.bitWidth {
+            if(rhs[i]) {
+                product += lhs &<< i
+            }
+        }
+        
+        return product
     }
+    
+    /// Multiplies two values and produces their product.
+    public static func *<T: SignedInteger>(lhs: BigInteger, rhs: T) -> BigInteger {
+        return lhs * BigInteger(rhs)
+    }
+    
+    /// Multiplies two values and produces their product.
+    public static func *<T: SignedInteger>(lhs: T, rhs: BigInteger) -> BigInteger {
+        return BigInteger(lhs) * rhs
+    }
+    
+    /// Multiplies two values and produces their product.
+    public static func *<T: UnsignedInteger>(lhs: BigInteger, rhs: T) -> BigInteger {
+        return lhs * BigInteger(rhs)
+    }
+    
+    /// Multiplies two values and produces their product.
+    public static func *<T: UnsignedInteger>(lhs: T, rhs: BigInteger) -> BigInteger {
+        return BigInteger(lhs) * rhs
+    }
+    
+    /// Multiplies two values and stores the result in the left-hand-side
+    /// variable.
+    ///
+    /// - Parameters:
+    ///   - lhs: The first value to multiply.
+    ///   - rhs: The second value to multiply.
+    public static func *=(lhs: inout BigInteger, rhs: BigInteger) {
+        lhs = lhs * rhs
+    }
+    
+    /// Multiplies two values and stores the result in the left-hand-side
+    /// variable.
+    ///
+    /// - Parameters:
+    ///   - lhs: The first value to multiply.
+    ///   - rhs: The second value to multiply.
+    public static func *=<T: SignedInteger>(lhs: inout BigInteger, rhs: T) {
+        lhs = lhs * BigInteger(rhs)
+    }
+    
+    /// Multiplies two values and stores the result in the left-hand-side
+    /// variable.
+    ///
+    /// - Parameters:
+    ///   - lhs: The first value to multiply.
+    ///   - rhs: The second value to multiply.
+    public static func *=<T: UnsignedInteger>(lhs: inout BigInteger, rhs: T) {
+        lhs = lhs * BigInteger(rhs)
+    }
+    
     
     //MARK: - Division
     public static func /(lhs: BigInteger, rhs: BigInteger) -> BigInteger {

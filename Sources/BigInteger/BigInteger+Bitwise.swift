@@ -414,6 +414,10 @@ extension BigInteger {
     public static func &<< (lhs: BigInteger, rhs: BigInteger) -> BigInteger {
         var result: BigInteger = lhs
         
+        if(rhs.toInt() == 0) {
+            return lhs
+        }
+        
         //FIXME: Remove toInt() when Range is complete
         for _ in 0..<rhs.toInt() {
             result.source.insert(false, at: 0)
