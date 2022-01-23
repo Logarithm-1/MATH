@@ -50,19 +50,15 @@ let package = Package(
             dependencies: ["MATH"]),
         .testTarget(
           name: "BigIntegerTests",
-          dependencies: ["BigInteger"],
-          exclude: excludedFilenames),
+          dependencies: ["BigInteger"]),
         .testTarget(
           name: "MatrixTests",
-          dependencies: ["BigInteger"],
-          exclude: excludedFilenames),
+          dependencies: ["MatrixTests"]),
         .testTarget(
           name: "ModularArithmeticTests",
-          dependencies: ["ModularArithmetic"],
-          exclude: excludedFilenames),
+          dependencies: ["ModularArithmetic"]),
         .testTarget(
           name: "VectorTests",
-          dependencies: ["BigInteger"],
-          exclude: excludedFilenames),
+          dependencies: ["VectorTests"]),
     ]
 )
