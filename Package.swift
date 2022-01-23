@@ -13,7 +13,9 @@ let package = Package(
     products: [
         .library(name: "MATH", targets: ["MATH"]),
         .library(name: "BigInteger", targets: ["BigInteger"]),
-        .library(name: "ModularArithmetic", targets: ["ModularArithmetic"])
+        .library(name: "Matrix", targets: ["Matrix"]),
+        .library(name: "ModularArithmetic", targets: ["ModularArithmetic"]),
+        .library(name: "Vector", targets: ["Vector"]),
     ],
     dependencies: [
         // Dependencies declare other packages that this package depends on.
@@ -30,7 +32,15 @@ let package = Package(
             dependencies: [],
             exclude: excludedFilenames),
         .target(
+            name: "Matrix",
+            dependencies: [],
+            exclude: excludedFilenames),
+        .target(
             name: "ModularArithmetic",
+            dependencies: [],
+            exclude: excludedFilenames),
+        .target(
+            name: "Vector",
             dependencies: [],
             exclude: excludedFilenames),
         
@@ -43,8 +53,16 @@ let package = Package(
           dependencies: ["BigInteger"],
           exclude: excludedFilenames),
         .testTarget(
+          name: "MatrixTests",
+          dependencies: ["BigInteger"],
+          exclude: excludedFilenames),
+        .testTarget(
           name: "ModularArithmeticTests",
           dependencies: ["ModularArithmetic"],
+          exclude: excludedFilenames),
+        .testTarget(
+          name: "VectorTests",
+          dependencies: ["BigInteger"],
           exclude: excludedFilenames),
     ]
 )
