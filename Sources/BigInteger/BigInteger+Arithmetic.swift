@@ -28,7 +28,7 @@ extension BigInteger: AdditiveArithmetic {
     public static func +(lhs: BigInteger, rhs: BigInteger) -> BigInteger {
         //If lhs and rhs have the same sign (are both positive or both negative) add like normal and keep the sign
         if(lhs.negative == rhs.negative) {
-            let and: BigInteger = (lhs & rhs) &<< 1
+            let and: BigInteger = (lhs & rhs) &<< BigInteger(1)
             let xor: BigInteger = lhs ^ rhs
             
             if(and.toInt() == 0) {
@@ -42,26 +42,6 @@ extension BigInteger: AdditiveArithmetic {
         return BigInteger()
     }
     
-    /// Adds two values and produces their sum.
-    public static func +<T: SignedInteger>(lhs: BigInteger, rhs: T) -> BigInteger {
-        return lhs + BigInteger(rhs)
-    }
-    
-    /// Adds two values and produces their sum.
-    public static func +<T: SignedInteger>(lhs: T, rhs: BigInteger) -> BigInteger {
-        return BigInteger(lhs) + rhs
-    }
-    
-    /// Adds two values and produces their sum.
-    public static func +<T: UnsignedInteger>(lhs: BigInteger, rhs: T) -> BigInteger {
-        return lhs + BigInteger(rhs)
-    }
-    
-    /// Adds two values and produces their sum.
-    public static func +<T: UnsignedInteger>(lhs: T, rhs: BigInteger) -> BigInteger {
-        return BigInteger(lhs) + rhs
-    }
-    
     /// Adds two values and stores the result in the left-hand-side variable.
     ///
     /// The sum of the two arguments must be representable in the arguments' type.
@@ -69,17 +49,7 @@ extension BigInteger: AdditiveArithmetic {
     /// - Parameters:
     ///   - lhs: The first value to add.
     ///   - rhs: The second value to add.
-    public static func += (lhs: inout BigInteger, rhs: BigInteger) {
-        lhs = lhs + rhs
-    }
-    
-    /// Adds two values and stores the result in the left-hand-side variable.
-    public static func +=<T: SignedInteger>(lhs: inout BigInteger, rhs: T) {
-        lhs = lhs + rhs
-    }
-    
-    /// Adds two values and stores the result in the left-hand-side variable.
-    public static func +=<T: UnsignedInteger>(lhs: inout BigInteger, rhs: T) {
+    public static func +=(lhs: inout BigInteger, rhs: BigInteger) {
         lhs = lhs + rhs
     }
     
@@ -100,42 +70,12 @@ extension BigInteger: AdditiveArithmetic {
         return lhs + (-rhs)
     }
     
-    /// Subtracts one value from another and produces their difference.
-    public static func -<T: SignedInteger>(lhs: BigInteger, rhs: T) -> BigInteger {
-        return lhs - BigInteger(rhs)
-    }
-    
-    /// Subtracts one value from another and produces their difference.
-    public static func -<T: SignedInteger>(lhs: T, rhs: BigInteger) -> BigInteger {
-        return BigInteger(lhs) - rhs
-    }
-    
-    /// Subtracts one value from another and produces their difference.
-    public static func -<T: UnsignedInteger>(lhs: BigInteger, rhs: T) -> BigInteger {
-        return lhs - BigInteger(rhs)
-    }
-    
-    /// Subtracts one value from another and produces their difference.
-    public static func -<T: UnsignedInteger>(lhs: T, rhs: BigInteger) -> BigInteger {
-        return BigInteger(lhs) - rhs
-    }
-    
     /// Subtracts the second value from the first and stores the difference in the left-hand-side variable.
     ///
     /// - Parameters:
     ///   - lhs: A numeric value.
     ///   - rhs: The value to subtract from `lhs`.
-    public static func -= (lhs: inout BigInteger, rhs: BigInteger) {
-        lhs = lhs - rhs
-    }
-    
-    /// Subtracts the second value from the first and stores the difference in the left-hand-side variable.
-    public static func -=<T: SignedInteger>(lhs: inout BigInteger, rhs: T) {
-        lhs = lhs - rhs
-    }
-    
-    /// Subtracts the second value from the first and stores the difference in the left-hand-side variable.
-    public static func -=<T: UnsignedInteger>(lhs: inout BigInteger, rhs: T) {
+    public static func -=(lhs: inout BigInteger, rhs: BigInteger) {
         lhs = lhs - rhs
     }
 }
@@ -164,31 +104,11 @@ extension BigInteger {
         
         for i in 0..<rhs.bitWidth {
             if(rhs[i]) {
-                product += lhs &<< i
+                product += lhs &<< BigInteger(i)
             }
         }
         
         return product
-    }
-    
-    /// Multiplies two values and produces their product.
-    public static func *<T: SignedInteger>(lhs: BigInteger, rhs: T) -> BigInteger {
-        return lhs * BigInteger(rhs)
-    }
-    
-    /// Multiplies two values and produces their product.
-    public static func *<T: SignedInteger>(lhs: T, rhs: BigInteger) -> BigInteger {
-        return BigInteger(lhs) * rhs
-    }
-    
-    /// Multiplies two values and produces their product.
-    public static func *<T: UnsignedInteger>(lhs: BigInteger, rhs: T) -> BigInteger {
-        return lhs * BigInteger(rhs)
-    }
-    
-    /// Multiplies two values and produces their product.
-    public static func *<T: UnsignedInteger>(lhs: T, rhs: BigInteger) -> BigInteger {
-        return BigInteger(lhs) * rhs
     }
     
     /// Multiplies two values and stores the result in the left-hand-side
@@ -200,27 +120,6 @@ extension BigInteger {
     public static func *=(lhs: inout BigInteger, rhs: BigInteger) {
         lhs = lhs * rhs
     }
-    
-    /// Multiplies two values and stores the result in the left-hand-side
-    /// variable.
-    ///
-    /// - Parameters:
-    ///   - lhs: The first value to multiply.
-    ///   - rhs: The second value to multiply.
-    public static func *=<T: SignedInteger>(lhs: inout BigInteger, rhs: T) {
-        lhs = lhs * BigInteger(rhs)
-    }
-    
-    /// Multiplies two values and stores the result in the left-hand-side
-    /// variable.
-    ///
-    /// - Parameters:
-    ///   - lhs: The first value to multiply.
-    ///   - rhs: The second value to multiply.
-    public static func *=<T: UnsignedInteger>(lhs: inout BigInteger, rhs: T) {
-        lhs = lhs * BigInteger(rhs)
-    }
-    
     
     //MARK: - Division
     public static func /(lhs: BigInteger, rhs: BigInteger) -> BigInteger {
