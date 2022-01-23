@@ -53,12 +53,12 @@ let package = Package(
           dependencies: ["BigInteger"]),
         .testTarget(
           name: "MatrixTests",
-          dependencies: ["MatrixTests"]),
+          dependencies: ["Matrix"]),
         .testTarget(
           name: "ModularArithmeticTests",
           dependencies: ["ModularArithmetic"]),
         .testTarget(
           name: "VectorTests",
-          dependencies: ["VectorTests"]),
+          dependencies: ["Vector"]),
     ]
 )
