@@ -12,3 +12,9 @@ extension BigInteger: CustomStringConvertible {
         return toString()
     }
 }
+
+extension BigInteger: CustomDebugStringConvertible {
+  public var debugDescription: String {
+    "BigInteger(size: \(String(bitWidth)), string: \(toString())"
+  }
+}

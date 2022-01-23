@@ -9,6 +9,8 @@
 //
 //
 
+import Darwin
+
 /// An integer with the max-limit of at least 1,000 bits.
 ///
 /// TODO: Figure out the max-limit of bits
@@ -42,20 +44,20 @@ extension BigInteger {
     ///
     /// Equivalent to `BigInteger([false], false)`.
     public init() {
-        self.init(source: [false])
+        self.init(source: [false], negative: false)
     }
     
     /// A BigInteger constructed by specifying the reverse of the source array (so that it would be read left-right correctly).
     ///
     /// Equivalent to `BigInteger(source.reversed(), false)`.
-    public init(reversed source: [Bool]) {
-        self.init(source: source.reversed())
+    public init(reversed source: [Bool], negative: Bool = false) {
+        self.init(source: source.reversed(), negative: negative)
     }
     
     /// A BigInteger that equates to a unsigned integer.
     ///
     /// Equivalent to `BigInteger(num, false)`.
-    public init(_ num: UInt) {
+    public init(_ num: UInt, negative: Bool = false) {
         if(num == 0) {
             self.init()
             return
@@ -77,7 +79,18 @@ extension BigInteger {
             self.init()
         }
         
-        self.init(source: source)
+        self.init(source: source, negative: negative)
+    }
+    
+    /// A BigInteger that equates to a signed integer.
+    ///
+    /// Equivalent to `BigInteger(num, num < 0)`.
+    public init(_ num: Int) {
+        if(num >= 0) {
+            self.init(UInt(num), negative: false)
+        } else {
+            self.init(UInt(-num), negative: true)
+        }
     }
     
     //TODO: Integer String
@@ -96,14 +109,14 @@ extension BigInteger {
     public subscript(index: Int) -> Bool {
         get {
             //If the index is outOfRange of the array, return zero. 
-            if(index < 0 || index > bitWidth) {
+            if(index < 0 || index >= bitWidth) {
                 return false
             }
             
             return source[index]
         } set(newValue) {
             //If the newValue is `false` (0) and it would be placed in the front of the array (as a leading zero) then don't bother with it.
-            if(newValue == false && source.count < index) {
+            if(newValue == false && index >= bitWidth) {
                 return
             }
             
@@ -113,7 +126,7 @@ extension BigInteger {
             }
             
             //If the newValue is going on an index that does not exist, keep adding zeros to the array until it does.
-            while(source.count < index) {
+            while(index >= bitWidth) {
                 source.append(false)
             }
             
@@ -134,6 +147,27 @@ extension BigInteger {
         }
         
         return str
+    }
+    
+    public func toInt() -> Int {
+        print(toString())
+        if(bitWidth > 64) {
+            fatalError("Cannot convert to integer at this size")
+        }
+        
+        var result: Int = 0
+        
+        for (index, bit) in source.enumerated() {
+            if(bit) {
+                result += Int(pow(2.0, Double(index)))
+            }
+        }
+        
+        if(negative) {
+            result *= -1
+        }
+        
+        return result
     }
 }
 

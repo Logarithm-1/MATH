@@ -12,7 +12,8 @@ let package = Package(
     ],
     products: [
         .library(name: "MATH", targets: ["MATH"]),
-        .library(name: "BigInteger", targets: ["BigInteger"])
+        .library(name: "BigInteger", targets: ["BigInteger"]),
+        .library(name: "ModularArithmetic", targets: ["ModularArithmetic"])
     ],
     dependencies: [
         // Dependencies declare other packages that this package depends on.
@@ -28,6 +29,10 @@ let package = Package(
             name: "BigInteger",
             dependencies: [],
             exclude: excludedFilenames),
+        .target(
+            name: "ModularArithmetic",
+            dependencies: [],
+            exclude: excludedFilenames),
         
         // MARK: - Unit test bundles
         .testTarget(
@@ -36,6 +41,10 @@ let package = Package(
         .testTarget(
           name: "BigIntegerTests",
           dependencies: ["BigInteger"],
+          exclude: excludedFilenames),
+        .testTarget(
+          name: "ModularArithmeticTests",
+          dependencies: ["ModularArithmetic"],
           exclude: excludedFilenames),
     ]
 )
