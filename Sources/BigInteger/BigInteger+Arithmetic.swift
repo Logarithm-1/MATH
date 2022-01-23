@@ -238,6 +238,13 @@ infix operator ^^ : PowerPrecedence
 extension BigInteger {
     //MARK: - Power
     public static func ^^(lhs: BigInteger, rhs: BigInteger) -> BigInteger {
-        return BigInteger()
+        var result: BigInteger = BigInteger(1) //= 1
+        
+        //TODO: Remove toInt()
+        for _ in 0..<rhs.toInt() {
+            result *= lhs
+        }
+        
+        return result
     }
 }
