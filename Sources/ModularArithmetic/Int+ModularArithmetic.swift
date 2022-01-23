@@ -7,4 +7,4 @@
 //
 // See https://github.com/Logarithm-1/MATH/blob/main/LICENSE for license information
 
-extension Int: Modular {}
+extension Int: ModularArithmetic {}

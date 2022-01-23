@@ -3,7 +3,7 @@
 
 import PackageDescription
 
-let excludedFilenames: [String] = [String]() //["README.md"]
+let excludedFilenames: [String] = ["README.md"]
 
 let package = Package(
     name: "MATH",

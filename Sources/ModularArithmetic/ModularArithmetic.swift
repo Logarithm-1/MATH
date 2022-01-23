@@ -8,23 +8,54 @@
 // See https://github.com/Logarithm-1/MATH/blob/main/LICENSE for license information
 
 /// A type that adds a modulus to integers.
-public protocol Modular: SignedInteger {}
+public protocol ModularArithmetic: SignedInteger {}
 
-
-extension Modular {
-    public func mod(_ base: Self) -> Self {
+extension ModularArithmetic {
+    public func mod(_ modulus: Self) -> Self {
+        var value: Self = self
+        
+        if(value < 0) {//Value is negative
+            //Ex: value = -45 and modulas = 26
+            //-> then value % modulus = -19
+            value %= modulus
+            
+            //-> then value + modulus = 7
+            value += modulus
+        }
+        
+        return value % modulus
+    }
+    
+    //TODO: Greatest Common Denominator - Extended
+    public func divided(by divisor: Self, for modulus: Self) -> Self {
         return 0
     }
     
-    public func divided(by divisor: Self, base: Self) -> Self {
-        return 0
+    //MARK: - Powers
+    public func power(of power: Self, for modulus: Self) -> Self {
+        var value: Self = self.mod(modulus)
+        var ex: Self = power
+        var product: Self = 1
+        
+        if(value == 0) {
+             return 0
+        }
+        
+        while(ex > 0) {
+            //If power (ex) is odd
+            if(ex & 1 != 0) {
+                product = (product * value).mod(modulus)
+            }
+            
+            ex >>= 1 //ex /= 2
+            value = (value*value).mod(modulus)
+        }
+        
+        return product
     }
     
-    public func power(of power: Self) -> Self {
-        return 0
-    }
-    
-    public func inversePower(of power: Self) -> Self {
+    //TODO: Greatest Common Denominator - Extended
+    public func inversePower(of power: Self, for modulus: Self) -> Self {
         return 0
     }
 }
