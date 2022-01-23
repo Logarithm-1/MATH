@@ -28,7 +28,7 @@ extension BigInteger: AdditiveArithmetic {
     public static func +(lhs: BigInteger, rhs: BigInteger) -> BigInteger {
         //If lhs and rhs have the same sign (are both positive or both negative) add like normal and keep the sign
         if(lhs.negative == rhs.negative) {
-            let and: BigInteger = (lhs & rhs) &<< BigInteger(1)
+            let and: BigInteger = (lhs & rhs) &<< 1
             let xor: BigInteger = lhs ^ rhs
             
             if(and.toInt() == 0) {
@@ -102,7 +102,7 @@ extension BigInteger {
         // (1101 &<< 0) + (1101 &<< 1)
         // (1101) + (11010)
         // (100111)
-        var product: BigInteger = BigInteger() //= 0
+        var product: BigInteger = 0
         
         for i in 0..<rhs.bitWidth {
             if(rhs[i]) {
@@ -141,10 +141,10 @@ infix operator ^^ : PowerPrecedence
 extension BigInteger {
     //MARK: - Power
     public static func ^^(lhs: BigInteger, rhs: BigInteger) -> BigInteger {
-        var result: BigInteger = BigInteger(1) //= 1
+        var result: BigInteger = 1
         
         //TODO: Remove toInt()
-        for _ in 0..<rhs.toInt() {
+        for _ in 0..<rhs {
             result *= lhs
         }
         

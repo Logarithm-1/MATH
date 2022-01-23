@@ -19,10 +19,10 @@ extension BigInteger: Strideable {
     /// - Parameter other: The value to calculate the distance to.
     /// - Returns: The distance from this value to `other`.
     public func distance(to other: BigInteger) -> Int {
-        var distance = self //- other
-        //distance.negative = false
+        var distance: BigInteger = self - other
+        distance.negative = false
 
-        //FIXME: Change to BigInt
+        //FIXME: Change to distance
         return 3//distance
     }
 
@@ -40,6 +40,6 @@ extension BigInteger: Strideable {
     /// - Parameter n: The distance to advance this value.
     /// - Returns: A value that is offset from this value by `n`.
     public func advanced(by n: Int) -> BigInteger {
-        return self //+ n
+        return self + BigInteger(n)
     }
 }

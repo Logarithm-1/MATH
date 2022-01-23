@@ -8,5 +8,14 @@
 // See https://github.com/Logarithm-1/MATH/blob/main/LICENSE for license information
 
 extension BigInteger {
-    
+    /// Returns the factorial of `self.value`
+    func factorial() -> BigInteger {
+        var factroial: BigInteger = 1
+        
+        for i in 2...self {
+            factroial *= i
+        }
+        
+        return factroial
+    }
 }

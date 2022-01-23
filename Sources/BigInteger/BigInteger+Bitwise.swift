@@ -24,7 +24,7 @@ extension BigInteger {
     ///   - lhs: An integer value.
     ///   - rhs: Another integer value.
     public static func &(lhs: BigInteger, rhs: BigInteger) -> BigInteger {
-        var result: BigInteger = BigInteger()
+        var result: BigInteger = 0
         
         //Min since what ever whould go over whould be false, thus the and would also return false.
         for i in 0..<min(lhs.bitWidth, rhs.bitWidth) {
@@ -68,7 +68,7 @@ extension BigInteger {
     ///   - lhs: An integer value.
     ///   - rhs: Another integer value.
     public static func |(lhs: BigInteger, rhs: BigInteger) -> BigInteger {
-        var result: BigInteger = BigInteger()
+        var result: BigInteger = 0
         
         for i in 0..<max(lhs.bitWidth, rhs.bitWidth) {
             result[i] = lhs[i] || rhs[i]
@@ -112,12 +112,11 @@ extension BigInteger {
     ///   - lhs: An integer value.
     ///   - rhs: Another integer value.
     public static func ^(lhs: BigInteger, rhs: BigInteger) -> BigInteger {
-        var result: BigInteger = BigInteger()
+        var result: BigInteger = 0
         
         for i in 0..<max(lhs.bitWidth, rhs.bitWidth) {
             //If left is the same as right (wether true of false) return false
             //If left is different then right (one of them is true, the other is false) return ture
-            
             result[i] = lhs[i] != rhs[i]
         }
         
