@@ -136,6 +136,131 @@ extension BigInteger {
     }
 }
 
+/*
+ //MARK: Divison
+ /// Returns the quotient of dividing the first value by the second.
+ ///
+ /// For integer types, any remainder of the division is discarded.
+ ///
+ ///     let x = 21 / 5
+ ///     // x == 4
+ ///
+ /// - Parameters:
+ ///   - lhs: The value to divide.
+ ///   - rhs: The value to divide `lhs` by. `rhs` must not be zero.
+ public static func / (lhs: BigInt, rhs: BigInt) -> BigInt {
+     if(rhs == BigInt()) {
+         //FIXME: Should be an overflow error
+         return BigInt()
+     }
+     
+     var result = BigInt()
+     
+     let dividend: BigInt = lhs.abs()
+     let divisor: BigInt = rhs.abs()
+     
+     var partialDividend: BigInt = BigInt(dividend.source.last ?? 0)
+     var pdIndex: Int = dividend.source.count - 2
+     
+     while(pdIndex >= 0) {
+         while(partialDividend < divisor) {
+             partialDividend.source.insert(0, at: 0)
+             partialDividend += dividend.source[pdIndex]
+             pdIndex -= 1
+         }
+     
+         while(partialDividend >= divisor) {
+             partialDividend -= divisor
+             result += dividend.sourcePower(pdIndex + 1)
+         }
+     }
+     
+     //Negative
+     result.negative = lhs.negative != rhs.negative
+         
+     return result
+ }
+ 
+ /// Divides the first value by the second and stores the quotient in the
+ /// left-hand-side variable.
+ ///
+ /// - Parameters:
+ ///   - lhs: The value to divide.
+ ///   - rhs: The value to divide `lhs` by. `rhs` must not be zero.
+ public static func /= (lhs: inout BigInt, rhs: BigInt) {
+     lhs = lhs / rhs
+ }
+ 
+ //MARK: Modulus
+ /// Returns the remainder of dividing the first value by the second.
+ ///
+ /// The result of the remainder operator (`%`) has the same sign as `lhs` and
+ /// has a magnitude less than `rhs.magnitude`.
+ ///
+ ///     let x = 22 % 5
+ ///     // x == 2
+ ///     let y = 22 % -5
+ ///     // y == 2
+ ///     let z = -22 % -5
+ ///     // z == -2
+ ///
+ /// For any two integers `a` and `b`, their quotient `q`, and their remainder
+ /// `r`, `a == b * q + r`.
+ ///
+ /// - Parameters:
+ ///   - lhs: The value to divide.
+ ///   - rhs: The value to divide `lhs` by. `rhs` must not be zero.
+ public static func % (lhs: BigInt, rhs: BigInt) -> BigInt {
+     let dividend: BigInt = lhs.abs()
+     let divisor: BigInt = rhs.abs()
+     
+     var partialDividend: BigInt = BigInt(dividend.source.last ?? 0)
+     var pdIndex: Int = dividend.source.count - 2
+     
+     while(pdIndex >= 0) {
+         while(partialDividend < divisor) {
+             partialDividend.source.insert(0, at: 0)
+             partialDividend += dividend.source[pdIndex]
+             pdIndex -= 1
+         }
+     
+         while(partialDividend >= divisor) {
+             partialDividend -= divisor
+         }
+     }
+     
+     //Negative
+     partialDividend.negative = lhs.negative != rhs.negative
+     
+     return partialDividend
+ }
+ 
+ /// Divides the first value by the second and stores the remainder in the
+ /// left-hand-side variable.
+ ///
+ /// The result has the same sign as `lhs` and has a magnitude less than
+ /// `rhs.magnitude`.
+ ///
+ ///     var x = 22
+ ///     x %= 5
+ ///     // x == 2
+ ///
+ ///     var y = 22
+ ///     y %= -5
+ ///     // y == 2
+ ///
+ ///     var z = -22
+ ///     z %= -5
+ ///     // z == -2
+ ///
+ /// - Parameters:
+ ///   - lhs: The value to divide.
+ ///   - rhs: The value to divide `lhs` by. `rhs` must not be zero.
+ public static func %= (lhs: inout BigInt, rhs: BigInt) {
+     lhs = lhs % rhs
+ }
+ */
+
 precedencegroup PowerPrecedence { higherThan: MultiplicationPrecedence }
 infix operator ^^ : PowerPrecedence
 extension BigInteger {

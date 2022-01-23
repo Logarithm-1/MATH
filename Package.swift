@@ -5,14 +5,16 @@ import PackageDescription
 
 let excludedFilenames: [String] = ["README.md"]
 
+//TODO: Add a all incopassing Libary ("MATH")
+
 let package = Package(
     name: "MATH",
     platforms: [
             .macOS(.v10_14), .iOS(.v13), .tvOS(.v13)
     ],
     products: [
-        .library(name: "MATH", targets: ["MATH"]),
         .library(name: "BigInteger", targets: ["BigInteger"]),
+        .library(name: "Constants", targets: ["Constants"]),
         .library(name: "Matrix", targets: ["Matrix"]),
         .library(name: "ModularArithmetic", targets: ["ModularArithmetic"]),
         .library(name: "Vector", targets: ["Vector"]),
@@ -24,11 +26,11 @@ let package = Package(
     targets: [
         // MARK: - Public API
         .target(
-            name: "MATH",
+            name: "BigInteger",
             dependencies: [],
             exclude: excludedFilenames),
         .target(
-            name: "BigInteger",
+            name: "Constants",
             dependencies: [],
             exclude: excludedFilenames),
         .target(
@@ -46,11 +48,11 @@ let package = Package(
         
         // MARK: - Unit test bundles
         .testTarget(
-            name: "MATHTests",
-            dependencies: ["MATH"]),
-        .testTarget(
           name: "BigIntegerTests",
           dependencies: ["BigInteger"]),
+        .testTarget(
+          name: "ConstantsTests",
+          dependencies: ["Constants"]),
         .testTarget(
           name: "MatrixTests",
           dependencies: ["Matrix"]),

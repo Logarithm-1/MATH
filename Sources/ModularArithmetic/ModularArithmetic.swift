@@ -71,3 +71,28 @@ extension ModularArithmetic where Self : SignedInteger {
         return 0
     }
 }
+
+/*
+ public func divide(_ dividend: Element, _ divisor: Element) -> Element {
+     var modCoefficient: Element = 0
+     var dividendCoefficient: Element = 0
+     let _ = MATH.greatestCommonDenominatorExtended(modulus, dividend, firstCoefficient: &modCoefficient, secondCoefficient: &dividendCoefficient)
+     let quotient = divisor * dividendCoefficient
+     return mod(quotient)
+ }
+ 
+ 
+ func inversePower(_ base: Element, _ power: Element) -> Element {
+     if(MATH.isPrime(modulus)) {
+         let a: Element = modulus - 1
+         var powerCoefficient: Element = 0
+         var aCoefficient: Element = 0
+         let _ = MATH.greatestCommonDenominatorExtended(power, a, firstCoefficient: &powerCoefficient, secondCoefficient: &aCoefficient)
+         
+         let inversePower: Element = a + aCoefficient
+         return self.power(base, inversePower)
+     }
+     
+     return Element(0)
+ }
+ */
