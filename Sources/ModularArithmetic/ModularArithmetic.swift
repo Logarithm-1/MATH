@@ -7,6 +7,8 @@
 //
 // See https://github.com/Logarithm-1/MATH/blob/main/LICENSE for license information
 
+import IntegerUtilities
+
 /// A type that adds `modular arithmetic` or `remainder arithmetic` to a ``SignedInteger``.
 public protocol ModularArithmetic: BinaryInteger {}
 
@@ -38,12 +40,22 @@ extension ModularArithmetic where Self : SignedInteger {
     
     //TODO: Should I add functions for (+, -, *, etc)
     
-    //TODO: Greatest Common Denominator - Extended
+    //MARK: - Modular Divison
+    /// Divides two integers using Modular divison.
+    ///
+    /// - Parameters:
+    ///    - divisor: A Integer that is dividing `self`
+    ///    - modulo: The base of the Modular Division.
+    /// - Returns the quotient of the `dividend (self)` divided by the `divisor` using Modular divison with `modulo` as the base.
     public func divided(by divisor: Self, for modulo: Self) -> Self {
-        return 0
+        var modCoefficient: Self = 0
+        var dividendCoefficient: Self = 0
+        let _ = greatestCommonDenominatorExtended(modulo, self, aCoefficient: &modCoefficient, bCoefficient: &dividendCoefficient)
+        let quotient = divisor * dividendCoefficient
+        return quotient.modulus(modulo)
     }
     
-    //MARK: - Powers
+    //MARK: - Power
     public func power(of power: Self, for modulo: Self) -> Self {
         var value: Self = self.modulus(modulo)
         var ex: Self = power
@@ -67,32 +79,17 @@ extension ModularArithmetic where Self : SignedInteger {
     }
     
     //TODO: Greatest Common Denominator - Extended
-    public func inversePower(of power: Self, for modulo: Self) -> Self {
-        return 0
+    public func inversePower(of power: Self, for modulo: Self) -> Self? {
+        if(isPrime(modulo)) {
+            let b: Self = modulo - 1
+            var powerCoefficient: Self = 0
+            var bCoefficient: Self = 0
+            let _ = greatestCommonDenominatorExtended(power, b, aCoefficient: &powerCoefficient, bCoefficient: &bCoefficient)
+            
+            let inversePower: Self = b + bCoefficient
+            return self.power(of: inversePower, for: modulo)
+        }
+        
+        return nil
     }
 }
-
-/*
- public func divide(_ dividend: Element, _ divisor: Element) -> Element {
-     var modCoefficient: Element = 0
-     var dividendCoefficient: Element = 0
-     let _ = MATH.greatestCommonDenominatorExtended(modulus, dividend, firstCoefficient: &modCoefficient, secondCoefficient: &dividendCoefficient)
-     let quotient = divisor * dividendCoefficient
-     return mod(quotient)
- }
- 
- 
- func inversePower(_ base: Element, _ power: Element) -> Element {
-     if(MATH.isPrime(modulus)) {
-         let a: Element = modulus - 1
-         var powerCoefficient: Element = 0
-         var aCoefficient: Element = 0
-         let _ = MATH.greatestCommonDenominatorExtended(power, a, firstCoefficient: &powerCoefficient, secondCoefficient: &aCoefficient)
-         
-         let inversePower: Element = a + aCoefficient
-         return self.power(base, inversePower)
-     }
-     
-     return Element(0)
- }
- */

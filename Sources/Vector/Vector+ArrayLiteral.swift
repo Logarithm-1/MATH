@@ -1,4 +1,4 @@
-// Vector+Arithmetic.swift
+// Vector+ArrayLiteral.swift
 //
 // This source file is part of the Swift Math open source project.
 //

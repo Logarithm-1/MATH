@@ -1,4 +1,4 @@
-// Vector.swift
+// Vector+Comparable.swift
 //
 // This source file is part of the Swift Math open source project.
 //

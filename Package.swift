@@ -34,12 +34,16 @@ let package = Package(
             dependencies: [],
             exclude: excludedFilenames),
         .target(
+          name: "IntegerUtilities",
+          dependencies: [],
+          exclude: excludedFilenames),
+        .target(
             name: "Matrix",
             dependencies: [],
             exclude: excludedFilenames),
         .target(
             name: "ModularArithmetic",
-            dependencies: [],
+            dependencies: ["IntegerUtilities"],
             exclude: excludedFilenames),
         .target(
             name: "Vector",
@@ -53,6 +57,9 @@ let package = Package(
         .testTarget(
           name: "ConstantsTests",
           dependencies: ["Constants"]),
+        .testTarget(
+          name: "IntegerUtilitiesTests",
+          dependencies: ["IntegerUtilities"]),
         .testTarget(
           name: "MatrixTests",
           dependencies: ["Matrix"]),

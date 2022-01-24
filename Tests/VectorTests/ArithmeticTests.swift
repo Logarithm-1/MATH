@@ -64,6 +64,4 @@ final class ArithmeticTests: XCTestCase {
         let dotProduct = vector1 •* vector2
         XCTAssertEqual(dotProduct, 39)
     }
-    
-    
 }
