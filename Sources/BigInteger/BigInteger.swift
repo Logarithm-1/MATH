@@ -159,31 +159,15 @@ extension BigInteger {
         }
     }
     
-    public func toString() -> String {
-        var str: String = ""
-        
-        for (_, bit) in source.reversed().enumerated() {
-            if(bit) {
-                str += "1"
-            } else {
-                str += "0"
-            }
-        }
-        
-        return str
-    }
-    
     public func toString(radix: Int = 10) -> String {
         var str: String = ""
         
         var num: BigInteger = self
-        print(self)
         
         while(num > 0) {
-            let result = num.divided(by: 10)
-            str += result.remainder._toString()
+            let result = num.divided(by: BigInteger(radix))
+            str += result.remainder._toString(radix: radix)
             num = result.quotient
-            print(result.quotient, result.remainder, str)
         }
         
         if(negative) {
@@ -193,8 +177,26 @@ extension BigInteger {
         return String(str.reversed())
     }
     
-    private func _toString() -> String {
-        return String(toInt())
+    /// A Helper Function for `toString()` function. Suppose to work when `self` is a small integer, something that a normal `Int` should be able to store.
+    /// - Note: Only use if BitWidth is less than or equal to 64
+    private func _toString(radix: Int) -> String {
+        if(bitWidth > 64) {
+            fatalError("Cannot convert to integer at this size")
+        }
+        
+        var result: Int = 0
+        
+        for (index, bit) in source.enumerated() {
+            if(bit) {
+                result += Int(pow(2.0, Double(index)))
+            }
+        }
+        
+        if(negative) {
+            result *= -1
+        }
+        
+        return String(result, radix: radix)
     }
     
     public func toInt() -> Int {

@@ -31,7 +31,7 @@ extension BigInteger: AdditiveArithmetic {
             let and: BigInteger = (lhs & rhs) &<< 1
             let xor: BigInteger = lhs ^ rhs
             
-            if(and.toInt() == 0) {
+            if(and == 0) {
                 return xor
             }
             

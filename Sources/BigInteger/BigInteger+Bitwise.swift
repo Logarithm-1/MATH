@@ -263,7 +263,7 @@ extension BigInteger {
     public static func &<< (lhs: BigInteger, rhs: BigInteger) -> BigInteger {
         var result: BigInteger = lhs
         
-        if(rhs.toInt() == 0) {
+        if(rhs == 0) {
             return lhs
         }
         

@@ -14,14 +14,23 @@ final class BasicTests: XCTestCase {
     
     func testInitializers() {
         let num: BigInteger = BigInteger(25)
-        XCTAssertEqual(num.toString(), "11001")
+        XCTAssertEqual(num.toString(), "25")
+    }
+    
+    func testToString(for value: Int) {
+        XCTAssertEqual(BigInteger(value).toString(radix: 2),  String(value, radix: 2))
+        XCTAssertEqual(BigInteger(value).toString(radix: 8),  String(value, radix: 8))
+        XCTAssertEqual(BigInteger(value).toString(radix: 10), String(value, radix: 10))
+        XCTAssertEqual(BigInteger(value).toString(radix: 16), String(value, radix: 16))
+        XCTAssertEqual(BigInteger(value).toString(radix: 32), String(value, radix: 32))
+        XCTAssertEqual(BigInteger(value).toString(radix: 36), String(value, radix: 36))
     }
     
     func testToString() {
-        XCTAssertEqual(BigInteger(1023).toString(radix: 10), "1023")
-        XCTAssertEqual(BigInteger(8148246).toString(radix: 10), "8148246")
-        XCTAssertEqual(BigInteger(789281).toString(radix: 10), "789281")
-        XCTAssertEqual(BigInteger(5658).toString(radix: 10), "5658")
+        testToString(for: 1023)
+        testToString(for: 8148246)
+        testToString(for: 789281)
+        testToString(for: 5658)
     }
     
 }
