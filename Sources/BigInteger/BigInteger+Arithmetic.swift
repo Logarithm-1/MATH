@@ -240,31 +240,37 @@ extension BigInteger {
             fatalError("Can't divide by zero")
         }
         
-        var result: BigInteger = 0
-        
-        //TODO: Fix .magnitude
-        let dividend: BigInteger = self.negative ? self * (-1) : self
-        let divisor: BigInteger = rhs.negative ? rhs * (-1) : rhs
+        // dividend / divisor = quotient R remainder
+        let dividend: BigInteger = self //FIXME: .magnitude
+        let divisor: BigInteger = rhs //FIXME: .magnitude
         
         var partialDividend: BigInteger = 1
-        var index: Int = dividend.bitWidth - 2
+        var index: Int = dividend.bitWidth - 1 //First bit from left to right
         
-        print("Index: \(index)")
+        var result: BigInteger = 0
+        
         while(index >= 0) {
-            while(partialDividend >= divisor) {
-                partialDividend -= divisor
-                print(index + 1)
-                result += (dividend &<< BigInteger(index + 1))
+            //Increase partialDividend until it is bigger than divisor.
+            if(partialDividend < divisor) {
+                //Move partial Dividend over one to the left
+                partialDividend &<<= 1
+                //Move index to the right one
+                index -= 1
+                //Add in the next dividend bit (at index)
+                partialDividend[0] = dividend[index]
+                continue
             }
             
-            while(partialDividend < divisor) {
-                partialDividend &<<= 1
-                partialDividend[0] = dividend[index]
-                index -= 1
+            if(partialDividend >= divisor) {
+                partialDividend -= divisor
+                result += BigInteger(1) &<< BigInteger(index)
+                continue
             }
         }
         
-        result.negative = self.negative != rhs.negative
+        //Since index is now -1 (It goes through the while one more time) partialDividend is not moved to the left 1. So to get remainder we must move it back 1 to the right.
+        partialDividend &>>= 1
+        
         return (quotient: result, remainder: partialDividend)
     }
 }

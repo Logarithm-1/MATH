@@ -66,9 +66,9 @@ final class ArithmeticTests: XCTestCase {
     
     func testDividing() {
         testDividingTwoIntegers(5, 3)
-        //testDividingTwoIntegers(324, 21)
-        //testDividingTwoIntegers(5233, 36432)
-        //testDividingTwoIntegers(5865, 343)
+        testDividingTwoIntegers(324, 21)
+        testDividingTwoIntegers(5233, 36432)
+        testDividingTwoIntegers(5865, 343)
     }
     
     func testModing() {

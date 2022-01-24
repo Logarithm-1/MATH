@@ -46,7 +46,8 @@ extension BigInteger {
     ///
     /// Equivalent to `BigInteger([false], false)`.
     public init() {
-        self.init(source: [false], negative: false)
+        let source: [Bool] = [false]
+        self.init(source: source, negative: false)
     }
     
     /// A BigInteger constructed by specifying the reverse of the source array (so that it would be read left-right correctly).
@@ -62,6 +63,9 @@ extension BigInteger {
     public init<T: UnsignedInteger>(_ num: T, negative: Bool = false) {
         if(num == 0) {
             self.init()
+            return
+        } else if(num == 1) {
+            self.init(source: [true])
             return
         }
         
@@ -134,15 +138,24 @@ extension BigInteger {
             
             //Index should be in range of source now, so should be good to set the value.
             source[index] = newValue
-            
-            //Remove trailing zeros
-            for index in 0..<bitWidth {
-                if(!source[bitWidth - index - 1]) {
-                    source.removeLast()
-                } else {
-                    break
-                }
+        }
+    }
+    
+    public mutating func removeTrailingZeros() {
+        for index in 0..<bitWidth {
+            if(index == 0) {
+                break
             }
+            
+            if(!source[bitWidth - index - 1]) {
+                source.removeLast()
+            } else {
+                break
+            }
+        }
+        
+        if(bitWidth == 0) {
+            self[0] = false
         }
     }
     

@@ -24,12 +24,7 @@ extension BigInteger: Equatable {
             return false
         }
         
-        //If the number of bits is different on one side compared to the other, then both sides are not equal.
-        if(lhs.bitWidth != rhs.bitWidth) {
-            return false
-        }
-        
-        for index in 0..<lhs.bitWidth {
+        for index in 0..<max(lhs.bitWidth, rhs.bitWidth) {
             if(lhs[index] != rhs[index]) {
                 return false
             }
