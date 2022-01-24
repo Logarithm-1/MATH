@@ -80,7 +80,7 @@ extension ModularArithmetic where Self : SignedInteger {
     
     //TODO: Greatest Common Denominator - Extended
     public func inversePower(of power: Self, for modulo: Self) -> Self? {
-        if(isPrime(modulo)) {
+        if(modulo.isPrime()) {
             let b: Self = modulo - 1
             var powerCoefficient: Self = 0
             var bCoefficient: Self = 0
