@@ -17,4 +17,8 @@ final class BasicTests: XCTestCase {
         XCTAssertEqual(num.toString(), "11001")
     }
     
+    func testToString() {
+        XCTAssertEqual(BigInteger(1023).toString(radix: 10), "1023")
+    }
+    
 }

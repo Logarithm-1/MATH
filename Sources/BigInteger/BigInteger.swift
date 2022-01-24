@@ -132,8 +132,17 @@ extension BigInteger {
                 source.append(false)
             }
             
-            //If
+            //Index should be in range of source now, so should be good to set the value.
             source[index] = newValue
+            
+            //Remove trailing zeros
+            for index in 0..<bitWidth {
+                if(!source[bitWidth - index - 1]) {
+                    source.removeLast()
+                } else {
+                    break
+                }
+            }
         }
     }
     
@@ -149,6 +158,24 @@ extension BigInteger {
         }
         
         return str
+    }
+    
+    public func toString(radix: Int = 10) -> String {
+        var str: String = ""
+        
+        var num: BigInteger = self
+        
+        while(num > 0) {
+            let result = num.divided(by: 10)
+            str += result.remainder._toString()
+            num = result.remainder
+        }
+        
+        return String(str)
+    }
+    
+    private func _toString() -> String {
+        return String(toInt())
     }
     
     public func toInt() -> Int {

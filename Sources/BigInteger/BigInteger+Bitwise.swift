@@ -328,7 +328,7 @@ extension BigInteger {
     prefix public static func ~(x: BigInteger) -> BigInteger {
         var result: BigInteger = BigInteger()
 
-        for i in 0..<x.upperLimit {
+        for i in 0..<x.bitWidth {
             result[i] = !x[i]
         }
         
