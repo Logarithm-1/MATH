@@ -56,31 +56,25 @@ extension BigInteger: Comparable {
             return false
         }
         
-        //lhs.negative == rhs.negative
-        if(lhs.bitWidth == rhs.bitWidth) {
-            //Check
-            for i in 0..<lhs.bitWidth {
-                //Start from the last element in the array.
-                let index: Int = lhs.bitWidth - i - 1
-                
-                //Since we are starting from the largest bit value (2^index), if rhs is true and lhs is false, then we can conclue that lhs < rhs
-                
-                if(lhs[index] != rhs[index] && rhs[index]) {
-                    //lhs[index] = false, rhs[index] = true
-                    //Since we are starting from the largest bit value, we can conclude that lhs < rhs (thus return true) if both lhs and rhs are positive. If they are both negative then we can conclude that lhs > rhs (thus return false).
-                    return lhs.negative ? false : true
-                } else if(lhs[index] != rhs[index]) {
-                    //lhs = true, rhs = false
-                    //Since we are starting from the largest bit value. We can conclude that lhs > rhs (thus return false) if both lhs and rhs are positive. If they are both negative then we can concluded that lhs < rhs (thus return true).
-                    return lhs.negative ? true : false
-                }
-                
-                //lhs[index] == rhs[index]
-                //Cannot determine yet, go down to the next largest value.
+        //Check
+        for i in 0..<max(lhs.bitWidth, rhs.bitWidth) {
+            //Start from the last element in the array.
+            let index: Int = max(lhs.bitWidth, rhs.bitWidth) - i - 1
+            
+            //Since we are starting from the largest bit value (2^index), if rhs is true and lhs is false, then we can conclue that lhs < rhs
+            
+            if(lhs[index] != rhs[index] && rhs[index]) {
+                //lhs[index] = false, rhs[index] = true
+                //Since we are starting from the largest bit value, we can conclude that lhs < rhs (thus return true) if both lhs and rhs are positive. If they are both negative then we can conclude that lhs > rhs (thus return false).
+                return lhs.negative ? false : true
+            } else if(lhs[index] != rhs[index]) {
+                //lhs = true, rhs = false
+                //Since we are starting from the largest bit value. We can conclude that lhs > rhs (thus return false) if both lhs and rhs are positive. If they are both negative then we can concluded that lhs < rhs (thus return true).
+                return lhs.negative ? true : false
             }
-        } else if(lhs.bitWidth < rhs.bitWidth) {
-            //If the lhs has lesser bitWidth we can determine that the value is also lesser than rhs, assuming that all leadding zero's (false's) are removed from array.
-            return true
+            
+            //lhs[index] == rhs[index]
+            //Cannot determine yet, go down to the next largest value.
         }
         
         //If the lhs has greater bitWidth we can determine that the value is not lesser than rhs.

@@ -127,7 +127,7 @@ extension BigInteger {
             }
             
             //If the index is out of range then don't do anything.
-            if(index > upperLimit) {
+            if(index > upperLimit || index < 0) {
                 return
             }
             
@@ -177,14 +177,20 @@ extension BigInteger {
         var str: String = ""
         
         var num: BigInteger = self
+        print(self)
         
         while(num > 0) {
             let result = num.divided(by: 10)
             str += result.remainder._toString()
-            num = result.remainder
+            num = result.quotient
+            print(result.quotient, result.remainder, str)
         }
         
-        return String(str)
+        if(negative) {
+            str += "-"
+        }
+        
+        return String(str.reversed())
     }
     
     private func _toString() -> String {

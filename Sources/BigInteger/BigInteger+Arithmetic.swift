@@ -264,12 +264,15 @@ extension BigInteger {
             if(partialDividend >= divisor) {
                 partialDividend -= divisor
                 result += BigInteger(1) &<< BigInteger(index)
+                
                 continue
             }
         }
         
         //Since index is now -1 (It goes through the while one more time) partialDividend is not moved to the left 1. So to get remainder we must move it back 1 to the right.
         partialDividend &>>= 1
+        
+        result.negative = negative != rhs.negative
         
         return (quotient: result, remainder: partialDividend)
     }
