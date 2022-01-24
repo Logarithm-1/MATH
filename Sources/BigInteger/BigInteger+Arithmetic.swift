@@ -142,7 +142,7 @@ extension BigInteger {
         
         for i in 0..<rhs.bitWidth {
             if(rhs[i]) {
-                product += lhs &<< 1
+                product += lhs &<< BigInteger(i)
             }
         }
         
