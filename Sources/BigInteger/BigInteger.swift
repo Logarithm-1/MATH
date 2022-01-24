@@ -101,8 +101,18 @@ extension BigInteger {
     
     //TODO: Integer String
     /// A BigInteger that equates to an Integer String.
-    public init(_ stringInt: String) {
-        self.init()
+    public init?(_ stringInt: String) {
+        self.init(source: [false])
+        
+        //Iterate through string starting with tens place
+        for digit in stringInt {
+            if let value: Int = Int(String(digit)) {
+                self *= 10
+                self += BigInteger(value)
+            } else if(digit != "_" || digit != "," || digit != ".") {
+                return nil
+            }
+        }
     }
 }
 
@@ -168,6 +178,10 @@ extension BigInteger {
             let result = num.divided(by: BigInteger(radix))
             str += result.remainder._toString(radix: radix)
             num = result.quotient
+        }
+        
+        if(str == "") {
+            str += "0"
         }
         
         if(negative) {

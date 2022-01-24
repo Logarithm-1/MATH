@@ -17,6 +17,10 @@ final class BasicTests: XCTestCase {
         XCTAssertEqual(num.toString(), "25")
     }
     
+    func testStringInitializer(for str: String) {
+        XCTAssertEqual((BigInteger(str) ?? BigInteger(5)).toString(), str)
+    }
+    
     func testToString(for value: Int) {
         XCTAssertEqual(BigInteger(value).toString(radix: 2),  String(value, radix: 2))
         XCTAssertEqual(BigInteger(value).toString(radix: 8),  String(value, radix: 8))
@@ -26,6 +30,13 @@ final class BasicTests: XCTestCase {
         XCTAssertEqual(BigInteger(value).toString(radix: 36), String(value, radix: 36))
     }
     
+    func testStringInitializer() {
+        testStringInitializer(for: "5845")
+        testStringInitializer(for: "89465168465165432184")
+        testStringInitializer(for: "46849685498168465486516842684849848945467468948")
+        testStringInitializer(for: "849841659848798459135215646548978915239729821849546124561984687643218239856256495662632326598956326895622213465498745165852585258516897465843216465465432")
+    }
+    
     func testToString() {
         testToString(for: 1023)
         testToString(for: 8148246)
@@ -33,4 +44,10 @@ final class BasicTests: XCTestCase {
         testToString(for: 5658)
     }
     
+    
+    func measureStringInitializer() {
+        measure {
+            testStringInitializer(for: "46849685498168465486516842684849848945467468948")
+        }
+    }
 }

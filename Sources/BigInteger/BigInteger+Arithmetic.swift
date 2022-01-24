@@ -296,63 +296,17 @@ extension BigInteger {
 }
 
 
-/*
- public static func / (lhs: BigInt, rhs: BigInt) -> BigInt {
-     if(rhs == BigInt()) {
-         //FIXME: Should be an overflow error
-         return BigInt()
-     }
-     
-     var result = BigInt()
-     
-     let dividend: BigInt = lhs.abs()
-     let divisor: BigInt = rhs.abs()
-     
-     var partialDividend: BigInt = BigInt(dividend.source.last ?? 0)
-     var pdIndex: Int = dividend.source.count - 2
-     
-     while(pdIndex >= 0) {
-         while(partialDividend < divisor) {
-             partialDividend.source.insert(0, at: 0)
-             partialDividend += dividend.source[pdIndex]
-             pdIndex -= 1
-         }
-     
-         while(partialDividend >= divisor) {
-             partialDividend -= divisor
-             result += dividend.sourcePower(pdIndex + 1)
-         }
-     }
-     
-     //Negative
-     result.negative = lhs.negative != rhs.negative
-         
-     return result
- }
- 
- public static func % (lhs: BigInt, rhs: BigInt) -> BigInt {
-     let dividend: BigInt = lhs.abs()
-     let divisor: BigInt = rhs.abs()
-     
-     var partialDividend: BigInt = BigInt(dividend.source.last ?? 0)
-     var pdIndex: Int = dividend.source.count - 2
-     
-     while(pdIndex >= 0) {
-         while(partialDividend < divisor) {
-             partialDividend.source.insert(0, at: 0)
-             partialDividend += dividend.source[pdIndex]
-             pdIndex -= 1
-         }
-     
-         while(partialDividend >= divisor) {
-             partialDividend -= divisor
-         }
-     }
-     
-     //Negative
-     partialDividend.negative = lhs.negative != rhs.negative
-     
-     return partialDividend
- }
- 
- */
+
+extension Int {
+    //MARK: - Power
+    public static func ^^(lhs: Int, rhs: Int) -> Int {
+        var result: Int = 1
+        
+        //TODO: Remove toInt()
+        for _ in 0..<rhs {
+            result *= lhs
+        }
+        
+        return result
+    }
+}
