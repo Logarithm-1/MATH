@@ -16,8 +16,8 @@ final class BitwiseTests: XCTestCase {
     func testAndOperationBetween(on x: UInt8, _ y: UInt8) {
         let correctValue = x & y
         
-        //let value = BigInteger(x) & BigInteger(y)
-        //XCTAssertEqual(value, BigInteger(correctValue))
+        let value = BigInteger(x) & BigInteger(y)
+        XCTAssertEqual(value, BigInteger(correctValue))
         
         let uValue = BigUInteger(x) & BigUInteger(y)
         XCTAssertEqual(uValue, BigUInteger(correctValue))
@@ -26,8 +26,8 @@ final class BitwiseTests: XCTestCase {
     func testOrOperationBetween(on x: UInt8, _ y: UInt8) {
         let correctValue = x | y
         
-        //let value = BigInteger(x) | BigInteger(y)
-        //XCTAssertEqual(value, BigInteger(correctValue))
+        let value = BigInteger(x) | BigInteger(y)
+        XCTAssertEqual(value, BigInteger(correctValue))
         
         let uValue = BigUInteger(x) | BigUInteger(y)
         XCTAssertEqual(uValue, BigUInteger(correctValue))
@@ -36,8 +36,8 @@ final class BitwiseTests: XCTestCase {
     func testXorOperationBetween(on x: UInt8, _ y: UInt8) {
         let correctValue = x ^ y
         
-        //let value = BigInteger(x) ^ BigInteger(y)
-        //XCTAssertEqual(value, BigInteger(correctValue))
+        let value = BigInteger(x) ^ BigInteger(y)
+        XCTAssertEqual(value, BigInteger(correctValue))
         
         let uValue = BigUInteger(x) ^ BigUInteger(y)
         XCTAssertEqual(uValue, BigUInteger(correctValue))
@@ -46,8 +46,8 @@ final class BitwiseTests: XCTestCase {
     func testRightOperationBetween(on x: UInt8, _ y: UInt8) {
         let correctValue = x &>> y
         
-        //let value = BigInteger(x) &>> BigInteger(y)
-        //XCTAssertEqual(value, BigInteger(correctValue))
+        let value = BigInteger(x) &>> BigInteger(y)
+        XCTAssertEqual(value, BigInteger(correctValue))
         
         let uValue = BigUInteger(x) &>> BigUInteger(y)
         XCTAssertEqual(uValue, BigUInteger(correctValue))
@@ -56,8 +56,8 @@ final class BitwiseTests: XCTestCase {
     func testLeftOperationBetween(on x: UInt8, _ y: UInt8) {
         let correctValue = x &<< y
         
-        //let value = BigInteger(x) &<< BigInteger(y)
-        //XCTAssertEqual(value, BigInteger(correctValue))
+        let value = BigInteger(x) &<< BigInteger(y)
+        XCTAssertEqual(value, BigInteger(correctValue))
         
         let uValue = BigUInteger(x) &<< BigUInteger(y)
         XCTAssertEqual(uValue, BigUInteger(correctValue))
