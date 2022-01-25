@@ -8,6 +8,7 @@
 // See https://github.com/Logarithm-1/MATH/blob/main/LICENSE for license information
 
 //MARK: - Integer Conversion
+//MARK: From BinaryInteger
 extension BigUInteger {
     public init<T: UnsignedInteger>(_ value: T) {
         if(value == 0) {
@@ -68,6 +69,7 @@ extension BigUInteger {
 }
 
 //MARK: - Floating Point Conversion
+//MARK: From BinaryFloatingPoint
 extension BigUInteger {
     public init?<Element: BinaryFloatingPoint>(exactly source: Element) {
         guard source.isFinite else {
@@ -107,6 +109,7 @@ extension BigUInteger {
     }
 }
 
+//MARK: to BinaryFloatingPoint
 extension BinaryFloatingPoint where RawExponent: FixedWidthInteger, RawSignificand: FixedWidthInteger {
     
     //TODO: BigUInteger to BinaryFloatingPoint
@@ -117,7 +120,7 @@ extension BinaryFloatingPoint where RawExponent: FixedWidthInteger, RawSignifica
 }
 
 //MARK: - String Conversion
-//String to BigUInteger
+//MARK: From String
 extension BigUInteger {
     /// A BigUInteger that equates to an ASCII representation in a given radix. Where numerals above `9` are represented by letters from the english alphabet.
     ///
@@ -143,7 +146,7 @@ extension BigUInteger {
     }
 }
 
-//BigUInteger to String
+//MARK: to String
 extension String {
     /// A String that equates to the ASCII representation of a BigUInteger in a given `radix`. Where numerals abobe `9` are represented by letters from the english alphabet.
     ///
@@ -167,7 +170,7 @@ extension String {
         
         while(!num.isZero) {
             let result = num.divided(by: BigUInteger(radix))
-            let intRemainder: Int = result.remainder.toInt()
+            let intRemainder: Int = result.remainder.toInt() //FIXME: I don't want to use toInt()
             str += String(intRemainder, radix: radix)
             num = result.quotient
         }
@@ -180,4 +183,29 @@ extension String {
     }
 }
 
+//MARK: String Convertibles
+extension BigUInteger: CustomStringConvertible {
+    public var description: String {
+        return String(self)
+    }
+}
+
+extension BigUInteger: CustomDebugStringConvertible {
+    public var debugDescription: String {
+        return "BigUInteger(size: \(bitWidth), string: \(self))"
+    }
+}
+
+extension BigUInteger: CustomPlaygroundDisplayConvertible {
+    public var playgroundDescription: Any {
+        return "\(self) (\(self.bitWidth) bits)"
+    }
+}
+
+
 //MARK: - Data Conversion
+extension BigUInteger {
+    //MARK: From Data
+    
+    //MARK: To Data
+}

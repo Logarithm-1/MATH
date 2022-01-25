@@ -60,6 +60,6 @@ final class BasicTests: XCTestCase {
     
     func testWords() {
         let num: BigUInteger = 123
-        print(num.words[0])
+        print(num.serialize() as NSData)
     }
 }
