@@ -11,11 +11,15 @@
 //Conform BigInteger to BinaryInteger
 
 extension BigInteger {    
+    public var isZero: Bool {
+        return (self == 0)
+    }
     
     public typealias Word = Bool
     
     public struct Words: RandomAccessCollection {
         private let value: BigInteger
+        
         
         init(_ value: BigInteger) {
             self.value = value

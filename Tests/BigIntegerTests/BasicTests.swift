@@ -19,6 +19,7 @@ final class BasicTests: XCTestCase {
     
     func testStringInitializer(for str: String) {
         XCTAssertEqual((BigInteger(str) ?? BigInteger(5)).toString(), str)
+        XCTAssertEqual(String(BigUInteger(str) ?? BigUInteger(5)), str)
     }
     
     func testToString(for value: Int) {
@@ -28,6 +29,13 @@ final class BasicTests: XCTestCase {
         XCTAssertEqual(BigInteger(value).toString(radix: 16), String(value, radix: 16))
         XCTAssertEqual(BigInteger(value).toString(radix: 32), String(value, radix: 32))
         XCTAssertEqual(BigInteger(value).toString(radix: 36), String(value, radix: 36))
+        
+        XCTAssertEqual(String(BigUInteger(value), radix: 2),  String(value, radix: 2))
+        XCTAssertEqual(String(BigUInteger(value), radix: 8),  String(value, radix: 8))
+        XCTAssertEqual(String(BigUInteger(value), radix: 10), String(value, radix: 10))
+        XCTAssertEqual(String(BigUInteger(value), radix: 16), String(value, radix: 16))
+        XCTAssertEqual(String(BigUInteger(value), radix: 32), String(value, radix: 32))
+        XCTAssertEqual(String(BigUInteger(value), radix: 36), String(value, radix: 36))
     }
     
     func testStringInitializer() {
@@ -52,6 +60,6 @@ final class BasicTests: XCTestCase {
     
     func testWords() {
         let num: BigUInteger = 123
-        print(num.words)
+        print(num.words[0])
     }
 }

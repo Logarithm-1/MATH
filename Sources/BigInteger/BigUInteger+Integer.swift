@@ -11,8 +11,24 @@
 //Conform BigUInteger to BinaryInteger
 
 extension BigUInteger {
+    public static var isSigned: Bool {
+        return false
+    }
     
-    public typealias Word = Bool
+    
+    public var trailingZeroBitCount: Int {
+        return 0
+    }
+    
+    public func hash(into hasher: inout Hasher) {
+        //I Don't Know
+    }
+    
+    public var isZero: Bool {
+        return (self == 0)
+    }
+    
+    public typealias Word = UInt
     
     public struct Words: RandomAccessCollection {
         private let value: BigUInteger
@@ -30,7 +46,7 @@ extension BigUInteger {
         }
         
         public subscript(_ index: Int) -> Word {
-            return value[index]
+            return value[index] ? 1 : 0
         }
     }
     

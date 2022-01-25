@@ -16,3 +16,22 @@ extension BigUInteger: ExpressibleByIntegerLiteral {
 }
 
 //TODO: ExpressibleByStringLiteral
+extension BigUInteger: ExpressibleByStringLiteral {
+    /// A `BigUInteger` from a decimal number represented by a string literal of arbitrary length.
+    /// - Requires the string to only contain decimal digits
+    public init(stringLiteral value: StringLiteralType) {
+        self.init(value, radix: 10)!
+    }
+    
+    /// A `BigUInteger` from a Extended Grapheme Cluster.
+    /// - Requires the string to only contain decimal digits
+    public init(extendedGraphemeClusterLiteral value: String) {
+        self = BigUInteger(value, radix: 10)!
+    }
+    
+    /// A `BigUInteger` from a Unicode Scalar
+    /// - Requires the Scalar to represent a decimal digit.
+    public init(unicodeScalarLiteral value: UnicodeScalar) {
+        self = BigUInteger(String(value), radix: 10)!
+    }
+}

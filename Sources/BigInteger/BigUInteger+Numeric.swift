@@ -35,12 +35,4 @@ extension BigUInteger: Numeric {
             //TODO: set
         }
     }
-    
-    public init?<T>(exactly source: T) where T : BinaryInteger {
-        if let value = UInt(exactly: source) {
-            self.init(value)
-        } else {
-            return nil
-        }
-    }
 }

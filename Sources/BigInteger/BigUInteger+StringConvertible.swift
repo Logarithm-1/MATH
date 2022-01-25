@@ -9,18 +9,18 @@
 
 extension BigUInteger: CustomStringConvertible {
     public var description: String {
-        return toString()
+        return String(self)
     }
 }
 
 extension BigUInteger: CustomDebugStringConvertible {
     public var debugDescription: String {
-        return "BigUInteger(size: \(bitWidth), string: \(toString()))"
+        return "BigUInteger(size: \(bitWidth), string: \(self))"
     }
 }
 
 extension BigUInteger: CustomPlaygroundDisplayConvertible {
     public var playgroundDescription: Any {
-        return toString() + " (\(self.bitWidth) bits)"
+        return "\(self) (\(self.bitWidth) bits)"
     }
 }
