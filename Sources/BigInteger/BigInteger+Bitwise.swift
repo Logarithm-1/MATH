@@ -1,4 +1,4 @@
-// BigUInteger+Bitwise.swift
+// BigInteger+Bitwise.swift
 //
 // This source file is part of the Swift Math open source project.
 //
@@ -7,7 +7,16 @@
 //
 // See https://github.com/Logarithm-1/MATH/blob/main/LICENSE for license information
 
-extension BigUInteger {
+extension BigInteger {
+    public func twosComplement() -> BigUInteger {
+        switch sign {
+        case.plus:
+            return magnitude
+        case.minus:
+            return (~magnitude) + 1
+        }
+    }
+    
     //MARK: - And
     /// Returns the result of performing a bitwise AND operation on the two given
     /// values.
@@ -23,15 +32,9 @@ extension BigUInteger {
     /// - Parameters:
     ///   - lhs: An integer value.
     ///   - rhs: Another integer value.
-    public static func &(lhs: BigUInteger, rhs: BigUInteger) -> BigUInteger {
-        var result: BigUInteger = 0
-        
-        //Min since what ever whould go over whould be false, thus the and would also return false.
-        for i in 0..<Swift.min(lhs.bitWidth, rhs.bitWidth) {
-            result[i] = lhs[i] && rhs[i]
-        }
-        
-        return result
+    public static func &(lhs: BigInteger, rhs: BigInteger) -> BigInteger {
+        return BigInteger(sign: (lhs.sign == .minus || rhs.sign == .minus) ? .minus : .plus,
+                          magnitude: lhs.twosComplement() & rhs.twosComplement())
     }
     
     /// Stores the result of performing a bitwise AND operation on the two given
@@ -47,11 +50,11 @@ extension BigUInteger {
     /// - Parameters:
     ///   - lhs: An integer value.
     ///   - rhs: Another integer value.
-    public static func &= (lhs: inout BigUInteger, rhs: BigUInteger) {
+    public static func &= (lhs: inout BigInteger, rhs: BigInteger) {
         lhs = lhs & rhs
     }
     
-    //MARK: - OR
+    //MARK: - Or
     /// Returns the result of performing a bitwise OR operation on the two given
     /// values.
     ///
@@ -67,14 +70,9 @@ extension BigUInteger {
     /// - Parameters:
     ///   - lhs: An integer value.
     ///   - rhs: Another integer value.
-    public static func |(lhs: BigUInteger, rhs: BigUInteger) -> BigUInteger {
-        var result: BigUInteger = 0
-        
-        for i in 0..<Swift.max(lhs.bitWidth, rhs.bitWidth) {
-            result[i] = lhs[i] || rhs[i]
-        }
-        
-        return result
+    public static func |(lhs: BigInteger, rhs: BigInteger) -> BigInteger {
+        return BigInteger(sign: (lhs.sign == .minus || rhs.sign == .minus) ? .minus : .plus,
+                          magnitude: lhs.twosComplement() | rhs.twosComplement())
     }
     
     /// Stores the result of performing a bitwise OR operation on the two given
@@ -91,7 +89,7 @@ extension BigUInteger {
     /// - Parameters:
     ///   - lhs: An integer value.
     ///   - rhs: Another integer value.
-    public static func |=(lhs: inout BigUInteger, rhs: BigUInteger) {
+    public static func |=(lhs: inout BigInteger, rhs: BigInteger) {
         lhs = lhs | rhs
     }
     
@@ -111,16 +109,9 @@ extension BigUInteger {
     /// - Parameters:
     ///   - lhs: An integer value.
     ///   - rhs: Another integer value.
-    public static func ^(lhs: BigUInteger, rhs: BigUInteger) -> BigUInteger {
-        var result: BigUInteger = 0
-        
-        for i in 0..<Swift.max(lhs.bitWidth, rhs.bitWidth) {
-            //If left is the same as right (wether true of false) return false
-            //If left is different then right (one of them is true, the other is false) return ture
-            result[i] = lhs[i] != rhs[i]
-        }
-        
-        return result
+    public static func ^(lhs: BigInteger, rhs: BigInteger) -> BigInteger {
+        return BigInteger(sign: (lhs.sign == .minus || rhs.sign == .minus) ? .minus : .plus,
+                          magnitude: lhs.twosComplement() ^ rhs.twosComplement())
     }
     
     /// Stores the result of performing a bitwise XOR operation on the two given
@@ -137,7 +128,7 @@ extension BigUInteger {
     /// - Parameters:
     ///   - lhs: An integer value.
     ///   - rhs: Another integer value.
-    public static func ^=(lhs: inout BigUInteger, rhs: BigUInteger) {
+    public static func ^=(lhs: inout BigInteger, rhs: BigInteger) {
         lhs = lhs ^ rhs
     }
     
@@ -176,25 +167,13 @@ extension BigUInteger {
     ///   - rhs: The number of bits to shift `lhs` to the right. If `rhs` is
     ///     outside the range `0..<lhs.bitWidth`, it is masked to produce a
     ///     value within that range.
-    public static func &>> (lhs: BigUInteger, rhs: BigUInteger) -> BigUInteger {
+    public static func &>> (lhs: BigInteger, rhs: BigInteger) -> BigInteger {
         guard rhs >= 0 else {
             return lhs
         }
         
-        var result: BigUInteger = lhs
-        
-        //FIXME: Remove toInt (ie when Range is complete)
-        for _ in 0..<rhs.toInt() {
-            if(result.bitWidth >= 1) {
-                result.source.removeFirst()
-            }
-        }
-        
-        if(result.bitWidth == 0) {
-            result[0] = false
-        }
-        
-        return result
+        let m = lhs.magnitude &>> rhs.magnitude
+        return BigInteger(sign: lhs.sign, magnitude: lhs.sign == .minus && m.isZero ? 1 : m)
     }
     
     /// Returns the result of shifting a value's binary representation the
@@ -246,12 +225,12 @@ extension BigUInteger {
     /// - Parameters:
     ///   - lhs: The value to shift.
     ///   - rhs: The number of bits to shift `lhs` to the right.
-    public static func >><Other: BinaryInteger>(lhs: BigUInteger, rhs: Other) -> BigUInteger {
+    public static func >><Other: BinaryInteger>(lhs: BigInteger, rhs: Other) -> BigInteger {
         guard rhs >= 0 else {
             return lhs
         }
         
-        return lhs &>> BigUInteger(rhs)
+        return lhs &>> BigInteger(rhs)
     }
     
     /// Calculates the result of shifting a value's binary representation the
@@ -282,7 +261,7 @@ extension BigUInteger {
     ///   - rhs: The number of bits to shift `lhs` to the right. If `rhs` is
     ///     outside the range `0..<lhs.bitWidth`, it is masked to produce a
     ///     value within that range.
-    public static func &>>=(lhs: inout BigUInteger, rhs: BigUInteger) {
+    public static func &>>=(lhs: inout BigInteger, rhs: BigInteger) {
         lhs = lhs &>> rhs
     }
     
@@ -340,7 +319,7 @@ extension BigUInteger {
     /// - Parameters:
     ///   - lhs: The value to shift.
     ///   - rhs: The number of bits to shift `lhs` to the right.
-    public static func >>=<Other: BinaryInteger>(lhs: inout BigUInteger, rhs: Other) {
+    public static func >>=<Other: BinaryInteger>(lhs: inout BigInteger, rhs: Other) {
         lhs = lhs >> rhs
     }
     
@@ -379,23 +358,12 @@ extension BigUInteger {
     ///   - rhs: The number of bits to shift `lhs` to the left. If `rhs` is
     ///     outside the range `0..<lhs.bitWidth`, it is masked to produce a
     ///     value within that range.
-    public static func &<< (lhs: BigUInteger, rhs: BigUInteger) -> BigUInteger {
+    public static func &<< (lhs: BigInteger, rhs: BigInteger) -> BigInteger {
         guard rhs > 0 else {
             return lhs
         }
         
-        var result: BigUInteger = lhs
-        
-        if(rhs == 0) {
-            return lhs
-        }
-        
-        //FIXME: Remove toInt() when Range is complete
-        for _ in 0..<rhs.toInt() {
-            result.source.insert(false, at: 0)
-        }
-        
-        return result
+        return BigInteger(sign: lhs.sign, magnitude: lhs.magnitude &<< rhs.magnitude)
     }
     
     /// Returns the result of shifting a value's binary representation the
@@ -436,12 +404,12 @@ extension BigUInteger {
     /// - Parameters:
     ///   - lhs: The value to shift.
     ///   - rhs: The number of bits to shift `lhs` to the left.
-    public static func <<<Other: BinaryInteger>(lhs: BigUInteger, rhs: Other) -> BigUInteger {
+    public static func <<<Other: BinaryInteger>(lhs: BigInteger, rhs: Other) -> BigInteger {
         guard rhs > 0 else {
             return lhs
         }
         
-        return lhs &<< BigUInteger(rhs)
+        return lhs &<< BigInteger(rhs)
     }
     
     /// Returns the result of shifting a value's binary representation the
@@ -472,7 +440,7 @@ extension BigUInteger {
     ///   - rhs: The number of bits to shift `lhs` to the left. If `rhs` is
     ///     outside the range `0..<lhs.bitWidth`, it is masked to produce a
     ///     value within that range.
-    public static func &<<= (lhs: inout BigUInteger, rhs: BigUInteger) {
+    public static func &<<= (lhs: inout BigInteger, rhs: BigInteger) {
         lhs = lhs &<< rhs
     }
     
@@ -518,7 +486,7 @@ extension BigUInteger {
     /// - Parameters:
     ///   - lhs: The value to shift.
     ///   - rhs: The number of bits to shift `lhs` to the left.
-    public static func <<=<Other: BinaryInteger>(lhs: inout BigUInteger, rhs: Other) {
+    public static func <<=<Other: BinaryInteger>(lhs: inout BigInteger, rhs: Other) {
         lhs = lhs << rhs
     }
     
@@ -540,13 +508,12 @@ extension BigUInteger {
     ///     let allOnes = ~UInt8.min   // 0b11111111
     ///
     /// - Complexity: O(1).
-    prefix public static func ~(x: BigUInteger) -> BigUInteger {
-        var result: BigUInteger = BigUInteger()
-
-        for i in 0..<x.bitWidth {
-            result[i] = !x[i]
+    prefix public static func ~(x: BigInteger) -> BigInteger {
+        switch x.sign {
+        case .plus:
+            return BigInteger(sign: .minus, magnitude: x.magnitude + 1)
+        case .minus:
+            return BigInteger(sign: .plus, magnitude: x.magnitude - 1)
         }
-        
-        return result
     }
 }
