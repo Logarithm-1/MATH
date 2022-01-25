@@ -14,33 +14,51 @@ final class ArithmeticTests: XCTestCase {
     func testAddingTwoIntegers(_ x: Int, _ y: Int) {
         let bigInt: BigInteger = BigInteger(x) + BigInteger(y)
         XCTAssertEqual(bigInt, BigInteger(x + y))
+        
+        let bigUInt: BigUInteger = BigUInteger(UInt(x)) + BigUInteger(UInt(y))
+        XCTAssertEqual(bigUInt, BigUInteger(UInt(x + y)))
     }
     
     func testSubtractingTwoIntegers(_ x: Int, _ y: Int) {
         let bigInt: BigInteger = BigInteger(x) - BigInteger(y)
         XCTAssertEqual(bigInt, BigInteger(x - y))
+        
+        if(x - y >= 0) {
+            let bigUInt: BigUInteger = BigUInteger(UInt(x)) - BigUInteger(UInt(y))
+            XCTAssertEqual(bigUInt, BigUInteger(UInt(x - y)))
+        }
     }
     
     func testMultiplyingTwoIntegers(_ x: Int, _ y: Int) {
         let bigInt: BigInteger = BigInteger(x) * BigInteger(y)
-        print(bigInt)
-        
         XCTAssertEqual(bigInt, BigInteger(x * y))
+        
+        let bigUInt: BigUInteger = BigUInteger(UInt(x)) * BigUInteger(UInt(y))
+        XCTAssertEqual(bigUInt, BigUInteger(UInt(x * y)))
     }
     
     func testDividingTwoIntegers(_ x: Int, _ y: Int) {
         let bigInt: BigInteger = BigInteger(x) / BigInteger(y)
         XCTAssertEqual(bigInt, BigInteger(x / y))
+        
+        let bigUInt: BigUInteger = BigUInteger(UInt(x)) / BigUInteger(UInt(y))
+        XCTAssertEqual(bigUInt, BigUInteger(UInt(x / y)))
     }
     
     func testModingTwoIntegers(_ x: Int, _ y: Int) {
         let bigInt: BigInteger = BigInteger(x) % BigInteger(y)
         XCTAssertEqual(bigInt, BigInteger(x % y))
+        
+        let bigUInt: BigUInteger = BigUInteger(UInt(x)) % BigUInteger(UInt(y))
+        XCTAssertEqual(bigUInt, BigUInteger(UInt(x % y)))
     }
     
     func testPoweringTwoIntegers(_ x: Int, _ y: Int) {
         let bigInt: BigInteger = BigInteger(x) ^^ BigInteger(y)
         XCTAssertEqual(bigInt, BigInteger(x ^^ y))
+        
+        let bigUInt: BigUInteger = BigUInteger(UInt(x)) ^^ BigUInteger(UInt(y))
+        XCTAssertEqual(bigUInt, BigUInteger(UInt(x ^^ y)))
     }
     
     func testAdding() {

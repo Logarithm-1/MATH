@@ -17,30 +17,45 @@ final class BitwiseTests: XCTestCase {
         let value = BigInteger(x) & BigInteger(y)
         let correctValue = x & y
         XCTAssertEqual(value, BigInteger(correctValue))
+        
+        let uValue = BigUInteger(x) & BigUInteger(y)
+        XCTAssertEqual(uValue, BigUInteger(correctValue))
     }
     
     func testOrOperationBetween(on x: UInt8, _ y: UInt8) {
         let value = BigInteger(x) | BigInteger(y)
         let correctValue = x | y
         XCTAssertEqual(value, BigInteger(correctValue))
+        
+        let uValue = BigUInteger(x) | BigUInteger(y)
+        XCTAssertEqual(uValue, BigUInteger(correctValue))
     }
     
     func testXorOperationBetween(on x: UInt8, _ y: UInt8) {
         let value = BigInteger(x) ^ BigInteger(y)
         let correctValue = x ^ y
         XCTAssertEqual(value, BigInteger(correctValue))
+        
+        let uValue = BigUInteger(x) ^ BigUInteger(y)
+        XCTAssertEqual(uValue, BigUInteger(correctValue))
     }
     
     func testRightOperationBetween(on x: UInt8, _ y: UInt8) {
         let value = BigInteger(x) &>> BigInteger(y)
         let correctValue = x &>> y
         XCTAssertEqual(value, BigInteger(correctValue))
+        
+        let uValue = BigUInteger(x) &>> BigUInteger(y)
+        XCTAssertEqual(uValue, BigUInteger(correctValue))
     }
     
     func testLeftOperationBetween(on x: UInt8, _ y: UInt8) {
         let value = BigInteger(x) &<< BigInteger(y)
         let correctValue = x &<< y
         XCTAssertEqual(value, BigInteger(correctValue))
+        
+        let uValue = BigUInteger(x) &<< BigUInteger(y)
+        XCTAssertEqual(uValue, BigUInteger(correctValue))
     }
     
     func testAndOperation() {
@@ -57,13 +72,12 @@ final class BitwiseTests: XCTestCase {
         testOrOperationBetween(on: 75, 3)
     }
     
-    /*
     func testXorOperation() {
         testXorOperationBetween(on: 4, 5)
         testXorOperationBetween(on: 243, 32)
         testXorOperationBetween(on: 43, 23)
         testXorOperationBetween(on: 75, 3)
-    }*/
+    }
     
     func testRightOperation() {
         testRightOperationBetween(on: 4, 5)

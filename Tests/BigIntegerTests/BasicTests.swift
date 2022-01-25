@@ -44,10 +44,14 @@ final class BasicTests: XCTestCase {
         testToString(for: 5658)
     }
     
-    
     func measureStringInitializer() {
         measure {
             testStringInitializer(for: "46849685498168465486516842684849848945467468948")
         }
+    }
+    
+    func testWords() {
+        let num: BigUInteger = 123
+        print(num.words)
     }
 }

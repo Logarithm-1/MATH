@@ -1,4 +1,4 @@
-// BigInteger+Integer.swift
+// BigUInteger+Integer.swift
 //
 // This source file is part of the Swift Math open source project.
 //
@@ -8,16 +8,16 @@
 // See https://github.com/Logarithm-1/MATH/blob/main/LICENSE for license information
 
 //MARK: - BinaryInteger
-//Conform BigInteger to BinaryInteger
+//Conform BigUInteger to BinaryInteger
 
-extension BigInteger {    
+extension BigUInteger {
     
     public typealias Word = Bool
     
     public struct Words: RandomAccessCollection {
-        private let value: BigInteger
+        private let value: BigUInteger
         
-        init(_ value: BigInteger) {
+        init(_ value: BigUInteger) {
             self.value = value
         }
         
@@ -40,4 +40,4 @@ extension BigInteger {
 }
 
 //MARK: - SignedInteger
-//Conform BigInteger to SignedInteger
+//Conform BigUInteger to SignedInteger

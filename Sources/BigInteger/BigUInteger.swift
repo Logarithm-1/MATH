@@ -1,4 +1,4 @@
-// BigInteger.swift
+// BigUInteger.swift
 //
 // This source file is part of the Swift Math open source project.
 //
@@ -7,12 +7,13 @@
 //
 // See https://github.com/Logarithm-1/MATH/blob/main/LICENSE for license information
 
-//TODO: Ranges?
-
-/// An integer with the max-limit of at least 1,000 bits.
+/// An unsigned integer type with arbitary precision know as a "big integer"
 ///
-/// TODO: Figure out the max-limit of bits
-public struct BigInteger {
+/// The pros of using big integers is that they never overflow.
+/// The cons is that thye may take a long time to execute.
+///
+/// This partcular big integer type uses booleans to represent bits.
+public struct BigUInteger {
     /// An array of bits (Boolean's) representing the value of an integer.
     ///
     /// The first bit in the array is an boolean that represents the "one's" place. The second element in the array represents the "two's", where the third represents "four's" and so on.
@@ -23,49 +24,38 @@ public struct BigInteger {
     /// So the array would be read in rervse.
     internal var source: [Bool]
     
-    /// A Boolean where if `true` the BigInteger is negative and if `false` it is positve.
-    internal var negative: Bool
-    
     /// The maxiumn size of the array (ie. how many bits the integer can use)
     internal var upperLimit: Int = 1000
     
     /// A BigInteger constructed by specifying the source array.
-    public init(source: [Bool], negative: Bool = false) {
+    public init(source: [Bool]) {
         self.source = source
-        self.negative = negative
     }
 }
 
 //MARK: - Additional Initializers
-extension BigInteger {
+extension BigUInteger {
     /// A BigInteger that equates to zero.'
     ///
-    /// Equivalent to `BigInteger([false], false)`.
+    /// Equivalent to `BigInteger([false])`.
     public init() {
-        let source: [Bool] = [false]
-        self.init(source: source, negative: false)
+        self.init(source: [false])
     }
     
     /// A BigInteger constructed by specifying the reverse of the source array (so that it would be read left-right correctly).
     ///
-    /// Equivalent to `BigInteger(source.reversed(), false)`.
-    public init(reversed source: [Bool], negative: Bool = false) {
-        self.init(source: source.reversed(), negative: negative)
+    /// Equivalent to `BigInteger(source.reversed())`.
+    public init(reversed source: [Bool]) {
+        self.init(source: source.reversed())
     }
     
-    /// A BigInteger that equates to a unsigned integer.
-    ///
-    /// Equivalent to `BigInteger(num, false)`.
-    public init<T: UnsignedInteger>(_ num: T, negative: Bool = false) {
-        if(num == 0) {
+    public init<T: UnsignedInteger>(_ value: T) {
+        if(value == 0) {
             self.init()
-            return
-        } else if(num == 1) {
-            self.init(source: [true])
             return
         }
         
-        let binary = String(num, radix: 2)
+        let binary = String(value, radix: 2)
         var source: [Bool] = [Bool]()
         
         for bit in binary.reversed() {
@@ -81,46 +71,24 @@ extension BigInteger {
             self.init()
         }
         
-        self.init(source: source, negative: negative)
+        self.init(source: source)
     }
     
-    /// A BigInteger that equates to a signed integer.
-    ///
-    /// Equivalent to `BigInteger(num, num < 0)`.
-    public init<T: SignedInteger>(_ num: T) {
-        if(num >= 0) {
-            self.init(UInt(num), negative: false)
-        } else {
-            self.init(UInt(-num), negative: true)
-        }
-    }
-    
-    //TODO: Integer String
-    /// A BigInteger that equates to an Integer String.
-    public init?(_ stringInt: String) {
-        self.init(source: [false])
-        
-        //Iterate through string starting with tens place
-        for digit in stringInt {
-            if let value: Int = Int(String(digit)) {
-                self *= 10
-                self += BigInteger(value)
-            } else if(digit != "_" || digit != "," || digit != ".") {
-                return nil
-            }
-        }
+    public init?(_ stringValue: String) {
+        //TODO: Init
+        self.init()
     }
 }
 
-// MARK: - Basic properties
-extension BigInteger {
+//MARK: - Basic Properties
+extension BigUInteger {
     public var bitWidth: Int {
         return source.count
     }
     
     public subscript(index: Int) -> Bool {
         get {
-            //If the index is outOfRange of the array, return zero. 
+            //If the index is outOfRange of the array, return zero.
             if(index < 0 || index >= bitWidth) {
                 return false
             }
@@ -147,31 +115,13 @@ extension BigInteger {
         }
     }
     
-    public mutating func removeTrailingZeros() {
-        for index in 0..<bitWidth {
-            if(index == 0) {
-                break
-            }
-            
-            if(!source[bitWidth - index - 1]) {
-                source.removeLast()
-            } else {
-                break
-            }
-        }
-        
-        if(bitWidth == 0) {
-            self[0] = false
-        }
-    }
-    
-    public func toString(radix: Int = 10) -> String {
+    public func toString(radix: UInt = 10) -> String {
         var str: String = ""
         
-        var num: BigInteger = self
+        var num: BigUInteger = self
         
         while(num > 0) {
-            let result = num.divided(by: BigInteger(radix))
+            let result = num.divided(by: BigUInteger(radix))
             str += result.remainder._toString(radix: radix)
             num = result.quotient
         }
@@ -180,16 +130,13 @@ extension BigInteger {
             str += "0"
         }
         
-        if(negative) {
-            str += "-"
-        }
-        
         return String(str.reversed())
+        return "FIXME"
     }
     
     /// A Helper Function for `toString()` function. Suppose to work when `self` is a small integer, something that a normal `Int` should be able to store.
     /// - Note: Only use if BitWidth is less than or equal to 64
-    private func _toString(radix: Int) -> String {
+    private func _toString(radix: UInt) -> String {
         if(bitWidth > 64) {
             fatalError("Cannot convert to integer at this size")
         }
@@ -212,11 +159,7 @@ extension BigInteger {
             }
         }
         
-        if(negative) {
-            result *= -1
-        }
-        
-        return String(result, radix: radix)
+        return String(result, radix: Int(radix))
     }
     
     public func toInt() -> Int {
@@ -241,12 +184,9 @@ extension BigInteger {
                 result += pow
             }
         }
-        
-        if(negative) {
-            result *= -1
-        }
-        
+                
         return result
     }
 }
+
 
