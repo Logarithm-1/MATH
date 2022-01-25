@@ -167,7 +167,7 @@ extension BigInteger {
     ///   - rhs: The number of bits to shift `lhs` to the right. If `rhs` is
     ///     outside the range `0..<lhs.bitWidth`, it is masked to produce a
     ///     value within that range.
-    public static func &>> (lhs: BigInteger, rhs: BigInteger) -> BigInteger {
+    public static func &>>(lhs: BigInteger, rhs: BigInteger) -> BigInteger {
         guard rhs >= 0 else {
             return lhs
         }
