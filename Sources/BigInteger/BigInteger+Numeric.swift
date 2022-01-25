@@ -172,7 +172,10 @@ extension BigInteger: BinaryInteger {
     }
     
     //TODO: init(words)
-    
+}
+
+//MARK: - SignedInteger
+extension BigInteger: SignedInteger {
     /// Returns `-1` if this value is negative and `1` if it’s positive; otherwise, `0`.
     ///
     /// - Returns: The sign of this number, expressed as an integer of the same type.
@@ -185,6 +188,3 @@ extension BigInteger: BinaryInteger {
         }
     }
 }
-
-//MARK: - SignedInteger
-extension BigInteger: SignedInteger {}

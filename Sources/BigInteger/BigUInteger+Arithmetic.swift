@@ -282,15 +282,48 @@ extension BigUInteger {
     }
 }
 
-//MARK: - Power
+//MARK: - Exponentiation
 precedencegroup PowerPrecedence { higherThan: MultiplicationPrecedence }
 infix operator ^^ : PowerPrecedence
 extension BigUInteger {
-    public static func ^^(lhs: BigUInteger, rhs: BigUInteger) -> BigUInteger {
-        var result: BigUInteger = 1
+    /// Returns this integer rasied to the power `exponent`.
+    ///
+    /// The function calculates the result by [successibely squaring the base while halving the exponent](https://en.wikipedia.org/wiki/Exponentiation_by_squaring)
+    ///
+    /// - Note: This function can be unreasonably expnsive for large exponents, which is why `exponent` is a simple integer value. If you want to calculate big exponents, you'll probably need to use the modulo arithmetic variant.
+    /// - Parameter exponent: The exponent the value is powering by.
+    /// - Returns `1` if `exponent == 0`, otherwise `self` raised to `exponent`.
+    /// - SeeAlso: ``ModularArithmetic.power``
+    /// - Complexity: `O(exponent * self.count) ^ log_2(3)`. _The result may require a large amount of memory._
+    public func power(_ exponent: Int) -> BigUInteger {
+        if(exponent == 0) {
+            return 1
+        }
         
-        for _ in 0..<rhs {
-            result *= lhs
+        if(exponent == 1) {
+            return self
+        }
+        
+        if(exponent < 0) {
+            precondition(!self.isZero)
+            return (self == 1) ? 1 : 0
+        }
+        
+        if(self <= 1) {
+            return self
+        }
+        
+        var result: BigUInteger = 1
+        var b = self
+        var e = exponent
+        
+        while(e > 0) {
+            if(e & 1 == 1) { //e is odd
+                result *= b
+            }
+            
+            e >>= 1
+            b *= b
         }
         
         return result

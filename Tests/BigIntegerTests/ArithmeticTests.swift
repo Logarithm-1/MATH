@@ -54,11 +54,7 @@ final class ArithmeticTests: XCTestCase {
     }
     
     func testPoweringTwoIntegers(_ x: Int, _ y: Int) {
-        let bigInt: BigInteger = BigInteger(x) ^^ BigInteger(y)
-        XCTAssertEqual(bigInt, BigInteger(x ^^ y))
         
-        let bigUInt: BigUInteger = BigUInteger(UInt(x)) ^^ BigUInteger(UInt(y))
-        XCTAssertEqual(bigUInt, BigUInteger(UInt(x ^^ y)))
     }
     
     func testAdding() {
