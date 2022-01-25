@@ -12,4 +12,20 @@ import XCTest
 
 final class BasicTests: XCTestCase {
     
+    func testGCD(for x: Int, _ y: Int, equals: Int, x_co: Int, y_co: Int) {
+        let gcd = greatestCommonDenominator(x, y)
+        XCTAssertEqual(gcd, equals)
+        
+        let gcd_ext = greatestCommonDenominatorExtended(x, y)
+        XCTAssertEqual(gcd_ext.gcd, equals)
+        XCTAssertEqual(gcd_ext.aCoefficient, x_co)
+        XCTAssertEqual(gcd_ext.bCoefficient, y_co)
+    }
+    
+    func testGCD() {
+        testGCD(for: 150, 180, equals: 30, x_co: -1, y_co: 1)
+        testGCD(for: 57, 81, equals: 3, x_co: 10, y_co: -7)
+        testGCD(for: 3, 180, equals: 3, x_co: 1, y_co: 0)
+    }
+    
 }

@@ -16,6 +16,10 @@ final class BasicTests: XCTestCase {
         XCTAssertEqual(value.modulus(base), equal)
     }
     
+    func testInverse(value: Int, base: Int, equal: Int?) {
+        XCTAssertEqual(value.inverse(for: base), equal)
+    }
+    
     func testDivision(dividend: Int, divisor: Int, modulo: Int, equal: Int) {
         XCTAssertEqual(dividend.divided(by: divisor, for: modulo), equal)
     }
@@ -31,6 +35,11 @@ final class BasicTests: XCTestCase {
     func testMod() {
         testMod(value: 32, base: 26, equal: 6)
         testMod(value: -45, base: 26, equal: 7)
+    }
+    
+    func testInverse() {
+        testInverse(value: 3, base: 26, equal: 9)
+        testInverse(value: 518, base: 26, equal: nil)
     }
     
     func testDivision() {

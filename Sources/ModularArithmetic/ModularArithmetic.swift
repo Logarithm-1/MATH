@@ -48,14 +48,40 @@ extension ModularArithmetic where Self : SignedInteger {
     ///    - modulo: The base of the Modular Division.
     /// - Returns the quotient of the `dividend (self)` divided by the `divisor` using Modular divison with `modulo` as the base.
     public func divided(by divisor: Self, for modulo: Self) -> Self {
-        var modCoefficient: Self = 0
-        var dividendCoefficient: Self = 0
-        let _ = greatestCommonDenominatorExtended(modulo, self, aCoefficient: &modCoefficient, bCoefficient: &dividendCoefficient)
-        let quotient = divisor * dividendCoefficient
+        let gcd = greatestCommonDenominatorExtended(modulo, self)
+        let quotient = divisor * gcd.bCoefficient
         return quotient.modulus(modulo)
     }
     
+    /// Returns the [multiplicative inverse of this integer in modulo `modulus` arithmetic](https://en.wikipedia.org/wiki/Extended_Euclidean_algorithm#Modular_integers), or `nil` if there is no such number.
+    ///
+    /// - Parameter modulo: The base of the Modular Inverse
+    /// - Returns: If `gcd(self, modulus) == 1`, the value returned is an integer `a < modulus` such that `(a * self) % modulus == 1`. If `self` and `modulus` aren't coprime, the return value is `nil`.
+    /// - Requires: `modulus.magnitude > 1`
+    /// - Complexity: `O(count^3)`
+    public func inverse(for modulo: Self) -> Self? {
+        guard modulo > 1 else {
+            return nil
+        }
+        
+        let b: Self = modulo - 1
+        
+        let gcd = greatestCommonDenominatorExtended(self, b)
+        
+        //TODO: Add in guaurd against base cases
+        return b + gcd.bCoefficient
+    }
+    
     //MARK: - Power
+    /// Returns the remainder of this integer raised to the power `exponent` in modulo arithmetic under `modulo`.
+    ///
+    /// Uses the [right-to-left binary method]( https://en.wikipedia.org/wiki/Modular_exponentiation#Right-to-left_binary_method)
+    ///
+    /// - Parameters:
+    ///    - power: The exponent of the operation.
+    ///    - modulo: The base of the operation.
+    /// - Returns: `self^power mod modulo`
+    /// - Complexity: `O(exponent.count * modulus.count^log2(3))`
     public func power(of power: Self, for modulo: Self) -> Self {
         var value: Self = self.modulus(modulo)
         var ex: Self = power
@@ -78,16 +104,11 @@ extension ModularArithmetic where Self : SignedInteger {
         return product
     }
     
-    //TODO: Greatest Common Denominator - Extended
     public func inversePower(of power: Self, for modulo: Self) -> Self? {
         if(modulo.isPrime()) {
-            let b: Self = modulo - 1
-            var powerCoefficient: Self = 0
-            var bCoefficient: Self = 0
-            let _ = greatestCommonDenominatorExtended(power, b, aCoefficient: &powerCoefficient, bCoefficient: &bCoefficient)
-            
-            let inversePower: Self = b + bCoefficient
-            return self.power(of: inversePower, for: modulo)
+            if let inversePower = power.inverse(for: modulo) {
+                return self.power(of: inversePower, for: modulo)
+            }
         }
         
         return nil
