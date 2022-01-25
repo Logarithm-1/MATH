@@ -201,10 +201,10 @@ extension String {
             self.init(radixEight: v)
             return
         } else if(radix == 16) {
-            self.init(radixSixteen: v)
+            self.init(radixSixteen: v, uppercase: uppercase)
             return
         } else if(radix == 32) {
-            self.init(radixSixteen: v)
+            self.init(radixThirtyTwo: v, uppercase: uppercase)
             return
         }
         
@@ -215,7 +215,7 @@ extension String {
         while(!num.isZero) {
             let result = num.quotientAndRemainder(dividingBy: BigUInteger(radix))
             let intRemainder: Int = result.remainder.toInt() //FIXME: I don't want to use toInt()
-            str += String(intRemainder, radix: radix)
+            str += String(intRemainder, radix: radix, uppercase: uppercase)
             num = result.quotient
         }
         
@@ -290,23 +290,23 @@ extension String {
     /// A String that equates the the ASCII representation of a BigUInteger with `radix = 16`.
     ///
     /// A quicker method then constantly divinding.
-    private init(radixSixteen v: BigUInteger) {
+    private init(radixSixteen v: BigUInteger, uppercase: Bool) {
         self = ""
         
         var index: Int = 0
         while(index < v.bitWidth) {
             if(v[index + 3] && v[index + 2] && v[index + 1] && v[index]) {
-                self = "F" + self //15
+                self = "f" + self //15
             } else if(v[index + 3] && v[index + 2] && v[index + 1]) {
-                self = "E" + self //14
+                self = "e" + self //14
             } else if(v[index + 3] && v[index + 2] && v[index]) {
-                self = "D" + self //13
+                self = "d" + self //13
             } else if(v[index + 3] && v[index + 2]) {
-                self = "C" + self //12
+                self = "c" + self //12
             } else if(v[index + 3] && v[index + 1] && v[index]) {
-                self = "B" + self //11
+                self = "b" + self //11
             } else if(v[index + 3] && v[index + 1]) {
-                self = "A" + self //10
+                self = "a" + self //10
             } else if(v[index + 3] && v[index]) {
                 self = "9" + self
             } else if(v[index + 3]) {
@@ -330,60 +330,64 @@ extension String {
             }
             index += 4
         }
+        
+        if(uppercase) {
+            self.uppercased()
+        }
     }
     
     /// A String that equates the the ASCII representation of a BigUInteger with `radix = 32`.
     ///
     /// A quicker method then constantly divinding.
-    private init(radixThirtyTwo v: BigUInteger) {
+    private init(radixThirtyTwo v: BigUInteger, uppercase: Bool) {
         self = ""
         
         var index: Int = 0
         while(index < v.bitWidth) {
             if(v[index + 4] && v[index + 3] && v[index + 2] && v[index + 1] && v[index]) {
-                self = "V" + self //31
+                self = "v" + self //31
             } else if(v[index + 4] && v[index + 3] && v[index + 2] && v[index + 1]) {
-                self = "U" + self //30
+                self = "u" + self //30
             } else if(v[index + 4] && v[index + 3] && v[index + 2] && v[index]) {
-                self = "T" + self //29
+                self = "t" + self //29
             } else if(v[index + 4] && v[index + 3] && v[index + 2]) {
-                self = "S" + self //28
+                self = "s" + self //28
             } else if(v[index + 4] && v[index + 3] && v[index + 1] && v[index]) {
-                self = "R" + self //27
+                self = "r" + self //27
             } else if(v[index + 4] && v[index + 3] && v[index + 1]) {
-                self = "Q" + self //26
+                self = "q" + self //26
             } else if(v[index + 4] && v[index + 3] && v[index]) {
-                self = "P" + self //25
+                self = "p" + self //25
             } else if(v[index + 4] && v[index + 3]) {
-                self = "O" + self //24
+                self = "o" + self //24
             } else if(v[index + 4] && v[index + 2] && v[index + 1] && v[index]) {
-                self = "N" + self //23
+                self = "n" + self //23
             } else if(v[index + 4] && v[index + 2] && v[index + 1]) {
-                self = "M" + self //22
+                self = "m" + self //22
             } else if(v[index + 4] && v[index + 2] && v[index]) {
-                self = "L" + self //21
+                self = "l" + self //21
             } else if(v[index + 4] && v[index + 2]) {
-                self = "K" + self //20
+                self = "k" + self //20
             } else if(v[index + 4] && v[index + 1] && v[index]) {
-                self = "J" + self //19
+                self = "j" + self //19
             } else if(v[index + 4] && v[index + 1]) {
-                self = "I" + self //18
+                self = "i" + self //18
             } else if(v[index + 4] && v[index]) {
-                self = "H" + self //17
+                self = "h" + self //17
             } else if(v[index + 4]) {
-                self = "G" + self //16
+                self = "g" + self //16
             } else if(v[index + 3] && v[index + 2] && v[index + 1] && v[index]) {
-                self = "F" + self //15
+                self = "f" + self //15
             } else if(v[index + 3] && v[index + 2] && v[index + 1]) {
-                self = "E" + self //14
+                self = "e" + self //14
             } else if(v[index + 3] && v[index + 2] && v[index]) {
-                self = "D" + self //13
+                self = "d" + self //13
             } else if(v[index + 3] && v[index + 2]) {
-                self = "C" + self //12
+                self = "c" + self //12
             } else if(v[index + 3] && v[index + 1] && v[index]) {
-                self = "B" + self //11
+                self = "b" + self //11
             } else if(v[index + 3] && v[index + 1]) {
-                self = "A" + self //10
+                self = "a" + self //10
             } else if(v[index + 3] && v[index]) {
                 self = "9" + self
             } else if(v[index + 3]) {
@@ -405,7 +409,12 @@ extension String {
             } else {
                 self = "0" + self
             }
+            
             index += 5
+        }
+        
+        if(uppercase) {
+            self.uppercased()
         }
     }
     

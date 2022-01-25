@@ -97,11 +97,11 @@ extension BigUInteger: BinaryInteger {
         }
         
         public var endIndex: Int {
-            return value.source.count
+            return (value.source.count / 512) + 1
         }
         
         public subscript(_ index: Int) -> Word {
-            return value[index] ? 1 : 0
+            return value[byte64: index]
         }
     }
     
