@@ -193,6 +193,65 @@ extension BigUInteger {
         return result
     }
     
+    /// Returns the result of shifting a value's binary representation the
+    /// specified number of digits to the right.
+    ///
+    /// The `>>` operator performs a *smart shift*, which defines a result for a
+    /// shift of any value.
+    ///
+    /// - Using a negative value for `rhs` performs a left shift using
+    ///   `abs(rhs)`.
+    /// - Using a value for `rhs` that is greater than or equal to the bit width
+    ///   of `lhs` is an *overshift*. An overshift results in `-1` for a
+    ///   negative value of `lhs` or `0` for a nonnegative value.
+    /// - Using any other value for `rhs` performs a right shift on `lhs` by that
+    ///   amount.
+    ///
+    /// The following example defines `x` as an instance of `UInt8`, an 8-bit,
+    /// unsigned integer type. If you use `2` as the right-hand-side value in an
+    /// operation on `x`, the value is shifted right by two bits.
+    ///
+    ///     let x: UInt8 = 30                 // 0b00011110
+    ///     let y = x >> 2
+    ///     // y == 7                         // 0b00000111
+    ///
+    /// If you use `11` as `rhs`, `x` is overshifted such that all of its bits
+    /// are set to zero.
+    ///
+    ///     let z = x >> 11
+    ///     // z == 0                         // 0b00000000
+    ///
+    /// Using a negative value as `rhs` is the same as performing a left shift
+    /// using `abs(rhs)`.
+    ///
+    ///     let a = x >> -3
+    ///     // a == 240                       // 0b11110000
+    ///     let b = x << 3
+    ///     // b == 240                       // 0b11110000
+    ///
+    /// Right shift operations on negative values "fill in" the high bits with
+    /// ones instead of zeros.
+    ///
+    ///     let q: Int8 = -30                 // 0b11100010
+    ///     let r = q >> 2
+    ///     // r == -8                        // 0b11111000
+    ///
+    ///     let s = q >> 11
+    ///     // s == -1                        // 0b11111111
+    ///
+    /// - Parameters:
+    ///   - lhs: The value to shift.
+    ///   - rhs: The number of bits to shift `lhs` to the right.
+    public static func >><Other: BinaryInteger>(lhs: BigUInteger, rhs: Other) -> BigUInteger {
+        if(rhs == 0) {
+            return lhs
+        } else if(rhs < 0) { //rhs is negative
+            return lhs &<< BigUInteger(rhs.magnitude)
+        }
+        
+        return lhs &>> BigUInteger(rhs)
+    }
+    
     /// Calculates the result of shifting a value's binary representation the
     /// specified number of digits to the right, masking the shift amount to the
     /// type's bit width, and stores the result in the left-hand-side variable.
@@ -223,6 +282,64 @@ extension BigUInteger {
     ///     value within that range.
     public static func &>>=(lhs: inout BigUInteger, rhs: BigUInteger) {
         lhs = lhs &>> rhs
+    }
+    
+    /// Stores the result of shifting a value's binary representation the
+    /// specified number of digits to the right in the left-hand-side variable.
+    ///
+    /// The `>>=` operator performs a *smart shift*, which defines a result for a
+    /// shift of any value.
+    ///
+    /// - Using a negative value for `rhs` performs a left shift using
+    ///   `abs(rhs)`.
+    /// - Using a value for `rhs` that is greater than or equal to the bit width
+    ///   of `lhs` is an *overshift*. An overshift results in `-1` for a
+    ///   negative value of `lhs` or `0` for a nonnegative value.
+    /// - Using any other value for `rhs` performs a right shift on `lhs` by that
+    ///   amount.
+    ///
+    /// The following example defines `x` as an instance of `UInt8`, an 8-bit,
+    /// unsigned integer type. If you use `2` as the right-hand-side value in an
+    /// operation on `x`, the value is shifted right by two bits.
+    ///
+    ///     var x: UInt8 = 30                 // 0b00011110
+    ///     x >>= 2
+    ///     // x == 7                         // 0b00000111
+    ///
+    /// If you use `11` as `rhs`, `x` is overshifted such that all of its bits
+    /// are set to zero.
+    ///
+    ///     var y: UInt8 = 30                 // 0b00011110
+    ///     y >>= 11
+    ///     // y == 0                         // 0b00000000
+    ///
+    /// Using a negative value as `rhs` is the same as performing a left shift
+    /// using `abs(rhs)`.
+    ///
+    ///     var a: UInt8 = 30                 // 0b00011110
+    ///     a >>= -3
+    ///     // a == 240                       // 0b11110000
+    ///
+    ///     var b: UInt8 = 30                 // 0b00011110
+    ///     b <<= 3
+    ///     // b == 240                       // 0b11110000
+    ///
+    /// Right shift operations on negative values "fill in" the high bits with
+    /// ones instead of zeros.
+    ///
+    ///     var q: Int8 = -30                 // 0b11100010
+    ///     q >>= 2
+    ///     // q == -8                        // 0b11111000
+    ///
+    ///     var r: Int8 = -30                 // 0b11100010
+    ///     r >>= 11
+    ///     // r == -1                        // 0b11111111
+    ///
+    /// - Parameters:
+    ///   - lhs: The value to shift.
+    ///   - rhs: The number of bits to shift `lhs` to the right.
+    public static func >>=<Other: BinaryInteger>(lhs: inout BigUInteger, rhs: Other) {
+        lhs = lhs >> rhs
     }
     
     //MARK: - Move to the Left
@@ -276,6 +393,54 @@ extension BigUInteger {
     }
     
     /// Returns the result of shifting a value's binary representation the
+    /// specified number of digits to the left.
+    ///
+    /// The `<<` operator performs a *smart shift*, which defines a result for a
+    /// shift of any value.
+    ///
+    /// - Using a negative value for `rhs` performs a right shift using
+    ///   `abs(rhs)`.
+    /// - Using a value for `rhs` that is greater than or equal to the bit width
+    ///   of `lhs` is an *overshift*, resulting in zero.
+    /// - Using any other value for `rhs` performs a left shift on `lhs` by that
+    ///   amount.
+    ///
+    /// The following example defines `x` as an instance of `UInt8`, an 8-bit,
+    /// unsigned integer type. If you use `2` as the right-hand-side value in an
+    /// operation on `x`, the value is shifted left by two bits.
+    ///
+    ///     let x: UInt8 = 30                 // 0b00011110
+    ///     let y = x << 2
+    ///     // y == 120                       // 0b01111000
+    ///
+    /// If you use `11` as `rhs`, `x` is overshifted such that all of its bits
+    /// are set to zero.
+    ///
+    ///     let z = x << 11
+    ///     // z == 0                         // 0b00000000
+    ///
+    /// Using a negative value as `rhs` is the same as performing a right shift
+    /// with `abs(rhs)`.
+    ///
+    ///     let a = x << -3
+    ///     // a == 3                         // 0b00000011
+    ///     let b = x >> 3
+    ///     // b == 3                         // 0b00000011
+    ///
+    /// - Parameters:
+    ///   - lhs: The value to shift.
+    ///   - rhs: The number of bits to shift `lhs` to the left.
+    public static func <<<Other: BinaryInteger>(lhs: BigUInteger, rhs: Other) -> BigUInteger {
+        if(rhs == 0) {
+            return lhs
+        } else if(rhs < 0) {//rhs is negative
+            return lhs &>> BigUInteger(rhs)
+        }
+        
+        return lhs &<< BigUInteger(rhs)
+    }
+    
+    /// Returns the result of shifting a value's binary representation the
     /// specified number of digits to the left, masking the shift amount to the
     /// type's bit width, and stores the result in the left-hand-side variable.
     ///
@@ -305,6 +470,52 @@ extension BigUInteger {
     ///     value within that range.
     public static func &<<= (lhs: inout BigUInteger, rhs: BigUInteger) {
         lhs = lhs &<< rhs
+    }
+    
+    /// Stores the result of shifting a value's binary representation the
+    /// specified number of digits to the left in the left-hand-side variable.
+    ///
+    /// The `<<` operator performs a *smart shift*, which defines a result for a
+    /// shift of any value.
+    ///
+    /// - Using a negative value for `rhs` performs a right shift using
+    ///   `abs(rhs)`.
+    /// - Using a value for `rhs` that is greater than or equal to the bit width
+    ///   of `lhs` is an *overshift*, resulting in zero.
+    /// - Using any other value for `rhs` performs a left shift on `lhs` by that
+    ///   amount.
+    ///
+    /// The following example defines `x` as an instance of `UInt8`, an 8-bit,
+    /// unsigned integer type. If you use `2` as the right-hand-side value in an
+    /// operation on `x`, the value is shifted left by two bits.
+    ///
+    ///     var x: UInt8 = 30                 // 0b00011110
+    ///     x <<= 2
+    ///     // x == 120                       // 0b01111000
+    ///
+    /// If you use `11` as `rhs`, `x` is overshifted such that all of its bits
+    /// are set to zero.
+    ///
+    ///     var y: UInt8 = 30                 // 0b00011110
+    ///     y <<= 11
+    ///     // y == 0                         // 0b00000000
+    ///
+    /// Using a negative value as `rhs` is the same as performing a right shift
+    /// with `abs(rhs)`.
+    ///
+    ///     var a: UInt8 = 30                 // 0b00011110
+    ///     a <<= -3
+    ///     // a == 3                         // 0b00000011
+    ///
+    ///     var b: UInt8 = 30                 // 0b00011110
+    ///     b >>= 3
+    ///     // b == 3                         // 0b00000011
+    ///
+    /// - Parameters:
+    ///   - lhs: The value to shift.
+    ///   - rhs: The number of bits to shift `lhs` to the left.
+    public static func <<=<Other: BinaryInteger>(lhs: inout BigUInteger, rhs: Other) {
+        lhs = lhs << rhs
     }
     
     //MARK: - NOT
