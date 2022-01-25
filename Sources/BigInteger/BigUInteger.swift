@@ -52,10 +52,47 @@ extension BigUInteger {
 
 //MARK: - Basic Properties
 extension BigUInteger {
+    /// The number of bits in the current binary representation of this value.
     public var bitWidth: Int {
         return source.count
     }
     
+    /// A Boolean value indicating whether this type is a signed integer type.
+    ///
+    /// Signed integer types can represent both positive and negative values. Unsigned integer types can represent only nonnegative values.
+    public static var isSigned: Bool {
+        return false
+    }
+    
+    /// The number of trailing zeros in this value’s binary representation.
+    ///
+    /// Thus how many trailingZero's in soruce
+    public var trailingZeroBitCount: Int {
+        var count: Int = 0
+        
+        for bit in source.reversed() {
+            if(!bit) {
+                count += 1
+            } else {
+                break
+            }
+        }
+        
+        return count
+    }
+    
+    /// Return `true` iff this integer is zero.
+    public var isZero: Bool {
+        return (self == 0)
+    }
+    
+    public static var zero: BigUInteger {
+        return BigUInteger()
+    }
+}
+
+//MARK: - Getters and Setters
+extension BigUInteger {
     public subscript(index: Int) -> Bool {
         get {
             //If the index is outOfRange of the array, return zero.
@@ -83,40 +120,6 @@ extension BigUInteger {
             //Index should be in range of source now, so should be good to set the value.
             source[index] = newValue
         }
-    }
-    
-    public func signum() -> BigUInteger {
-        if(isZero) {
-            return 0
-        }
-        
-        return 1
-    }
-    
-    public func toInt() -> Int {
-        if(bitWidth > 64) {
-            fatalError("Cannot convert to integer at this size")
-        }
-        
-        var result: Int = 0
-        
-        for (index, bit) in source.enumerated() {
-            if(bit) {
-                if(index == 0) {
-                    result += 1
-                    continue
-                }
-                
-                var pow: Int = 1
-                for _ in 0..<index {
-                    pow *= 2
-                }
-                
-                result += pow
-            }
-        }
-                
-        return result
     }
 }
 

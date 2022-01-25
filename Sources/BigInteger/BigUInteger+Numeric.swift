@@ -11,7 +11,7 @@
 extension BigUInteger: Numeric {
     //FIXME: Not to sure what this should be. BigUInteger? UInt?
     /// A type that can represent the absolute value of any possible value of this type.
-    public typealias Magnitude = UInt
+    public typealias Magnitude = BigUInteger
     
     /// The magnitude of this value.
     ///
@@ -28,12 +28,8 @@ extension BigUInteger: Numeric {
     /// to find an absolute value. In addition, because `abs(_:)` always returns
     /// a value of the same type, even in a generic context, using the function
     /// instead of the `magnitude` property is encouraged.
-    public var magnitude: UInt {
-        get {
-            return UInt(toInt())
-        } set {
-            //TODO: set
-        }
+    public var magnitude: BigUInteger {
+        return self
     }
 }
 
@@ -46,6 +42,8 @@ extension BigUInteger: Hashable {
 
 //MARK: - Strideable
 extension BigUInteger: Strideable {
+    //FIXME: public typealias Stride = BigInteger
+    
     /// Confirms to `Strideable`
     ///
     /// Returns the distance from this value to the given value, expressed as a
@@ -56,11 +54,9 @@ extension BigUInteger: Strideable {
     ///
     /// - Parameter other: The value to calculate the distance to.
     /// - Returns: The distance from this value to `other`.
-    public func distance(to other: BigUInteger) -> Int {
-        var distance: BigUInteger = self - other
-
-        //FIXME: Change to distance
-        return 3//distance
+    public func distance(to other: BigUInteger) -> BigInteger {
+        return 3
+        //FIXME: return BigInteger(self) - BigInteger(other)
     }
 
     /// Confirms to `Strideable`
@@ -77,26 +73,17 @@ extension BigUInteger: Strideable {
     /// - Parameter n: The distance to advance this value.
     /// - Returns: A value that is offset from this value by `n`.
     public func advanced(by n: Int) -> BigUInteger {
-        return self + BigUInteger(UInt(n))
+        return self + BigUInteger(n)
     }
+    
+    //FIXME: public func advanced(by n: BigInt) -> BigUInt {
+        //return n.sign == .minus ? self - n.magnitude : self + n.magnitude
+    //}
 }
 
 //MARK: - BinaryInteger
 //Conform BigUInteger to BinaryInteger
 extension BigUInteger: BinaryInteger {
-    public static var isSigned: Bool {
-        return false
-    }
-    
-    
-    public var trailingZeroBitCount: Int {
-        return 0
-    }
-    
-    public var isZero: Bool {
-        return (self == 0)
-    }
-    
     public typealias Word = UInt
     
     public struct Words: RandomAccessCollection {
@@ -121,5 +108,16 @@ extension BigUInteger: BinaryInteger {
     
     public var words: Words {
         return Words(self)
+    }
+    
+    /// Returns `-1` if this value is negative and `1` if it’s positive; otherwise, `0`.
+    ///
+    /// - Returns: The sign of this number, expressed as an integer of the same type.
+    public func signum() -> BigUInteger {
+        if(isZero) {
+            return 0
+        }
+        
+        return 1
     }
 }

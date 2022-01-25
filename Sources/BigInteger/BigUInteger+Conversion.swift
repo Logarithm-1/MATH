@@ -66,6 +66,33 @@ extension BigUInteger {
             self.init(source)
         }
     }
+    
+    //MARK: To Int
+    public func toInt() -> Int {
+        if(bitWidth > 64) {
+            fatalError("Cannot convert to integer at this size")
+        }
+        
+        var result: Int = 0
+        
+        for (index, bit) in source.enumerated() {
+            if(bit) {
+                if(index == 0) {
+                    result += 1
+                    continue
+                }
+                
+                var pow: Int = 1
+                for _ in 0..<index {
+                    pow *= 2
+                }
+                
+                result += pow
+            }
+        }
+                
+        return result
+    }
 }
 
 //MARK: - Floating Point Conversion
