@@ -28,16 +28,17 @@ extension BigInteger: AdditiveArithmetic {
         case (.minus, .minus):
             return BigInteger(sign: .minus, magnitude: lhs.magnitude + rhs.magnitude)
         case (.plus, .minus):
+            print(lhs, rhs)
             if(lhs.magnitude >= rhs.magnitude) {
                 return BigInteger(sign: .plus, magnitude: lhs.magnitude - rhs.magnitude)
             } else {
-                return BigInteger(sign: .minus, magnitude: rhs.magnitude + lhs.magnitude)
+                return BigInteger(sign: .minus, magnitude: rhs.magnitude - lhs.magnitude)
             }
         case (.minus, .plus):
             if(rhs.magnitude >= lhs.magnitude) {
                 return BigInteger(sign: .plus, magnitude: rhs.magnitude - lhs.magnitude)
             } else {
-                return BigInteger(sign: .minus, magnitude: rhs.magnitude + rhs.magnitude)
+                return BigInteger(sign: .minus, magnitude: lhs.magnitude - rhs.magnitude)
             }
         }
     }

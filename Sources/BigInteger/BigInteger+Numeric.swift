@@ -89,11 +89,10 @@ extension BigInteger: SignedNumeric {
     ///     x.negate()
     ///     // x == -21
     public mutating func negate() {
-        if(sign == .plus) {
-            sign = .minus
-        } else {
-            sign = .plus
+        guard !magnitude.isZero else {
+            return
         }
+        self.sign = (self.sign == .plus) ? .minus : .plus
     }
     
     /// Returns the given number unchanged.
