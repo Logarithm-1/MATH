@@ -328,4 +328,33 @@ extension BigUInteger {
         
         return result
     }
+    
+    /// Returns the integer square root of a big integer.
+    ///
+    /// For this instance, the square root will be the largest intger whose square isn't greater than `value`.
+    /// - Note: This implementations uses Newton's method.
+    /// - Returns: `floor(sqrt(self))`
+    public func squareRoot() -> BigUInteger {
+        guard !self.isZero else {
+            return 0
+        }
+        
+        var x: BigUInteger = BigUInteger(1) << ((self.bitWidth + 1) / 2)
+        var y: BigUInteger = 0
+        
+        while(true) {
+            y = self
+            y /= x
+            y += x
+            x >>= 1
+            
+            if(x == y || x == y - 1) {
+                break
+            }
+            
+            x = y
+        }
+        
+        return x
+    }
 }

@@ -214,33 +214,33 @@ extension BigInteger {
     }
 }
 
-//FIXME: Change
+//MARK: - Exponentiation
 precedencegroup PowerPrecedence { higherThan: MultiplicationPrecedence }
 infix operator ^^ : PowerPrecedence
 extension BigInteger {
     //MARK: - Power
-    public static func ^^(lhs: BigInteger, rhs: BigInteger) -> BigInteger {
-        var result: BigInteger = 1
-        
-        for _ in 0..<rhs {
-            result *= lhs
-        }
-        
-        return result
+    /// Returns this integer rasied to the power `exponent`.
+    ///
+    /// The function calculates the result by [successibely squaring the base while halving the exponent](https://en.wikipedia.org/wiki/Exponentiation_by_squaring)
+    ///
+    /// - Note: This function can be unreasonably expnsive for large exponents, which is why `exponent` is a simple integer value. If you want to calculate big exponents, you'll probably need to use the modulo arithmetic variant.
+    /// - Parameter exponent: The exponent the value is powering by.
+    /// - Returns `1` if `exponent == 0`, otherwise `self` raised to `exponent`.
+    /// - SeeAlso: ``ModularArithmetic.power``
+    /// - Complexity: `O(exponent * self.count) ^ log_2(3)`. _The result may require a large amount of memory._
+    public func power(_ exponent: Int) -> BigInteger {
+        return BigInteger(sign: self.sign == .minus && exponent & 1 != 0 ? .minus : .plus,
+                          magnitude: self.magnitude.power(exponent))
     }
-}
-
-
-
-extension Int {
-    //MARK: - Power
-    public static func ^^(lhs: Int, rhs: Int) -> Int {
-        var result: Int = 1
-        
-        for _ in 0..<rhs {
-            result *= lhs
-        }
-        
-        return result
+    
+    /// Returns the integer square root of a big integer.
+    ///
+    /// For this instance, the square root will be the largest intger whose square isn't greater than `value`.
+    /// - Note: This implementations uses Newton's method.
+    /// - Requires: `self >= 0`
+    /// - Returns: `floor(sqrt(self))`
+    public func squareRoot() -> BigInteger {
+        precondition(self.sign == .plus)
+        return BigInteger(sign: .plus, magnitude: self.magnitude.squareRoot())
     }
 }
