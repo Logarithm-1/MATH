@@ -92,8 +92,8 @@ extension BigUInteger: AdditiveArithmetic {
     }
 }
 
+//MARK: - Multiplication
 extension BigUInteger {
-    //MARK: - Multiplication
     /// Multiplies two values and produces their product.
     ///
     /// The multiplication operator (`*`) calculates the product of its two
@@ -136,80 +136,43 @@ extension BigUInteger {
         lhs = lhs * rhs
     }
     
-    //MARK: - Division
-    /// Returns the quotient of dividing the first value by the second.
+    /// Returns `true` if this value is a multiple of the given value, and false otherwise.
     ///
-    /// For integer types, any remainder of the division is discarded.
+    /// For two integers `a` and `b`, `a` is a multiple of `b` if there exists a third integer `q` such that `a = q*b`. For example. `6` is a multiple of `3` because `6 = 2*3`. `Zero` is a mulitple of everything because `0 = 0*x` for any integer x.
     ///
-    ///     let x = 21 / 5
-    ///     // x == 4
-    ///
-    /// - Parameters:
-    ///   - lhs: The value to divide.
-    ///   - rhs: The value to divide `lhs` by. `rhs` must not be zero.
-    public static func /(lhs: BigUInteger, rhs: BigUInteger) -> BigUInteger {
-        return lhs.divided(by: rhs).quotient
+    /// - Parameter other: The other value to test.
+    /// - Returns A `Boolean` whether `self` is a multiple of `other`.
+    public func isMultiple(of other: BigUInteger) -> Bool {
+        if(isZero) {
+            return true
+        }
+        
+        if(other.isZero) {
+            return false
+        }
+        
+        let (_, r) = self.quotientAndRemainder(dividingBy: other)
+        if(r == 0) {
+            return true
+        }
+        return false
     }
-    
-    /// Divides the first value by the second and stores the quotient in the
-    /// left-hand-side variable.
+}
+ 
+//MARK: - Division and Modulus
+extension BigUInteger {
+    /// Returns the `quotient` and `remainder` of this value (`self`) divided by the given value.
     ///
-    /// - Parameters:
-    ///   - lhs: The value to divide.
-    ///   - rhs: The value to divide `lhs` by. `rhs` must not be zero.
-    public static func /=(lhs: inout BigUInteger, rhs: BigUInteger) {
-        lhs = lhs / rhs
-    }
-    
-    //MARK: - Modulus
-    /// Returns the remainder of dividing the first value by the second.
+    /// Use this method to calculate the quotient and remainder of a division at the same time.
     ///
-    /// The result of the remainder operator (`%`) has the same sign as `lhs` and
-    /// has a magnitude less than `rhs.magnitude`.
+    ///     let x = 1_000_000
+    ///     let (q, r) = x.quotientAndRemainder(dividingBy: 933)
+    ///     // q == 1071
+    ///     // r == 757
     ///
-    ///     let x = 22 % 5
-    ///     // x == 2
-    ///     let y = 22 % -5
-    ///     // y == 2
-    ///     let z = -22 % -5
-    ///     // z == -2
-    ///
-    /// For any two integers `a` and `b`, their quotient `q`, and their remainder
-    /// `r`, `a == b * q + r`.
-    ///
-    /// - Parameters:
-    ///   - lhs: The value to divide.
-    ///   - rhs: The value to divide `lhs` by. `rhs` must not be zero.
-    public static func %(lhs: BigUInteger, rhs: BigUInteger) -> BigUInteger {
-        return lhs.divided(by: rhs).remainder
-    }
-    
-    /// Divides the first value by the second and stores the remainder in the
-    /// left-hand-side variable.
-    ///
-    /// The result has the same sign as `lhs` and has a magnitude less than
-    /// `rhs.magnitude`.
-    ///
-    ///     var x = 22
-    ///     x %= 5
-    ///     // x == 2
-    ///
-    ///     var y = 22
-    ///     y %= -5
-    ///     // y == 2
-    ///
-    ///     var z = -22
-    ///     z %= -5
-    ///     // z == -2
-    ///
-    /// - Parameters:
-    ///   - lhs: The value to divide.
-    ///   - rhs: The value to divide `lhs` by. `rhs` must not be zero.
-    public static func %= (lhs: inout BigUInteger, rhs: BigUInteger) {
-        lhs = lhs % rhs
-    }
-    
-    internal func divided(by rhs: BigUInteger) -> (quotient: BigUInteger, remainder: BigUInteger) {
+    /// - Parameter rhs: The value to divide `self` by. The `divisor`.
+    /// - Returns A tuple containing the `quotient` and `remainder` of this value divided by `rhs`.
+    public func quotientAndRemainder(dividingBy rhs: BigUInteger) -> (quotient: BigUInteger, remainder: BigUInteger) {
         if(rhs == 0) {
             fatalError("Can't divide by zero")
         }
@@ -248,17 +211,88 @@ extension BigUInteger {
         
         return (quotient: result, remainder: partialDividend)
     }
+    
+    //MARK: Division
+    /// Returns the quotient of dividing the first value by the second.
+    ///
+    /// For integer types, any remainder of the division is discarded.
+    ///
+    ///     let x = 21 / 5
+    ///     // x == 4
+    ///
+    /// - Parameters:
+    ///   - lhs: The value to divide.
+    ///   - rhs: The value to divide `lhs` by. `rhs` must not be zero.
+    public static func /(lhs: BigUInteger, rhs: BigUInteger) -> BigUInteger {
+        return lhs.quotientAndRemainder(dividingBy: rhs).quotient
+    }
+    
+    /// Divides the first value by the second and stores the quotient in the
+    /// left-hand-side variable.
+    ///
+    /// - Parameters:
+    ///   - lhs: The value to divide.
+    ///   - rhs: The value to divide `lhs` by. `rhs` must not be zero.
+    public static func /=(lhs: inout BigUInteger, rhs: BigUInteger) {
+        lhs = lhs / rhs
+    }
+    
+    //MARK: Modulus
+    /// Returns the remainder of dividing the first value by the second.
+    ///
+    /// The result of the remainder operator (`%`) has the same sign as `lhs` and
+    /// has a magnitude less than `rhs.magnitude`.
+    ///
+    ///     let x = 22 % 5
+    ///     // x == 2
+    ///     let y = 22 % -5
+    ///     // y == 2
+    ///     let z = -22 % -5
+    ///     // z == -2
+    ///
+    /// For any two integers `a` and `b`, their quotient `q`, and their remainder
+    /// `r`, `a == b * q + r`.
+    ///
+    /// - Parameters:
+    ///   - lhs: The value to divide.
+    ///   - rhs: The value to divide `lhs` by. `rhs` must not be zero.
+    public static func %(lhs: BigUInteger, rhs: BigUInteger) -> BigUInteger {
+        return lhs.quotientAndRemainder(dividingBy: rhs).remainder
+    }
+    
+    /// Divides the first value by the second and stores the remainder in the
+    /// left-hand-side variable.
+    ///
+    /// The result has the same sign as `lhs` and has a magnitude less than
+    /// `rhs.magnitude`.
+    ///
+    ///     var x = 22
+    ///     x %= 5
+    ///     // x == 2
+    ///
+    ///     var y = 22
+    ///     y %= -5
+    ///     // y == 2
+    ///
+    ///     var z = -22
+    ///     z %= -5
+    ///     // z == -2
+    ///
+    /// - Parameters:
+    ///   - lhs: The value to divide.
+    ///   - rhs: The value to divide `lhs` by. `rhs` must not be zero.
+    public static func %= (lhs: inout BigUInteger, rhs: BigUInteger) {
+        lhs = lhs % rhs
+    }
 }
 
-
+//MARK: - Power
 precedencegroup PowerPrecedence { higherThan: MultiplicationPrecedence }
 infix operator ^^ : PowerPrecedence
 extension BigUInteger {
-    //MARK: - Power
     public static func ^^(lhs: BigUInteger, rhs: BigUInteger) -> BigUInteger {
         var result: BigUInteger = 1
         
-        //TODO: Remove toInt()
         for _ in 0..<rhs {
             result *= lhs
         }

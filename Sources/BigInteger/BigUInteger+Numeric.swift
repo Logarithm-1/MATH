@@ -36,3 +36,90 @@ extension BigUInteger: Numeric {
         }
     }
 }
+
+//MARK: - Hashable
+extension BigUInteger: Hashable {
+    public func hash(into hasher: inout Hasher) {
+        //I Don't Know
+    }
+}
+
+//MARK: - Strideable
+extension BigUInteger: Strideable {
+    /// Confirms to `Strideable`
+    ///
+    /// Returns the distance from this value to the given value, expressed as a
+    /// stride.
+    ///
+    /// For two values `x` and `y`, and a distance `n = x.distance(to: y)`,
+    /// `x.advanced(by: n) == y`.
+    ///
+    /// - Parameter other: The value to calculate the distance to.
+    /// - Returns: The distance from this value to `other`.
+    public func distance(to other: BigUInteger) -> Int {
+        var distance: BigUInteger = self - other
+
+        //FIXME: Change to distance
+        return 3//distance
+    }
+
+    /// Confirms to `Strideable`
+    ///
+    /// Returns a value that is offset the specified distance from this value.
+    ///
+    /// Use the `advanced(by:)` method in generic code to offset a value by a
+    /// specified distance. If you're working directly with numeric values, use
+    /// the addition operator (`+`) instead of this method.
+    ///
+    /// For a value `x`, a distance `n`, and a value `y = x.advanced(by: n)`,
+    /// `x.distance(to: y) == n`.
+    ///
+    /// - Parameter n: The distance to advance this value.
+    /// - Returns: A value that is offset from this value by `n`.
+    public func advanced(by n: Int) -> BigUInteger {
+        return self + BigUInteger(UInt(n))
+    }
+}
+
+//MARK: - BinaryInteger
+//Conform BigUInteger to BinaryInteger
+extension BigUInteger: BinaryInteger {
+    public static var isSigned: Bool {
+        return false
+    }
+    
+    
+    public var trailingZeroBitCount: Int {
+        return 0
+    }
+    
+    public var isZero: Bool {
+        return (self == 0)
+    }
+    
+    public typealias Word = UInt
+    
+    public struct Words: RandomAccessCollection {
+        private let value: BigUInteger
+        
+        init(_ value: BigUInteger) {
+            self.value = value
+        }
+        
+        public var startIndex: Int {
+            return 0
+        }
+        
+        public var endIndex: Int {
+            return value.source.count
+        }
+        
+        public subscript(_ index: Int) -> Word {
+            return value[index] ? 1 : 0
+        }
+    }
+    
+    public var words: Words {
+        return Words(self)
+    }
+}

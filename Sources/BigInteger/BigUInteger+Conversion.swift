@@ -169,7 +169,7 @@ extension String {
         var num: BigUInteger = v
         
         while(!num.isZero) {
-            let result = num.divided(by: BigUInteger(radix))
+            let result = num.quotientAndRemainder(dividingBy: BigUInteger(radix))
             let intRemainder: Int = result.remainder.toInt() //FIXME: I don't want to use toInt()
             str += String(intRemainder, radix: radix)
             num = result.quotient

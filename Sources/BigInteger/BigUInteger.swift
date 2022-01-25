@@ -85,6 +85,14 @@ extension BigUInteger {
         }
     }
     
+    public func signum() -> BigUInteger {
+        if(isZero) {
+            return 0
+        }
+        
+        return 1
+    }
+    
     public func toInt() -> Int {
         if(bitWidth > 64) {
             fatalError("Cannot convert to integer at this size")
