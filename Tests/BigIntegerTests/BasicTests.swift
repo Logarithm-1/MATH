@@ -14,21 +14,21 @@ final class BasicTests: XCTestCase {
     
     func testInitializers() {
         let num: BigInteger = BigInteger(25)
-        XCTAssertEqual(num.toString(), "25")
+        XCTAssertEqual(String(num), "25")
     }
     
     func testStringInitializer(for str: String) {
-        XCTAssertEqual((BigInteger(str) ?? BigInteger(5)).toString(), str)
+        XCTAssertEqual(String(BigInteger(str) ?? BigInteger(5)), str)
         XCTAssertEqual(String(BigUInteger(str) ?? BigUInteger(5)), str)
     }
     
     func testToString(for value: Int) {
-        XCTAssertEqual(BigInteger(value).toString(radix: 2),  String(value, radix: 2))
-        XCTAssertEqual(BigInteger(value).toString(radix: 8),  String(value, radix: 8))
-        XCTAssertEqual(BigInteger(value).toString(radix: 10), String(value, radix: 10))
-        XCTAssertEqual(BigInteger(value).toString(radix: 16), String(value, radix: 16))
-        XCTAssertEqual(BigInteger(value).toString(radix: 32), String(value, radix: 32))
-        XCTAssertEqual(BigInteger(value).toString(radix: 36), String(value, radix: 36))
+        XCTAssertEqual(String(BigInteger(value), radix: 2),  String(value, radix: 2))
+        XCTAssertEqual(String(BigInteger(value), radix: 8),  String(value, radix: 8))
+        XCTAssertEqual(String(BigInteger(value), radix: 10), String(value, radix: 10))
+        XCTAssertEqual(String(BigInteger(value), radix: 16), String(value, radix: 16))
+        XCTAssertEqual(String(BigInteger(value), radix: 32), String(value, radix: 32))
+        XCTAssertEqual(String(BigInteger(value), radix: 36), String(value, radix: 36))
         
         XCTAssertEqual(String(BigUInteger(value), radix: 2),  String(value, radix: 2))
         XCTAssertEqual(String(BigUInteger(value), radix: 8),  String(value, radix: 8))

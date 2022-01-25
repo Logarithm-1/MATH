@@ -8,10 +8,6 @@
 // See https://github.com/Logarithm-1/MATH/blob/main/LICENSE for license information
 
 extension BigInteger: AdditiveArithmetic {
-    public static var zero: BigInteger {
-        return BigInteger()
-    }
-    
     //MARK: - Addition
     /// Adds two values and produces their sum.
     ///
@@ -26,23 +22,24 @@ extension BigInteger: AdditiveArithmetic {
     ///   - rhs: The second value to add.
     /// - Returns: The sum of two values, `lhs` and `rhs`
     public static func +(lhs: BigInteger, rhs: BigInteger) -> BigInteger {
-        //If lhs and rhs have the same sign (are both positive or both negative) add like normal and keep the sign
-        if(lhs.negative == rhs.negative) {
-            let and: BigInteger = (lhs & rhs) &<< 1
-            let xor: BigInteger = lhs ^ rhs
-            
-            if(and == 0) {
-                return xor
+        switch (lhs.sign, rhs.sign) {
+        case (.plus, .plus):
+            return BigInteger(sign: .plus, magnitude: lhs.magnitude + rhs.magnitude)
+        case (.minus, .minus):
+            return BigInteger(sign: .minus, magnitude: lhs.magnitude + rhs.magnitude)
+        case (.plus, .minus):
+            if(lhs.magnitude >= rhs.magnitude) {
+                return BigInteger(sign: .plus, magnitude: lhs.magnitude - rhs.magnitude)
+            } else {
+                return BigInteger(sign: .minus, magnitude: rhs.magnitude + lhs.magnitude)
             }
-            
-            var sum: BigInteger = and + xor
-            sum.negative = lhs.negative
-            return sum
-        } else if(lhs.negative) {//lhs is negative, rhs is positive
-            return rhs - (-lhs)
+        case (.minus, .plus):
+            if(rhs.magnitude >= lhs.magnitude) {
+                return BigInteger(sign: .plus, magnitude: rhs.magnitude - lhs.magnitude)
+            } else {
+                return BigInteger(sign: .minus, magnitude: rhs.magnitude + rhs.magnitude)
+            }
         }
-        // Else lhs is positive, rhs is negative
-        return lhs - (-rhs)
     }
     
     /// Adds two values and stores the result in the left-hand-side variable.
@@ -69,41 +66,7 @@ extension BigInteger: AdditiveArithmetic {
     ///   - lhs: A numeric value.
     ///   - rhs: The value to subtract from `lhs`.
     public static func -(lhs: BigInteger, rhs: BigInteger) -> BigInteger {
-        if(rhs == 0) {
-            return lhs
-        }
-        
-        if(lhs.negative == rhs.negative && !lhs.negative) { //lhs and rhs are both positive
-            if(lhs >= rhs) {
-                //Get the borrow bits
-                let borrow = (~lhs) & rhs
-                
-                //Get the difference between left and right
-                let left = lhs ^ rhs
-                
-                //Shift borrow to the left by 1
-                let right = borrow &<< 1
-                
-                return left - right
-            } else { //lhs < rhs
-                var result: BigInteger = rhs - lhs
-                result.negative = true
-                return result
-            }
-        } else if(lhs.negative == rhs.negative) { //lhs and rhs are both negative
-            //The same as rhs - lhs
-            return rhs - lhs
-        } else if(lhs.negative) { //lhs is negative, rhs is positive
-            //The same as -(lhs + rhs)
-            let left: BigInteger = -lhs
-            var result: BigInteger = left + rhs
-            result.negative = true
-            return result
-        }
-        // Else lhs is positive, rhs is negative
-        //The same as lhs + rhs
-        
-        return lhs + rhs
+        return lhs + (-rhs)
     }
     
     /// Subtracts the second value from the first and stores the difference in the left-hand-side variable.
@@ -116,8 +79,8 @@ extension BigInteger: AdditiveArithmetic {
     }
 }
 
+//MARK: - Multiplication
 extension BigInteger {
-    //MARK: - Multiplication
     /// Multiplies two values and produces their product.
     ///
     /// The multiplication operator (`*`) calculates the product of its two
@@ -133,22 +96,7 @@ extension BigInteger {
     ///
     /// - Note: This function is a requirement of the protocol ``Numeric``
     public static func *(lhs: BigInteger, rhs: BigInteger) -> BigInteger {
-        // 1101 * 0011
-        // (1101*1) + (1101*10)
-        // (1101 &<< 0) + (1101 &<< 1)
-        // (1101) + (11010)
-        // (100111)
-        var product: BigInteger = 0
-        
-        for i in 0..<rhs.bitWidth {
-            if(rhs[i]) {
-                product += lhs &<< BigInteger(i)
-            }
-        }
-        
-        product.negative = lhs.negative != rhs.negative
-        
-        return product
+        return BigInteger(sign: (lhs.sign == rhs.sign) ? .plus : .minus, magnitude: lhs.magnitude * rhs.magnitude)
     }
     
     /// Multiplies two values and stores the result in the left-hand-side variable.
@@ -162,7 +110,36 @@ extension BigInteger {
         lhs = lhs * rhs
     }
     
-    //MARK: - Division
+    /// Returns `true` if this value is a multiple of the given value, and false otherwise.
+    ///
+    /// For two integers `a` and `b`, `a` is a multiple of `b` if there exists a third integer `q` such that `a = q*b`. For example. `6` is a multiple of `3` because `6 = 2*3`. `Zero` is a mulitple of everything because `0 = 0*x` for any integer x.
+    ///
+    /// - Parameter other: The other value to test.
+    /// - Returns A `Boolean` whether `self` is a multiple of `other`.
+    public func isMultiple(of other: BigInteger) -> Bool {
+        return magnitude.isMultiple(of: other.magnitude)
+    }
+}
+
+//MARK: - Division and Modulus
+extension BigInteger {
+    /// Returns the `quotient` and `remainder` of this value (`self`) divided by the given value.
+    ///
+    /// Use this method to calculate the quotient and remainder of a division at the same time.
+    ///
+    ///     let x = 1_000_000
+    ///     let (q, r) = x.quotientAndRemainder(dividingBy: 933)
+    ///     // q == 1071
+    ///     // r == 757
+    ///
+    /// - Parameter rhs: The value to divide `self` by. The `divisor`.
+    /// - Returns A tuple containing the `quotient` and `remainder` of this value divided by `rhs`.
+    public func quotientAndRemainder(dividingBy rhs: BigInteger) -> (quotient: BigInteger, remainder: BigInteger) {
+        let (q, r) = self.magnitude.quotientAndRemainder(dividingBy: rhs.magnitude)
+        return (quotient: BigInteger(sign: (sign == rhs.sign) ? .plus : .minus, magnitude: q), remainder: BigInteger(sign: .plus, magnitude: r))
+    }
+    
+    //MARK: Division
     /// Returns the quotient of dividing the first value by the second.
     ///
     /// For integer types, any remainder of the division is discarded.
@@ -174,7 +151,7 @@ extension BigInteger {
     ///   - lhs: The value to divide.
     ///   - rhs: The value to divide `lhs` by. `rhs` must not be zero.
     public static func /(lhs: BigInteger, rhs: BigInteger) -> BigInteger {
-        return lhs.divided(by: rhs).quotient
+        return lhs.quotientAndRemainder(dividingBy: rhs).quotient
     }
     
     /// Divides the first value by the second and stores the quotient in the
@@ -187,7 +164,7 @@ extension BigInteger {
         lhs = lhs / rhs
     }
     
-    //MARK: - Modulus
+    //MARK: Modulus
     /// Returns the remainder of dividing the first value by the second.
     ///
     /// The result of the remainder operator (`%`) has the same sign as `lhs` and
@@ -207,7 +184,7 @@ extension BigInteger {
     ///   - lhs: The value to divide.
     ///   - rhs: The value to divide `lhs` by. `rhs` must not be zero.
     public static func %(lhs: BigInteger, rhs: BigInteger) -> BigInteger {
-        return lhs.divided(by: rhs).remainder
+        return lhs.quotientAndRemainder(dividingBy: rhs).remainder
     }
     
     /// Divides the first value by the second and stores the remainder in the
@@ -234,51 +211,9 @@ extension BigInteger {
     public static func %= (lhs: inout BigInteger, rhs: BigInteger) {
         lhs = lhs % rhs
     }
-    
-    internal func divided(by rhs: BigInteger) -> (quotient: BigInteger, remainder: BigInteger) {
-        if(rhs == 0) {
-            fatalError("Can't divide by zero")
-        }
-        
-        // dividend / divisor = quotient R remainder
-        let dividend: BigInteger = self //FIXME: .magnitude
-        let divisor: BigInteger = rhs //FIXME: .magnitude
-        
-        var partialDividend: BigInteger = 1
-        var index: Int = dividend.bitWidth - 1 //First bit from left to right
-        
-        var result: BigInteger = 0
-        
-        while(index >= 0) {
-            //Increase partialDividend until it is bigger than divisor.
-            if(partialDividend < divisor) {
-                //Move partial Dividend over one to the left
-                partialDividend &<<= 1
-                //Move index to the right one
-                index -= 1
-                //Add in the next dividend bit (at index)
-                partialDividend[0] = dividend[index]
-                continue
-            }
-            
-            if(partialDividend >= divisor) {
-                partialDividend -= divisor
-                result += BigInteger(1) &<< BigInteger(index)
-                
-                continue
-            }
-        }
-        
-        //Since index is now -1 (It goes through the while one more time) partialDividend is not moved to the left 1. So to get remainder we must move it back 1 to the right.
-        partialDividend &>>= 1
-        
-        result.negative = negative != rhs.negative
-        
-        return (quotient: result, remainder: partialDividend)
-    }
 }
 
-
+//FIXME: Change
 precedencegroup PowerPrecedence { higherThan: MultiplicationPrecedence }
 infix operator ^^ : PowerPrecedence
 extension BigInteger {

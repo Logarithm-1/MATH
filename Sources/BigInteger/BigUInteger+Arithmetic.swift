@@ -8,10 +8,6 @@
 // See https://github.com/Logarithm-1/MATH/blob/main/LICENSE for license information
 
 extension BigUInteger: AdditiveArithmetic {
-    public static var zero: BigUInteger {
-        return BigUInteger()
-    }
-    
     //MARK: - Addition
     /// Adds two values and produces their sum.
     ///

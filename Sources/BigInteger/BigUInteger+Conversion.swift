@@ -141,8 +141,7 @@ extension BinaryFloatingPoint where RawExponent: FixedWidthInteger, RawSignifica
     
     //TODO: BigUInteger to BinaryFloatingPoint
     public init(_ value: BigUInteger) {
-        self = 0
-        return
+        self.init(BigInteger(sign: .plus, magnitude: value))
     }
 }
 
@@ -219,13 +218,13 @@ extension BigUInteger: CustomStringConvertible {
 
 extension BigUInteger: CustomDebugStringConvertible {
     public var debugDescription: String {
-        return "BigUInteger(size: \(bitWidth), string: \(self))"
+        return "BigUInteger(size: \(bitWidth), string: \(String(self)))"
     }
 }
 
 extension BigUInteger: CustomPlaygroundDisplayConvertible {
     public var playgroundDescription: Any {
-        return "\(self) (\(self.bitWidth) bits)"
+        return "\(String(self)) (\(self.bitWidth) bits)"
     }
 }
 
