@@ -16,7 +16,7 @@ extension BigUInteger: Hashable {
 
 //MARK: - Strideable
 extension BigUInteger: Strideable {
-    //FIXME: public typealias Stride = BigInteger
+    public typealias Stride = BigInteger
     
     /// Confirms to `Strideable`
     ///
@@ -29,8 +29,7 @@ extension BigUInteger: Strideable {
     /// - Parameter other: The value to calculate the distance to.
     /// - Returns: The distance from this value to `other`.
     public func distance(to other: BigUInteger) -> BigInteger {
-        return 3
-        //FIXME: return BigInteger(self) - BigInteger(other)
+        return BigInteger(other) - BigInteger(self)
     }
 
     /// Confirms to `Strideable`
@@ -46,8 +45,8 @@ extension BigUInteger: Strideable {
     ///
     /// - Parameter n: The distance to advance this value.
     /// - Returns: A value that is offset from this value by `n`.
-    public func advanced(by n: Int) -> BigUInteger {
-        return self + BigUInteger(n)
+    public func advanced(by n: BigInteger) -> BigUInteger {
+        return (n.sign == .minus) ? (self - n.magnitude) : (self + n.magnitude)
     }
     
     //FIXME: public func advanced(by n: BigInt) -> BigUInt {
