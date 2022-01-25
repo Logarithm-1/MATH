@@ -27,7 +27,7 @@ extension BigUInteger {
         var result: BigUInteger = 0
         
         //Min since what ever whould go over whould be false, thus the and would also return false.
-        for i in 0..<min(lhs.bitWidth, rhs.bitWidth) {
+        for i in 0..<Swift.min(lhs.bitWidth, rhs.bitWidth) {
             result[i] = lhs[i] && rhs[i]
         }
         
@@ -70,7 +70,7 @@ extension BigUInteger {
     public static func |(lhs: BigUInteger, rhs: BigUInteger) -> BigUInteger {
         var result: BigUInteger = 0
         
-        for i in 0..<max(lhs.bitWidth, rhs.bitWidth) {
+        for i in 0..<Swift.max(lhs.bitWidth, rhs.bitWidth) {
             result[i] = lhs[i] || rhs[i]
         }
         
@@ -114,7 +114,7 @@ extension BigUInteger {
     public static func ^(lhs: BigUInteger, rhs: BigUInteger) -> BigUInteger {
         var result: BigUInteger = 0
         
-        for i in 0..<max(lhs.bitWidth, rhs.bitWidth) {
+        for i in 0..<Swift.max(lhs.bitWidth, rhs.bitWidth) {
             //If left is the same as right (wether true of false) return false
             //If left is different then right (one of them is true, the other is false) return ture
             result[i] = lhs[i] != rhs[i]

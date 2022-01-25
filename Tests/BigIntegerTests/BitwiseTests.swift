@@ -14,45 +14,50 @@ final class BitwiseTests: XCTestCase {
     
     //MARK: - Functions
     func testAndOperationBetween(on x: UInt8, _ y: UInt8) {
-        let value = BigInteger(x) & BigInteger(y)
         let correctValue = x & y
-        XCTAssertEqual(value, BigInteger(correctValue))
+        
+        //let value = BigInteger(x) & BigInteger(y)
+        //XCTAssertEqual(value, BigInteger(correctValue))
         
         let uValue = BigUInteger(x) & BigUInteger(y)
         XCTAssertEqual(uValue, BigUInteger(correctValue))
     }
     
     func testOrOperationBetween(on x: UInt8, _ y: UInt8) {
-        let value = BigInteger(x) | BigInteger(y)
         let correctValue = x | y
-        XCTAssertEqual(value, BigInteger(correctValue))
+        
+        //let value = BigInteger(x) | BigInteger(y)
+        //XCTAssertEqual(value, BigInteger(correctValue))
         
         let uValue = BigUInteger(x) | BigUInteger(y)
         XCTAssertEqual(uValue, BigUInteger(correctValue))
     }
     
     func testXorOperationBetween(on x: UInt8, _ y: UInt8) {
-        let value = BigInteger(x) ^ BigInteger(y)
         let correctValue = x ^ y
-        XCTAssertEqual(value, BigInteger(correctValue))
+        
+        //let value = BigInteger(x) ^ BigInteger(y)
+        //XCTAssertEqual(value, BigInteger(correctValue))
         
         let uValue = BigUInteger(x) ^ BigUInteger(y)
         XCTAssertEqual(uValue, BigUInteger(correctValue))
     }
     
     func testRightOperationBetween(on x: UInt8, _ y: UInt8) {
-        let value = BigInteger(x) &>> BigInteger(y)
         let correctValue = x &>> y
-        XCTAssertEqual(value, BigInteger(correctValue))
+        
+        //let value = BigInteger(x) &>> BigInteger(y)
+        //XCTAssertEqual(value, BigInteger(correctValue))
         
         let uValue = BigUInteger(x) &>> BigUInteger(y)
         XCTAssertEqual(uValue, BigUInteger(correctValue))
     }
     
     func testLeftOperationBetween(on x: UInt8, _ y: UInt8) {
-        let value = BigInteger(x) &<< BigInteger(y)
         let correctValue = x &<< y
-        XCTAssertEqual(value, BigInteger(correctValue))
+        
+        //let value = BigInteger(x) &<< BigInteger(y)
+        //XCTAssertEqual(value, BigInteger(correctValue))
         
         let uValue = BigUInteger(x) &<< BigUInteger(y)
         XCTAssertEqual(uValue, BigUInteger(correctValue))

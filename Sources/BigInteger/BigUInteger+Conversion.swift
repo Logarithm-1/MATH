@@ -190,6 +190,24 @@ extension String {
             return
         }
         
+        if(radix == 2) {
+            //radix == 2
+            self.init(radixTwo: v)
+            return
+        } else if(radix == 4) {
+            self.init(radixFour: v)
+            return
+        } else if(radix == 8) {
+            self.init(radixEight: v)
+            return
+        } else if(radix == 16) {
+            self.init(radixSixteen: v)
+            return
+        } else if(radix == 32) {
+            self.init(radixSixteen: v)
+            return
+        }
+        
         var str: String = ""
         
         var num: BigUInteger = v
@@ -207,6 +225,193 @@ extension String {
         
         self = String(str.reversed())
     }
+    
+    /// A String that equates the the ASCII representation of a BigUInteger in binary.
+    ///
+    /// A quicker method then constantly divinding.
+    private init(radixTwo v: BigUInteger) {
+        self = ""
+        
+        for bit in v.source {
+            self = (bit ? "1" : "0") + self
+        }
+    }
+    
+    /// A String that equates the the ASCII representation of a BigUInteger with `radix = 4`.
+    ///
+    /// A quicker method then constantly divinding.
+    private init(radixFour v: BigUInteger) {
+        self = ""
+        
+        var index: Int = 0
+        while(index < v.bitWidth) {
+            if(v[index + 1] && v[index]) {
+                self = "3" + self
+            } else if(v[index + 1]) {
+                self = "2" + self
+            } else if(v[index]) {
+                self = "1" + self
+            } else {
+                self = "0" + self
+            }
+            index += 2
+        }
+    }
+    
+    /// A String that equates the the ASCII representation of a BigUInteger with `radix = 8`.
+    ///
+    /// A quicker method then constantly divinding.
+    private init(radixEight v: BigUInteger) {
+        self = ""
+        
+        var index: Int = 0
+        while(index < v.bitWidth) {
+            if(v[index + 2] && v[index + 1] && v[index]) {
+                self = "7" + self
+            } else if(v[index + 2] && v[index + 1]) {
+                self = "6" + self
+            } else if(v[index + 2] && v[index]) {
+                self = "5" + self
+            } else if(v[index + 2]) {
+                self = "4" + self
+            } else if(v[index + 1] && v[index]) {
+                self = "3" + self
+            } else if(v[index + 1]) {
+                self = "2" + self
+            } else if(v[index]) {
+                self = "1" + self
+            } else {
+                self = "0" + self
+            }
+            index += 3
+        }
+    }
+    
+    /// A String that equates the the ASCII representation of a BigUInteger with `radix = 16`.
+    ///
+    /// A quicker method then constantly divinding.
+    private init(radixSixteen v: BigUInteger) {
+        self = ""
+        
+        var index: Int = 0
+        while(index < v.bitWidth) {
+            if(v[index + 3] && v[index + 2] && v[index + 1] && v[index]) {
+                self = "F" + self //15
+            } else if(v[index + 3] && v[index + 2] && v[index + 1]) {
+                self = "E" + self //14
+            } else if(v[index + 3] && v[index + 2] && v[index]) {
+                self = "D" + self //13
+            } else if(v[index + 3] && v[index + 2]) {
+                self = "C" + self //12
+            } else if(v[index + 3] && v[index + 1] && v[index]) {
+                self = "B" + self //11
+            } else if(v[index + 3] && v[index + 1]) {
+                self = "A" + self //10
+            } else if(v[index + 3] && v[index]) {
+                self = "9" + self
+            } else if(v[index + 3]) {
+                self = "8" + self
+            } else if(v[index + 2] && v[index + 1] && v[index]) {
+                self = "7" + self
+            } else if(v[index + 2] && v[index + 1]) {
+                self = "6" + self
+            } else if(v[index + 2] && v[index]) {
+                self = "5" + self
+            } else if(v[index + 2]) {
+                self = "4" + self
+            } else if(v[index + 1] && v[index]) {
+                self = "3" + self
+            } else if(v[index + 1]) {
+                self = "2" + self
+            } else if(v[index]) {
+                self = "1" + self
+            } else {
+                self = "0" + self
+            }
+            index += 4
+        }
+    }
+    
+    /// A String that equates the the ASCII representation of a BigUInteger with `radix = 32`.
+    ///
+    /// A quicker method then constantly divinding.
+    private init(radixThirtyTwo v: BigUInteger) {
+        self = ""
+        
+        var index: Int = 0
+        while(index < v.bitWidth) {
+            if(v[index + 4] && v[index + 3] && v[index + 2] && v[index + 1] && v[index]) {
+                self = "V" + self //31
+            } else if(v[index + 4] && v[index + 3] && v[index + 2] && v[index + 1]) {
+                self = "U" + self //30
+            } else if(v[index + 4] && v[index + 3] && v[index + 2] && v[index]) {
+                self = "T" + self //29
+            } else if(v[index + 4] && v[index + 3] && v[index + 2]) {
+                self = "S" + self //28
+            } else if(v[index + 4] && v[index + 3] && v[index + 1] && v[index]) {
+                self = "R" + self //27
+            } else if(v[index + 4] && v[index + 3] && v[index + 1]) {
+                self = "Q" + self //26
+            } else if(v[index + 4] && v[index + 3] && v[index]) {
+                self = "P" + self //25
+            } else if(v[index + 4] && v[index + 3]) {
+                self = "O" + self //24
+            } else if(v[index + 4] && v[index + 2] && v[index + 1] && v[index]) {
+                self = "N" + self //23
+            } else if(v[index + 4] && v[index + 2] && v[index + 1]) {
+                self = "M" + self //22
+            } else if(v[index + 4] && v[index + 2] && v[index]) {
+                self = "L" + self //21
+            } else if(v[index + 4] && v[index + 2]) {
+                self = "K" + self //20
+            } else if(v[index + 4] && v[index + 1] && v[index]) {
+                self = "J" + self //19
+            } else if(v[index + 4] && v[index + 1]) {
+                self = "I" + self //18
+            } else if(v[index + 4] && v[index]) {
+                self = "H" + self //17
+            } else if(v[index + 4]) {
+                self = "G" + self //16
+            } else if(v[index + 3] && v[index + 2] && v[index + 1] && v[index]) {
+                self = "F" + self //15
+            } else if(v[index + 3] && v[index + 2] && v[index + 1]) {
+                self = "E" + self //14
+            } else if(v[index + 3] && v[index + 2] && v[index]) {
+                self = "D" + self //13
+            } else if(v[index + 3] && v[index + 2]) {
+                self = "C" + self //12
+            } else if(v[index + 3] && v[index + 1] && v[index]) {
+                self = "B" + self //11
+            } else if(v[index + 3] && v[index + 1]) {
+                self = "A" + self //10
+            } else if(v[index + 3] && v[index]) {
+                self = "9" + self
+            } else if(v[index + 3]) {
+                self = "8" + self
+            } else if(v[index + 2] && v[index + 1] && v[index]) {
+                self = "7" + self
+            } else if(v[index + 2] && v[index + 1]) {
+                self = "6" + self
+            } else if(v[index + 2] && v[index]) {
+                self = "5" + self
+            } else if(v[index + 2]) {
+                self = "4" + self
+            }else if(v[index + 1] && v[index]) {
+                self = "3" + self
+            } else if(v[index + 1]) {
+                self = "2" + self
+            } else if(v[index]) {
+                self = "1" + self
+            } else {
+                self = "0" + self
+            }
+            index += 5
+        }
+    }
+    
+    
+    //TODO: OctRadix
+    //TODO: hexRadix
 }
 
 //MARK: String Convertibles

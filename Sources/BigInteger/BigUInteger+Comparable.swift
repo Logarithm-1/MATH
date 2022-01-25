@@ -19,7 +19,7 @@ extension BigUInteger: Equatable {
     ///
     /// - Returns: `true` if `lhs` is equal to `rhs`
     public static func == (lhs: BigUInteger, rhs: BigUInteger) -> Bool {
-        for index in 0..<max(lhs.bitWidth, rhs.bitWidth) {
+        for index in 0..<Swift.max(lhs.bitWidth, rhs.bitWidth) {
             if(lhs[index] != rhs[index]) {
                 return false
             }
@@ -43,9 +43,9 @@ extension BigUInteger: Comparable {
     ///
     /// - Returns: `true` if `lhs` is lesser than `rhs`
     public static func < (lhs: BigUInteger, rhs: BigUInteger) -> Bool {
-        for i in 0..<max(lhs.bitWidth, rhs.bitWidth) {
+        for i in 0..<Swift.max(lhs.bitWidth, rhs.bitWidth) {
             //Start from the last element in the array.
-            let index: Int = max(lhs.bitWidth, rhs.bitWidth) - i - 1
+            let index: Int = Swift.max(lhs.bitWidth, rhs.bitWidth) - i - 1
             
             //Since we are starting from the largest bit value (2^index), if rhs is true and lhs is false, then we can conclue that lhs < rhs
             

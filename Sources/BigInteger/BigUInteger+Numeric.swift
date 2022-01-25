@@ -120,3 +120,6 @@ extension BigUInteger: BinaryInteger {
         return 1
     }
 }
+
+//MARK: - UnsignedInteger
+extension BigUInteger: UnsignedInteger {}

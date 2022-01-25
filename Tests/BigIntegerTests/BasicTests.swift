@@ -17,6 +17,16 @@ final class BasicTests: XCTestCase {
         XCTAssertEqual(String(num), "25")
     }
     
+    func testUpperLimit(upperLimit: Int) {
+        var arr: [Bool] = [Bool]()
+        
+        for _ in 0..<upperLimit {
+            arr.append(true)
+        }
+        
+        XCTAssertEqual(arr.count, upperLimit)
+    }
+    
     func testStringInitializer(for str: String) {
         XCTAssertEqual(String(BigInteger(str) ?? BigInteger(5)), str)
         XCTAssertEqual(String(BigUInteger(str) ?? BigUInteger(5)), str)
@@ -52,10 +62,35 @@ final class BasicTests: XCTestCase {
         testToString(for: 5658)
     }
     
+    func testUpperLimit() {
+        testUpperLimit(upperLimit: 1_000)
+        testUpperLimit(upperLimit: 10_000)
+        testUpperLimit(upperLimit: 100_000)
+        testUpperLimit(upperLimit: 1_000_000)
+    }
+    
     func measureStringInitializer() {
         measure {
             testStringInitializer(for: "46849685498168465486516842684849848945467468948")
         }
+    }
+    
+    func testGetUInt() {
+        var num: BigUInteger = 3087
+        XCTAssertEqual(num[byte: 0], 15)
+        XCTAssertEqual(num[byte: 1], 12)
+        
+        num[byte: 2] = 67
+        XCTAssertEqual(num[byte: 2], 67)
+        
+        num[byte: 8] = 95
+        XCTAssertEqual(num[byte: 8], 95)
+        
+        num[byte64: 2] = 343
+        XCTAssertEqual(num[byte64: 2], 343)
+        
+        num[byte64: 8] = 784962
+        XCTAssertEqual(num[byte64: 8], 784962)
     }
     
     func testWords() {

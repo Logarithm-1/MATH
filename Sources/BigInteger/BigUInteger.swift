@@ -25,7 +25,7 @@ public struct BigUInteger {
     internal var source: [Bool]
     
     /// The maxiumn size of the array (ie. how many bits the integer can use)
-    internal var upperLimit: Int = 1000
+    internal var upperLimit: Int = 1_000_000
     
     /// A BigInteger constructed by specifying the source array.
     public init(source: [Bool]) {
@@ -119,6 +119,67 @@ extension BigUInteger {
             
             //Index should be in range of source now, so should be good to set the value.
             source[index] = newValue
+        }
+    }
+    
+    /// `{get set}` a  `byte` of self in the form of a ``UInt8``.
+    public subscript(byte index: Int) -> UInt8 {
+        get {
+            var value: UInt8 = 0
+            
+            let minIndex: Int = index * 8
+            
+            for i in 0..<8 {
+                if(self[minIndex + i]) {
+                    value += (1 << i)
+                }
+            }
+            
+            return value
+        } set(newValue) {
+            var value: UInt8 = newValue
+            
+            let minIndex: Int = index * 8
+            
+            for i in 0..<8 {
+                if(value & 1 == 1) {
+                    self[minIndex + i] = true
+                } else {
+                    self[minIndex + i] = false
+                }
+                
+                value >>= 1
+            }
+        }
+    }
+    
+    public subscript(byte64 index: Int) -> UInt {
+        get {
+            var value: UInt = 0
+            
+            let minIndex: Int = index * 512
+            
+            for i in 0..<512 {
+                if(self[minIndex + i]) {
+                    value += (1 << i)
+                }
+            }
+            
+            return value
+        } set(newValue) {
+            var value: UInt = newValue
+            
+            let minIndex: Int = index * 512
+            
+            for i in 0..<512 {
+                if(value & 1 == 1) {
+                    self[minIndex + i] = true
+                } else {
+                    self[minIndex + i] = false
+                }
+                
+                value >>= 1
+            }
         }
     }
 }
