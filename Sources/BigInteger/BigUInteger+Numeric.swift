@@ -88,7 +88,7 @@ extension BigUInteger: BinaryInteger {
     public struct Words: RandomAccessCollection {
         private let value: BigUInteger
         
-        init(_ value: BigUInteger) {
+        fileprivate init(_ value: BigUInteger) {
             self.value = value
         }
         
@@ -108,6 +108,8 @@ extension BigUInteger: BinaryInteger {
     public var words: Words {
         return Words(self)
     }
+    
+    //TODO: init(words)
     
     /// Returns `-1` if this value is negative and `1` if it’s positive; otherwise, `0`.
     ///

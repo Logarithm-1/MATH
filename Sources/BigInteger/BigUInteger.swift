@@ -89,6 +89,11 @@ extension BigUInteger {
     public static var zero: BigUInteger {
         return BigUInteger()
     }
+    
+    /// The number of digits in this integer, excluding leading zero digits.
+    var count: Int {
+        return source.count
+    }
 }
 
 //MARK: - Getters and Setters

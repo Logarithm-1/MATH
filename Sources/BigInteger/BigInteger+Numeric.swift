@@ -115,6 +115,70 @@ extension BigInteger: SignedNumeric {
 extension BigInteger {
     public typealias Word = BigUInteger.Word
     
+    public struct Words: RandomAccessCollection {
+        public typealias Indices = CountableRange<Int>
+        
+        private let value: BigInteger
+        private let decrementLimit: Int
+        
+        fileprivate init(_ value: BigInteger) {
+            self.value = value
+            switch value.sign {
+            case .plus:
+                self.decrementLimit = 0
+            case .minus:
+                assert(!value.magnitude.isZero)
+                self.decrementLimit = value.magnitude.words.firstIndex(where: {$0 != 0})!
+            }
+        }
+        
+        public var count: Int {
+            switch value.sign {
+            case .plus:
+                if let high = value.magnitude.words.last,
+                   high >> (Word.bitWidth - 1) != 0 {
+                    return value.magnitude.count + 1
+                }
+                return value.magnitude.count
+            case .minus:
+                let high = value.magnitude.words.last!
+                if(high >> (Word.bitWidth - 1) != 0) {
+                    return value.magnitude.count + 1
+                }
+                return value.magnitude.count
+            }
+        }
+        
+        public var startIndex: Int {
+            return 0
+        }
+        
+        public var endIndex: Int {
+            return count
+        }
+        
+        public var indices: Indices {
+            return 0 ..< count
+        }
+        
+        public subscript(_ index: Int) -> UInt {
+            // Note that indices above `endIndex` are accepted.
+            if value.sign == .plus {
+                return value.magnitude[byte64: index]
+            }
+            if index <= decrementLimit {
+                return ~(value.magnitude[byte64: index] &- 1)
+            }
+            return ~value.magnitude[byte64: index]
+        }
+    }
+    
+    public var words: Words {
+        return Words(self)
+    }
+    
+    //TODO: init(words)
+    
     /// Returns `-1` if this value is negative and `1` if it’s positive; otherwise, `0`.
     ///
     /// - Returns: The sign of this number, expressed as an integer of the same type.
