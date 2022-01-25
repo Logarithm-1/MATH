@@ -16,7 +16,7 @@ extension BigInteger: Hashable {
 
 //MARK: - Strideable
 extension BigInteger: Strideable {
-    //FIXME: public typealias Stride = BigInteger
+    public typealias Stride = BigInteger
     
     /// Confirms to `Strideable`
     ///
@@ -28,9 +28,8 @@ extension BigInteger: Strideable {
     ///
     /// - Parameter other: The value to calculate the distance to.
     /// - Returns: The distance from this value to `other`.
-    public func distance(to other: BigInteger) -> Int {
-        return 3
-        //FIXME: return BigInteger(self) - BigInteger(other)
+    public func distance(to other: BigInteger) -> Stride {
+        return other - self
     }
 
     /// Confirms to `Strideable`
@@ -46,18 +45,13 @@ extension BigInteger: Strideable {
     ///
     /// - Parameter n: The distance to advance this value.
     /// - Returns: A value that is offset from this value by `n`.
-    public func advanced(by n: Int) -> BigInteger {
-        return self + BigInteger(n)
+    public func advanced(by n: Stride) -> BigInteger {
+        return self + n
     }
-    
-    //FIXME: public func advanced(by n: BigInt) -> BigUInt {
-        //return n.sign == .minus ? self - n.magnitude : self + n.magnitude
-    //}
 }
 
 //MARK: - Numeric
 extension BigInteger: Numeric {
-    //FIXME: Not to sure what this should be. BigInteger? UInt?
     /// A type that can represent the absolute value of any possible value of this type.
     public typealias Magnitude = BigUInteger
 }

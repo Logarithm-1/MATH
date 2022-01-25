@@ -48,15 +48,10 @@ extension BigUInteger: Strideable {
     public func advanced(by n: BigInteger) -> BigUInteger {
         return (n.sign == .minus) ? (self - n.magnitude) : (self + n.magnitude)
     }
-    
-    //FIXME: public func advanced(by n: BigInt) -> BigUInt {
-        //return n.sign == .minus ? self - n.magnitude : self + n.magnitude
-    //}
 }
 
 //MARK: - Numeric
 extension BigUInteger: Numeric {
-    //FIXME: Not to sure what this should be. BigUInteger? UInt?
     /// A type that can represent the absolute value of any possible value of this type.
     public typealias Magnitude = BigUInteger
     

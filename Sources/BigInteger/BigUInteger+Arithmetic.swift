@@ -174,8 +174,8 @@ extension BigUInteger {
         }
         
         // dividend / divisor = quotient R remainder
-        let dividend: BigUInteger = self //FIXME: .magnitude
-        let divisor: BigUInteger = rhs //FIXME: .magnitude
+        let dividend: BigUInteger = self
+        let divisor: BigUInteger = rhs
         
         var partialDividend: BigUInteger = 1
         var index: Int = dividend.bitWidth - 1 //First bit from left to right
