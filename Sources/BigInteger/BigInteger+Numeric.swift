@@ -112,7 +112,7 @@ extension BigInteger: SignedNumeric {
 }
 
 //MARK: - BinaryInteger
-extension BigInteger {
+extension BigInteger: BinaryInteger {
     public typealias Word = BigUInteger.Word
     
     public struct Words: RandomAccessCollection {
@@ -193,3 +193,4 @@ extension BigInteger {
 }
 
 //MARK: - SignedInteger
+extension BigInteger: SignedInteger {}
