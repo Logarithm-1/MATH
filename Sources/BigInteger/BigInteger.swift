@@ -7,8 +7,6 @@
 //
 // See https://github.com/Logarithm-1/MATH/blob/main/LICENSE for license information
 
-//TODO: Should I put bitwise functions on a Signed Integer?
-
 /// A signed integer type with arbitary precision know as a "big integer"
 ///
 /// The pros of using big integers is that they never overflow.

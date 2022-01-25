@@ -332,7 +332,7 @@ extension String {
         }
         
         if(uppercase) {
-            self.uppercased()
+            self = self.uppercased()
         }
     }
     
@@ -414,13 +414,9 @@ extension String {
         }
         
         if(uppercase) {
-            self.uppercased()
+            self = self.uppercased()
         }
     }
-    
-    
-    //TODO: OctRadix
-    //TODO: hexRadix
 }
 
 //MARK: String Convertibles

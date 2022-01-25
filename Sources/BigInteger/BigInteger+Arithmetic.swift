@@ -222,7 +222,6 @@ extension BigInteger {
     public static func ^^(lhs: BigInteger, rhs: BigInteger) -> BigInteger {
         var result: BigInteger = 1
         
-        //TODO: Remove toInt()
         for _ in 0..<rhs {
             result *= lhs
         }
@@ -238,7 +237,6 @@ extension Int {
     public static func ^^(lhs: Int, rhs: Int) -> Int {
         var result: Int = 1
         
-        //TODO: Remove toInt()
         for _ in 0..<rhs {
             result *= lhs
         }
