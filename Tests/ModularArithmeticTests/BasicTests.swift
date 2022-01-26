@@ -40,6 +40,7 @@ final class BasicTests: XCTestCase {
     func testInverse() {
         testInverse(value: 3, base: 26, equal: 9)
         testInverse(value: 518, base: 26, equal: nil)
+        testInverse(value: 842, base: 985, equal: 923)
     }
     
     func testDivision() {
@@ -50,13 +51,13 @@ final class BasicTests: XCTestCase {
     
     func testPower() {
         testPower(value: 4, power: 8, base: 26, equal: 16)
-        testPower(value: 5, power: 213, base: 26, equal: 12)
+        testPower(value: 5, power: 213, base: 26, equal: 5)
         testPower(value: 8, power: 848518, base: 26, equal: 12)
-        testPower(value: 3, power: 848518, base: 26, equal: 12)
+        testPower(value: 3, power: 848518, base: 26, equal: 3)
     }
     
     func testInversePower() {
-        testInversePower(value: 5, power: 72, modulo: 13, equal: 5)
+        testInversePower(value: 5, power: 72, modulo: 13, equal: 1)
         testInversePower(value: 6, power: 95, modulo: 13, equal: 6)
         testInversePower(value: 9, power: 1264, modulo: 13, equal: 3)
     }

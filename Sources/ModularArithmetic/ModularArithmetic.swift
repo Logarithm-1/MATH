@@ -55,6 +55,11 @@ extension ModularArithmetic where Self : SignedInteger {
     
     /// Returns the [multiplicative inverse of this integer in modulo `modulus` arithmetic](https://en.wikipedia.org/wiki/Extended_Euclidean_algorithm#Modular_integers), or `nil` if there is no such number.
     ///
+    ///     ab = 1 mod m
+    ///     ax + my = 1 = gcd(a, m) //Thus gcd(a, m) must equal 1
+    ///     ax - 1 = (-y)m
+    ///     ax = 1 mod m
+    ///
     /// - Parameter modulo: The base of the Modular Inverse
     /// - Returns: If `gcd(self, modulus) == 1`, the value returned is an integer `a < modulus` such that `(a * self) % modulus == 1`. If `self` and `modulus` aren't coprime, the return value is `nil`.
     /// - Requires: `modulus.magnitude > 1`
@@ -64,12 +69,12 @@ extension ModularArithmetic where Self : SignedInteger {
             return nil
         }
         
-        let b: Self = modulo - 1
+        let gcd = greatestCommonDenominatorExtended(self, modulo)
+        guard gcd.gcd == 1 else {
+            return nil
+        }
         
-        let gcd = greatestCommonDenominatorExtended(self, b)
-        
-        //TODO: Add in guaurd against base cases
-        return b + gcd.bCoefficient
+        return gcd.aCoefficient.modulus(modulo)
     }
     
     //MARK: - Power
@@ -106,9 +111,9 @@ extension ModularArithmetic where Self : SignedInteger {
     
     public func inversePower(of power: Self, for modulo: Self) -> Self? {
         if(modulo.isPrime()) {
-            if let inversePower = power.inverse(for: modulo) {
-                return self.power(of: inversePower, for: modulo)
-            }
+            let gcd = greatestCommonDenominatorExtended(power, modulo - 1)
+            let inversePower = (modulo - 1) + gcd.bCoefficient
+            return self.power(of: inversePower, for: modulo)
         }
         
         return nil
