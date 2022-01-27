@@ -6,7 +6,7 @@ import PackageDescription
 let excludedFilenames: [String] = ["README.md"]
 
 let package = Package(
-    name: "MATH",
+    name: "NumberTheory",
     platforms: [
         .macOS(.v10_14), .iOS(.v13), .tvOS(.v13)
     ],
