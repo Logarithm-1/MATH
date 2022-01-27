@@ -10,6 +10,30 @@
 extension BinaryInteger {
     /// In a set of whole numbers, a number is prime if its prime factors are 1 and it self.
     public func isPrime() -> Bool {
+        if(self == 2) {
+            return true
+        } else if(self & 1 == 0) { //self is positive
+            return false
+        }
+        
+        // Quickly check for small primes.
+        let smallPrimes: [Self] = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41]
+        
+        for prime in smallPrimes {
+            if(self == prime) {
+                //self is a small prime
+                return true
+            } else if(self % prime == 0) {
+                //self is multiple of a prime, thus can't be a prime.
+                return false
+            }
+        }
+        
+        
+        
+        
+        
+        
         //TODO: maxFactor should be the sqrt(self)
         let maxFactor: Self = self - 1
         var factor: Self = 2

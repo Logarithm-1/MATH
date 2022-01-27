@@ -1,4 +1,4 @@
-// Scalar.swift
+// BigInteger+ModularArithmetic.swift
 //
 // This source file is part of the Swift Math open source project.
 //
@@ -7,4 +7,6 @@
 //
 // See https://github.com/Logarithm-1/MATH/blob/main/LICENSE for license information
 
-public protocol Scalar: FloatingPoint {}
+import ModularArithmetic
+
+extension BigInteger: ModularArithmetic {}
