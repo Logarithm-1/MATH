@@ -5,7 +5,7 @@
 // Copyright (c) 2022 Logan Richards and the Swift Math project authors.
 // Licensed under MIT
 //
-// See https://github.com/Logarithm-1/MATH/blob/main/LICENSE for license information
+// See https://github.com/Logarithm-1/NumberTheory/blob/main/LICENSE for license information
 
 /// In a set of whole numbers, the Greatest Common Denominator (GCD) is the largest positive integer that divides evenly into all numbers with zero remainder.
 ///

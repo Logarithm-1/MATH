@@ -5,7 +5,7 @@
 // Copyright (c) 2022 Logan Richards and the Swift Math project authors.
 // Licensed under MIT
 //
-// See https://github.com/Logarithm-1/MATH/blob/main/LICENSE for license information
+// See https://github.com/Logarithm-1/NumberTheory/blob/main/LICENSE for license information
 
 extension BinaryInteger {
     /// In a set of whole numbers, a number is prime if its prime factors are 1 and it self.

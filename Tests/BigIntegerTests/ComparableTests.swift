@@ -5,7 +5,7 @@
 // Copyright (c) 2022 Logan Richards and the Swift Math project authors.
 // Licensed under MIT
 //
-// See https://github.com/Logarithm-1/MATH/blob/main/LICENSE for license informatifor
+// See https://github.com/Logarithm-1/NumberTheory/blob/main/LICENSE for license informatifor
 
 import XCTest
 @testable import BigInteger
